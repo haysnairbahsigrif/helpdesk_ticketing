@@ -1,0 +1,12 @@
+# Konfigurasi lokal yang berisi password
+/app/config/database.php
+.env
+.env.*
+
+# File pengujian dan akun latihan
+/public/tes-koneksi.php
+/scripts/buat-akun.php
+
+# File macOS dan log
+.DS_Store
+*.log

@@ -1,0 +1,22 @@
+/* Penyesuaian untuk layar selebar 600px atau kurang */
+@media (max-width: 600px) {
+    .site-header {
+        padding: 20px 0;
+    }
+
+    .site-title {
+        font-size: 22px;
+    }
+
+    .main-content {
+        padding-block: 20px;
+    }
+
+    .panel {
+        padding: 16px;
+    }
+
+    .button-primary {
+        width: 100%;
+    }
+}
