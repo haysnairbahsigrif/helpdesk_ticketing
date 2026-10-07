@@ -1,0 +1,98 @@
+/* Panel */
+.panel {
+    padding: 24px;
+    background-color: #ffffff;
+    border: 1px solid #dce3ee;
+    border-radius: 12px;
+}
+
+.panel h2 {
+    margin: 0 0 8px;
+}
+
+.panel p {
+    margin: 0;
+}
+
+/* Formulir */
+.panel .form-description {
+    margin-bottom: 20px;
+    color: #526075;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #94a3b8;
+    border-radius: 8px;
+    font: inherit;
+    color: #1e293b;
+    background-color: #ffffff;
+}
+
+.form-group textarea {
+    display: block;
+    resize: vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: 3px solid #bfdbfe;
+    border-color: #1d4ed8;
+}
+
+/* Tombol */
+.button-primary {
+    min-height: 44px;
+    padding: 12px 20px;
+    border: 0;
+    border-radius: 8px;
+    font: inherit;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #1d4ed8;
+    cursor: pointer;
+}
+
+.button-primary:hover {
+    background-color: #1e40af;
+}
+
+.button-primary:focus-visible {
+    outline: 3px solid #1e293b;
+    outline-offset: 3px;
+}
+
+/* Pesan notifikasi */
+.notification {
+    margin: 0 0 20px;
+    padding: 14px 16px;
+    border: 1px solid #94a3b8;
+    border-radius: 8px;
+    color: #1e293b;
+    background-color: #ffffff;
+}
+
+/* Penyesuaian komponen pada layar kecil */
+@media (max-width: 600px) {
+    .panel {
+        padding: 16px;
+    }
+
+    .button-primary {
+        width: 100%;
+    }
+}

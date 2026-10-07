@@ -8,7 +8,19 @@
     <title>Helpdesk Firgi</title>
 
     <link rel="stylesheet" href="/assets/css/style.css">
-    <link rel="stylesheet" href="/assets/css/responsive.css">
+    <link rel="stylesheet" href="/assets/css/components.css">
+
+    <?php if (isset($cssHalaman)): ?>
+        <link
+            rel="stylesheet"
+            href="<?php
+                    echo htmlspecialchars(
+                        $cssHalaman,
+                        ENT_QUOTES,
+                        'UTF-8'
+                    );
+                    ?>">
+    <?php endif; ?>
 </head>
 
 <body>

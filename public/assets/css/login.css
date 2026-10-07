@@ -1,0 +1,11 @@
+/* Panel login */
+.login-panel {
+    width: 100%;
+    max-width: 440px;
+    margin-inline: auto;
+}
+
+/* Tombol login */
+.login-button {
+    width: 100%;
+}

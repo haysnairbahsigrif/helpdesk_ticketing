@@ -1,0 +1,64 @@
+/* Judul dashboard */
+.page-heading {
+    margin-bottom: 24px;
+}
+
+.page-heading h2 {
+    margin: 0;
+}
+
+.page-heading p {
+    margin: 4px 0 0;
+    color: #526075;
+}
+
+/* Tata letak formulir dan daftar tiket */
+.ticket-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+}
+
+.ticket-layout > .panel {
+    min-width: 0;
+}
+
+/* Setiap tiket */
+.ticket-item {
+    padding-block: 20px;
+    border-bottom: 1px solid #dce3ee;
+    overflow-wrap: anywhere;
+}
+
+.ticket-item:last-child {
+    border-bottom: 0;
+}
+
+.ticket-item h3 {
+    margin: 0 0 8px;
+}
+
+.ticket-item p {
+    margin-bottom: 8px;
+}
+
+.ticket-complaint {
+    white-space: pre-wrap;
+}
+
+.ticket-date {
+    color: #526075;
+}
+
+/* Formulir perubahan status */
+.status-form {
+    margin-top: 16px;
+}
+
+/* Dashboard pada layar kecil */
+@media (max-width: 800px) {
+    .ticket-layout {
+        grid-template-columns: 1fr;
+    }
+}

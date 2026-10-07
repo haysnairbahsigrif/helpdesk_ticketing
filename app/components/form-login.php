@@ -1,24 +1,45 @@
 <section class="panel login-panel">
     <h2 id="judul-login">Masuk ke Helpdesk</h2>
+
     <p class="form-description">
-        Gunakan akun Anda untuk mengakses layanan IT Support.
+        Gunakan akun yang diberikan oleh admin.
     </p>
 
-    <form aria-labelledby="judul-login">
+    <form
+        action="/actions/login.php"
+        method="post"
+        aria-labelledby="judul-login"
+    >
+        <input
+            type="hidden"
+            name="csrf_token"
+            value="<?php
+                echo htmlspecialchars(
+                    $_SESSION['csrf_token'],
+                    ENT_QUOTES,
+                    'UTF-8'
+                );
+            ?>"
+        >
+
         <div class="form-group">
-            <label for="email">Email</label>
+            <label for="username">Username</label>
+
             <input
-                type="email"
-                id="email"
-                name="email"
-                placeholder="nama@example.test"
+                type="text"
+                id="username"
+                name="username"
+                maxlength="50"
                 autocomplete="username"
+                autocapitalize="none"
+                spellcheck="false"
                 required
             >
         </div>
 
         <div class="form-group">
             <label for="password">Password</label>
+
             <input
                 type="password"
                 id="password"
@@ -28,7 +49,7 @@
             >
         </div>
 
-        <button type="button" class="button-primary login-button">
+        <button type="submit" class="button-primary login-button">
             Masuk
         </button>
     </form>

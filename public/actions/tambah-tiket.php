@@ -1,52 +1,63 @@
 <?php
 
-// 1. Pastikan permintaan berasal dari pengiriman formulir.
+require __DIR__ . '/../../app/includes/cek-akses.php';
+wajibRole('user');
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: /');
+    header('Location: /user/');
     exit;
 }
 
-// 2. Ambil data formulir.
-$nama = $_POST['nama_pengguna'] ?? '';
+// Periksa token keamanan formulir.
+$token = $_POST['csrf_token'] ?? '';
+$tokenSession = $_SESSION['csrf_token'] ?? '';
+
+if (
+    !is_string($token)
+    || $tokenSession === ''
+    || !hash_equals($tokenSession, $token)
+) {
+    http_response_code(403);
+    exit('Permintaan tidak valid. Kembali ke dashboard dan muat ulang halaman.');
+}
+
+// Periksa keluhan.
 $keluhan = $_POST['keluhan'] ?? '';
 
-// 3. Pastikan masukan berupa teks.
-if (!is_string($nama) || !is_string($keluhan)) {
-    header('Location: /?pesan=data-tidak-valid', true, 303);
+if (!is_string($keluhan)) {
+    header('Location: /user/?pesan=data-tidak-valid', true, 303);
     exit;
 }
 
-// 4. Hapus spasi di awal dan akhir.
-$nama = trim($nama);
 $keluhan = trim($keluhan);
 
-// 5. Periksa kolom wajib.
-if ($nama === '' || $keluhan === '') {
-    header('Location: /?pesan=wajib-diisi', true, 303);
+if ($keluhan === '') {
+    header('Location: /user/?pesan=wajib-diisi', true, 303);
     exit;
 }
 
-// 6. Periksa panjang nama.
-$panjangNama = preg_match_all('/./us', $nama);
+$panjangKeluhan = preg_match_all('/./us', $keluhan);
 
-if ($panjangNama === false || $panjangNama > 100) {
-    header('Location: /?pesan=nama-terlalu-panjang', true, 303);
+if ($panjangKeluhan === false || $panjangKeluhan > 5000) {
+    header('Location: /user/?pesan=data-tidak-valid', true, 303);
     exit;
 }
 
-// 7. Hubungkan database dan simpan tiket.
+// Identitas pemilik berasal dari session login.
+$userId = (int) $_SESSION['akun']['id'];
+$nama = $_SESSION['akun']['nama'];
+
 try {
     require __DIR__ . '/../../app/config/database.php';
     require __DIR__ . '/../../app/functions/tiket.php';
 
-    tambahTiket($pdo, $nama, $keluhan);
+    tambahTiket($pdo, $userId, $nama, $keluhan);
 } catch (PDOException $error) {
     error_log($error->getMessage());
 
-    header('Location: /?pesan=gagal', true, 303);
+    header('Location: /user/?pesan=gagal', true, 303);
     exit;
 }
 
-// 8. Kembali ke halaman utama setelah berhasil.
-header('Location: /?pesan=berhasil', true, 303);
+header('Location: /user/?pesan=berhasil', true, 303);
 exit;

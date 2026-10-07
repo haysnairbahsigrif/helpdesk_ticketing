@@ -1,0 +1,89 @@
+/* Judul halaman */
+.users-heading {
+    margin-bottom: 24px;
+}
+
+.users-heading h2 {
+    margin: 0;
+}
+
+.users-heading p {
+    margin: 4px 0 12px;
+    color: #526075;
+}
+
+/* Tabel akun */
+.user-table-wrapper {
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.user-table {
+    width: 100%;
+    margin-top: 16px;
+    border-collapse: collapse;
+}
+
+.user-table th,
+.user-table td {
+    padding: 12px;
+    border-bottom: 1px solid #dce3ee;
+    text-align: left;
+    vertical-align: top;
+    overflow-wrap: anywhere;
+}
+
+.user-table th {
+    background-color: #f3f6fb;
+}
+
+@media (max-width: 600px) {
+    .user-table {
+        min-width: 0;
+    }
+
+    /* Sembunyikan judul kolom secara visual. */
+    .user-table thead {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+    }
+
+    .user-table,
+    .user-table tbody,
+    .user-table tr,
+    .user-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .user-table tr {
+        margin-bottom: 16px;
+        padding: 12px;
+        border: 1px solid #dce3ee;
+        border-radius: 8px;
+    }
+
+    .user-table tr:last-child {
+        margin-bottom: 0;
+    }
+
+    .user-table td {
+        padding: 8px 0;
+        border: 0;
+        overflow-wrap: anywhere;
+    }
+
+    .user-table td::before {
+        content: attr(data-label);
+        display: block;
+        margin-bottom: 4px;
+        font-weight: bold;
+        color: #526075;
+    }
+}
