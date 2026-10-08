@@ -6,7 +6,9 @@ function periksaLogin(
     string $password
 ): ?array {
     $statement = $pdo->prepare(
-        'SELECT id, nama, username, email, password_hash, role, is_active
+        'SELECT
+            id, nama, username, email, password_hash,
+            role, is_active, session_version
         FROM users
         WHERE username = :username
         LIMIT 1'
@@ -18,11 +20,7 @@ function periksaLogin(
 
     $akun = $statement->fetch();
 
-    if (!$akun) {
-        return null;
-    }
-
-    if ((int) $akun['is_active'] !== 1) {
+    if (!$akun || (int) $akun['is_active'] !== 1) {
         return null;
     }
 
@@ -36,5 +34,6 @@ function periksaLogin(
         'username' => $akun['username'],
         'email' => $akun['email'],
         'role' => $akun['role'],
+        'session_version' => (int) $akun['session_version'],
     ];
 }

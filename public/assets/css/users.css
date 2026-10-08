@@ -87,3 +87,64 @@
         color: #526075;
     }
 }
+
+/* Pencarian akun */
+.user-search {
+    margin-bottom: 24px;
+}
+
+.user-search-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+}
+
+/* Jarak tombol status dari tautan reset */
+.user-status-form {
+    margin-top: 12px;
+}
+
+/* Navigasi halaman daftar user */
+.user-pagination {
+    margin-top: 20px;
+}
+
+.user-pagination p {
+    margin: 0 0 12px;
+    color: #526075;
+}
+
+.user-pagination-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.user-pagination-links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 8px 14px;
+    border: 1px solid #94a3b8;
+    border-radius: 8px;
+    color: #1e3a8a;
+    background-color: #ffffff;
+    text-decoration: none;
+}
+
+.user-pagination-links a:hover {
+    background-color: #e8eefb;
+}
+
+.user-pagination-links a:focus-visible {
+    outline: 3px solid #1e293b;
+    outline-offset: 3px;
+}
+
+/* Tautan tindakan akun */
+.user-action-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}

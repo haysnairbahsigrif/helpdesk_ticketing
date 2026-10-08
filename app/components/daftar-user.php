@@ -1,4 +1,11 @@
+<?php
+
+/** @var string $pencarian */
+/** @var string $status */
+?>
+
 <section class="panel">
+
     <h2>Daftar user</h2>
 
     <?php if ($gagalMemuatUser): ?>
@@ -7,7 +14,13 @@
 
     <?php elseif (empty($daftarUser)): ?>
 
-        <p>Belum ada akun user.</p>
+        <p>
+            <?php
+            echo $pencarian !== '' || $status !== ''
+                ? 'Tidak ada user yang cocok dengan pencarian dan filter.'
+                : 'Belum ada akun user.';
+            ?>
+        </p>
 
     <?php else: ?>
 
@@ -19,6 +32,7 @@
                         <th scope="col">Username</th>
                         <th scope="col">Email</th>
                         <th scope="col">Status akun</th>
+                        <th scope="col">Tindakan</th>
                     </tr>
                 </thead>
 
@@ -61,6 +75,20 @@
                                     ? 'Aktif'
                                     : 'Nonaktif';
                                 ?>
+                            </td>
+
+                            <td data-label="Tindakan">
+                                <div class="user-action-links">
+                                    <a href="/admin/edit-user.php?id=<?php echo (int) $user['id']; ?>">
+                                        Edit
+                                    </a>
+
+                                    <a href="/admin/reset-password.php?id=<?php echo (int) $user['id']; ?>">
+                                        Reset password
+                                    </a>
+                                </div>
+
+                                <?php require __DIR__ . '/form-status-user.php'; ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>

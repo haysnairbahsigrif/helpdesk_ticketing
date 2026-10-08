@@ -16,6 +16,23 @@ $daftarPesan = [
     'user-duplikat' => 'Username atau email sudah digunakan.',
     'user-gagal' => 'Akun belum dapat disimpan. Silakan coba lagi.',
     'user-tidak-valid' => 'Periksa nama, format username, email, dan panjang password.',
+    'password-lama-salah' => 'Password saat ini tidak sesuai.',
+    'password-sama' => 'Password baru harus berbeda dari password saat ini.',
+    'password-tidak-valid' => 'Isi password saat ini. Password baru minimal 12 karakter dan maksimal 72 byte.',
+    'password-konfirmasi-salah' => 'Konfirmasi password baru tidak cocok.',
+    'password-gagal' => 'Password belum dapat diganti. Silakan coba lagi.',
+    'reset-berhasil' => 'Password sementara berhasil disimpan. Sesi lama user tidak berlaku.',
+    'reset-tidak-valid' => 'Password sementara minimal 12 karakter dan maksimal 72 byte.',
+    'reset-konfirmasi-salah' => 'Konfirmasi password sementara tidak cocok.',
+    'reset-gagal' => 'Password belum dapat direset. Silakan coba lagi.',
+    'reset-user-tidak-ditemukan' => 'Akun user tujuan tidak ditemukan.',
+    'akun-status-berhasil' => 'Status akun berhasil diperbarui.',
+    'akun-status-gagal' => 'Status akun belum dapat diperbarui. Silakan coba lagi.',
+    'akun-status-tidak-berubah' => 'Akun tidak ditemukan atau statusnya sudah sesuai. Muat ulang daftar user.',
+    'edit-user-berhasil' => 'Data user berhasil disimpan.',
+    'edit-user-gagal' => 'Data user belum dapat disimpan. Silakan coba lagi.',
+    'edit-user-tidak-valid' => 'Periksa nama, format username, dan email.',
+    'edit-user-tidak-ditemukan' => 'Akun user tidak ditemukan.',
 ];
 
 $pesan = is_string($kodePesan)
