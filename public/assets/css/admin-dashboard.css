@@ -1,0 +1,134 @@
+/* Kumpulan kartu ringkasan */
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 20px;
+    margin: 0;
+}
+
+/* Tampilan dasar setiap kartu */
+.summary-card {
+    min-width: 0;
+    padding: 24px 20px;
+    border: 1px solid #e2e8f0;
+    border-top: 4px solid #1e3a8a;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 2px 4px rgb(15 23 42 / 6%);
+}
+
+.summary-label {
+    color: #475569;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.summary-value {
+    margin: 14px 0 8px;
+    color: #0f172a;
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.summary-description {
+    margin: 0;
+    color: #64748b;
+    font-size: 13px;
+}
+
+/* Warna penanda kartu */
+.summary-card--user {
+    border-top-color: #1e3a8a;
+}
+
+.summary-card--total {
+    border-top-color: #2563eb;
+}
+
+.summary-card--baru {
+    border-top-color: #0284c7;
+}
+
+.summary-card--diproses {
+    border-top-color: #d97706;
+}
+
+.summary-card--selesai {
+    border-top-color: #16a34a;
+}
+
+/* Panel informasi di bawah kartu */
+.dashboard-intro {
+    margin-top: 24px;
+}
+
+/* Penyesuaian jumlah kolom */
+@media (max-width: 1200px) {
+    .summary-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 700px) {
+    .summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+    }
+}
+
+@media (max-width: 420px) {
+    .summary-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Kartu sebagai tautan */
+.summary-card {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    transition:
+        transform 150ms ease,
+        box-shadow 150ms ease;
+}
+
+.summary-label {
+    margin: 0;
+}
+
+.summary-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgb(15 23 42 / 12%);
+}
+
+.summary-card:focus-visible {
+    outline: 3px solid #2563eb;
+    outline-offset: 4px;
+}
+
+.summary-link-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    color: #1e40af;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.summary-card:hover .summary-link-label {
+    text-decoration: underline;
+}
+
+/* Hormati pengaturan pengguna yang mengurangi animasi */
+@media (prefers-reduced-motion: reduce) {
+    .summary-card {
+        transition: none;
+    }
+
+    .summary-card:hover {
+        transform: none;
+    }
+}

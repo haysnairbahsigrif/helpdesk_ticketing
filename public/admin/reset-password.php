@@ -36,22 +36,34 @@ if ($user === null) {
     exit('Akun user tidak ditemukan.');
 }
 
+$menuAktif = 'users';
+$judulHalaman = 'Reset Password User';
 $cssHalaman = '/assets/css/users.css';
 
-require __DIR__ . '/../../app/includes/header.php';
+require __DIR__ . '/../../app/includes/header-admin.php';
 ?>
 
-<main class="container main-content">
-    <div class="users-heading">
-        <h2>Keamanan akun user</h2>
-        <a href="/admin/users.php">Kembali ke daftar user</a>
+<main class="admin-main">
+    <section class="admin-hero" aria-labelledby="judul-reset-password">
+        <h1 id="judul-reset-password">Reset Password User</h1>
+        <p>Bantu pengguna mendapatkan kembali akses ke akunnya.</p>
+    </section>
+
+    <div class="admin-content">
+        <div class="panel users-back-panel">
+            <a href="/admin/users.php">
+                <span aria-hidden="true">←</span>
+                Kembali ke daftar user
+            </a>
+        </div>
+
+        <?php
+        require __DIR__ . '/../../app/components/pesan.php';
+        require __DIR__ . '/../../app/components/form-reset-password.php';
+        ?>
     </div>
-
-    <?php require __DIR__ . '/../../app/components/pesan.php'; ?>
-
-    <?php
-    require __DIR__ . '/../../app/components/form-reset-password.php';
-    ?>
 </main>
 
-<?php require __DIR__ . '/../../app/includes/footer.php'; ?>
+<?php
+require __DIR__ . '/../../app/includes/footer-admin.php';
+?>

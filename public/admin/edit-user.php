@@ -35,20 +35,34 @@ if ($user === null) {
     exit('Akun user tidak ditemukan.');
 }
 
+$menuAktif = 'users';
+$judulHalaman = 'Edit User';
 $cssHalaman = '/assets/css/users.css';
 
-require __DIR__ . '/../../app/includes/header.php';
+require __DIR__ . '/../../app/includes/header-admin.php';
 ?>
 
-<main class="container main-content">
-    <div class="users-heading">
-        <h2>Pengelolaan user</h2>
-        <a href="/admin/users.php">Kembali ke daftar user</a>
+<main class="admin-main">
+    <section class="admin-hero" aria-labelledby="judul-edit-user">
+        <h1 id="judul-edit-user">Edit Akun User</h1>
+        <p>Perbarui identitas akun pengguna layanan IT Support.</p>
+    </section>
+
+    <div class="admin-content">
+        <div class="panel users-back-panel">
+            <a href="/admin/users.php">
+                <span aria-hidden="true">←</span>
+                Kembali ke daftar user
+            </a>
+        </div>
+
+        <?php
+        require __DIR__ . '/../../app/components/pesan.php';
+        require __DIR__ . '/../../app/components/form-edit-user.php';
+        ?>
     </div>
-
-    <?php require __DIR__ . '/../../app/components/pesan.php'; ?>
-
-    <?php require __DIR__ . '/../../app/components/form-edit-user.php'; ?>
 </main>
 
-<?php require __DIR__ . '/../../app/includes/footer.php'; ?>
+<?php
+require __DIR__ . '/../../app/includes/footer-admin.php';
+?>

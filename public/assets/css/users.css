@@ -148,3 +148,61 @@
     flex-wrap: wrap;
     gap: 12px;
 }
+
+/* Bagian judul daftar dan tombol tambah user */
+.users-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.users-toolbar > div {
+    flex: 1;
+    min-width: 0;
+}
+
+.users-toolbar p {
+    color: #64748b;
+}
+
+.users-add-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    text-decoration: none;
+}
+
+/* Susunan pada HP */
+@media (max-width: 600px) {
+    .users-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .users-add-button {
+        width: 100%;
+    }
+}
+
+/* Navigasi kembali pada halaman pengelolaan akun */
+.users-back-panel {
+    margin-bottom: 24px;
+}
+
+.users-back-panel a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    color: #1e40af;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.users-back-panel a:hover {
+    text-decoration: underline;
+}

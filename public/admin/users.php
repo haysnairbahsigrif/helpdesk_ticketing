@@ -81,32 +81,47 @@ try {
     $gagalMemuatUser = true;
 }
 
+$menuAktif = 'users';
+$judulHalaman = 'Kelola User';
 $cssHalaman = '/assets/css/users.css';
 
-require __DIR__ . '/../../app/includes/header.php';
+require __DIR__ . '/../../app/includes/header-admin.php';
 ?>
 
-<main class="container main-content">
-    <div class="users-heading">
-        <h2>Pengelolaan user</h2>
-        <p>Akun pengguna layanan IT Support.</p>
+<main class="admin-main">
+    <section class="admin-hero" aria-labelledby="judul-users">
+        <h1 id="judul-users">Kelola User</h1>
+        <p>Kelola akun pengguna layanan IT Support.</p>
+    </section>
 
-        <a href="/admin/">Kembali ke dashboard</a>
+    <div class="admin-content">
+        <section class="panel users-toolbar">
+            <div>
+                <h2>Akun pengguna</h2>
+                <p>Tambahkan akun atau kelola pengguna yang terdaftar.</p>
+            </div>
 
-        <p>
-            <a href="/admin/tambah-user.php">Tambah user</a>
-        </p>
+            <a
+                class="button-primary users-add-button"
+                href="/admin/tambah-user.php">
+                Tambah user
+            </a>
+        </section>
+
+        <?php
+        require __DIR__ . '/../../app/components/pesan.php';
+        require __DIR__ . '/../../app/components/form-cari-user.php';
+        require __DIR__ . '/../../app/components/daftar-user.php';
+        ?>
+
+        <?php if (!$gagalMemuatUser): ?>
+            <?php
+            require __DIR__ . '/../../app/components/pagination-user.php';
+            ?>
+        <?php endif; ?>
     </div>
-
-    <?php require __DIR__ . '/../../app/components/pesan.php'; ?>
-
-    <?php require __DIR__ . '/../../app/components/form-cari-user.php'; ?>
-
-    <?php require __DIR__ . '/../../app/components/daftar-user.php'; ?>
-
-    <?php if (!$gagalMemuatUser): ?>
-        <?php require __DIR__ . '/../../app/components/pagination-user.php'; ?>
-    <?php endif; ?>
 </main>
 
-<?php require __DIR__ . '/../../app/includes/footer.php'; ?>
+<?php
+require __DIR__ . '/../../app/includes/footer-admin.php';
+?>

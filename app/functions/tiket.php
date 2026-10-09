@@ -38,10 +38,79 @@ function ambilTiketUser(PDO $pdo, int $userId): array
     return $statement->fetchAll();
 }
 
-function ambilSemuaTiket(PDO $pdo): array
-{
-    $statement = $pdo->query(
-        'SELECT
+function buatFilterTiket(
+    string $pencarian = '',
+    string $status = ''
+): array {
+    $kondisi = [];
+    $parameter = [];
+
+    if ($pencarian !== '') {
+        $kondisi[] = "
+            (
+                tickets.nama_pengguna LIKE :nama ESCAPE '!'
+                OR tickets.keluhan LIKE :keluhan ESCAPE '!'
+            )
+        ";
+
+        $kataKunci = '%' . str_replace(
+            ['!', '%', '_'],
+            ['!!', '!%', '!_'],
+            $pencarian
+        ) . '%';
+
+        $parameter['nama'] = $kataKunci;
+        $parameter['keluhan'] = $kataKunci;
+    }
+
+    if ($status !== '') {
+        $kondisi[] = 'tickets.status = :status';
+        $parameter['status'] = $status;
+    }
+
+    $where = $kondisi !== []
+        ? ' WHERE ' . implode(' AND ', $kondisi)
+        : '';
+
+    return [
+        'where' => $where,
+        'parameter' => $parameter,
+    ];
+}
+
+function hitungTiketAdmin(
+    PDO $pdo,
+    string $pencarian = '',
+    string $status = ''
+): int {
+    $filter = buatFilterTiket($pencarian, $status);
+
+    $statement = $pdo->prepare(
+        'SELECT COUNT(*) FROM tickets' . $filter['where']
+    );
+
+    $statement->execute($filter['parameter']);
+
+    return (int) $statement->fetchColumn();
+}
+
+function ambilSemuaTiket(
+    PDO $pdo,
+    string $pencarian = '',
+    string $status = '',
+    ?int $batas = null,
+    int $offset = 0
+): array {
+    if ($offset < 0 || ($batas !== null && $batas < 1)) {
+        throw new InvalidArgumentException(
+            'Batas harus positif dan offset tidak boleh negatif.'
+        );
+    }
+
+    $filter = buatFilterTiket($pencarian, $status);
+
+    $sql = '
+        SELECT
             tickets.id,
             tickets.nama_pengguna,
             tickets.keluhan,
@@ -50,8 +119,31 @@ function ambilSemuaTiket(PDO $pdo): array
             users.email AS email_pemilik
         FROM tickets
         LEFT JOIN users ON tickets.user_id = users.id
-        ORDER BY tickets.id DESC'
-    );
+    ';
+
+    $sql .= $filter['where'];
+    $sql .= ' ORDER BY tickets.id DESC';
+
+    if ($batas !== null) {
+        $sql .= ' LIMIT :batas OFFSET :offset';
+    }
+
+    $statement = $pdo->prepare($sql);
+
+    foreach ($filter['parameter'] as $nama => $nilai) {
+        $statement->bindValue(
+            ':' . $nama,
+            $nilai,
+            PDO::PARAM_STR
+        );
+    }
+
+    if ($batas !== null) {
+        $statement->bindValue(':batas', $batas, PDO::PARAM_INT);
+        $statement->bindValue(':offset', $offset, PDO::PARAM_INT);
+    }
+
+    $statement->execute();
 
     return $statement->fetchAll();
 }
