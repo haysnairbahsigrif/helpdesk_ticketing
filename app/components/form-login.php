@@ -1,3 +1,9 @@
+<?php
+
+/** @var string $pesanLoginInline */
+$pesanLoginInline = $pesanLoginInline ?? '';
+?>
+
 <section class="panel login-panel">
     <h2 id="judul-login">Masuk ke Helpdesk</h2>
 
@@ -8,19 +14,17 @@
     <form
         action="/actions/login.php"
         method="post"
-        aria-labelledby="judul-login"
-    >
+        aria-labelledby="judul-login">
         <input
             type="hidden"
             name="csrf_token"
             value="<?php
-                echo htmlspecialchars(
-                    $_SESSION['csrf_token'],
-                    ENT_QUOTES,
-                    'UTF-8'
-                );
-            ?>"
-        >
+                    echo htmlspecialchars(
+                        $_SESSION['csrf_token'],
+                        ENT_QUOTES,
+                        'UTF-8'
+                    );
+                    ?>">
 
         <div class="form-group">
             <label for="username">Username</label>
@@ -33,21 +37,42 @@
                 autocomplete="username"
                 autocapitalize="none"
                 spellcheck="false"
-                required
-            >
+                required>
         </div>
 
         <div class="form-group">
             <label for="password">Password</label>
 
-            <input
-                type="password"
-                id="password"
-                name="password"
-                autocomplete="current-password"
-                required
-            >
+            <div class="password-field">
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    autocomplete="current-password"
+                    <?php if ($pesanLoginInline !== ''): ?>
+                    aria-describedby="pesan-login-inline"
+                    <?php endif; ?>
+                    required>
+
+                <button
+                    type="button"
+                    class="password-toggle"
+                    data-password-toggle
+                    aria-controls="password"
+                    aria-label="Tampilkan password"
+                    title="Tampilkan password"
+                    hidden>
+                    <img
+                        src="/assets/icons/eye-off-line.svg"
+                        data-password-icon
+                        width="20"
+                        height="20"
+                        alt="">
+                </button>
+            </div>
         </div>
+
+        <?php require __DIR__ . '/pesan-login-inline.php'; ?>
 
         <button type="submit" class="button-primary login-button">
             Masuk

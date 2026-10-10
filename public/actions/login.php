@@ -7,6 +7,12 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
+unset(
+    $_SESSION['pesan_login'],
+    $_SESSION['jenis_pesan_login'],
+    $_SESSION['posisi_pesan_login']
+);
+
 // Periksa token formulir.
 $token = $_POST['csrf_token'] ?? '';
 $tokenSession = $_SESSION['csrf_token'] ?? '';
@@ -17,6 +23,7 @@ if (
     || !hash_equals($tokenSession, $token)
 ) {
     $_SESSION['pesan_login'] = 'Formulir kedaluwarsa. Silakan coba lagi.';
+    $_SESSION['jenis_pesan_login'] = 'error';
     header('Location: /login.php', true, 303);
     exit;
 }
@@ -27,6 +34,7 @@ $password = $_POST['password'] ?? '';
 
 if (!is_string($username) || !is_string($password)) {
     $_SESSION['pesan_login'] = 'Data login tidak valid.';
+    $_SESSION['jenis_pesan_login'] = 'error';
     header('Location: /login.php', true, 303);
     exit;
 }
@@ -35,6 +43,7 @@ $username = trim($username);
 
 if ($username === '' || $password === '') {
     $_SESSION['pesan_login'] = 'Username dan password wajib diisi.';
+    $_SESSION['jenis_pesan_login'] = 'error';
     header('Location: /login.php', true, 303);
     exit;
 }
@@ -49,12 +58,16 @@ try {
     error_log($error->getMessage());
 
     $_SESSION['pesan_login'] = 'Login belum dapat diproses. Coba lagi.';
+    $_SESSION['jenis_pesan_login'] = 'error';
     header('Location: /login.php', true, 303);
     exit;
 }
 
 if ($akun === null) {
     $_SESSION['pesan_login'] = 'Login ditolak. Periksa username dan password, atau hubungi admin.';
+    $_SESSION['jenis_pesan_login'] = 'error';
+    $_SESSION['posisi_pesan_login'] = 'password';
+
     header('Location: /login.php', true, 303);
     exit;
 }

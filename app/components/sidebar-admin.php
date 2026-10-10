@@ -17,7 +17,10 @@ $menuAktif = $menuAktif ?? '';
             <?php if ($menuAktif === 'dashboard'): ?>
                 aria-current="page"
             <?php endif; ?>>
-            Dashboard
+            <span
+                class="sidebar-icon sidebar-icon--dashboard"
+                aria-hidden="true"></span>
+            <span>Dashboard</span>
         </a>
 
         <a
@@ -25,7 +28,10 @@ $menuAktif = $menuAktif ?? '';
             <?php if ($menuAktif === 'tiket'): ?>
                 aria-current="page"
             <?php endif; ?>>
-            Daftar tiket
+            <span
+                class="sidebar-icon sidebar-icon--ticket"
+                aria-hidden="true"></span>
+            <span>Daftar tiket</span>
         </a>
 
         <a
@@ -33,7 +39,10 @@ $menuAktif = $menuAktif ?? '';
             <?php if ($menuAktif === 'users'): ?>
                 aria-current="page"
             <?php endif; ?>>
-            Kelola user
+            <span
+                class="sidebar-icon sidebar-icon--users"
+                aria-hidden="true"></span>
+            <span>Kelola user</span>
         </a>
     </nav>
 

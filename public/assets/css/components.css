@@ -96,3 +96,72 @@
         width: 100%;
     }
 }
+
+/* Kolom password dengan tombol tampil/sembunyikan */
+.password-field {
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+}
+
+.password-field input {
+    flex: 1;
+    min-width: 0;
+}
+
+.password-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #eff6ff;
+    color: #1e40af;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.password-toggle[hidden] {
+    display: none;
+}
+
+.password-toggle img {
+    display: block;
+    width: 20px;
+    height: 20px;
+}
+
+/* Jenis pesan hasil tindakan */
+.notification--success {
+    border-color: #86efac;
+    background: #f0fdf4;
+    color: #166534;
+}
+
+.notification--error {
+    border-color: #fca5a5;
+    background: #fef2f2;
+    color: #991b1b;
+}
+
+.notification--info {
+    border-color: #93c5fd;
+    background: #eff6ff;
+    color: #1e40af;
+}
+
+.notification-title {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.notification .notification-message {
+    margin: 0;
+    overflow-wrap: anywhere;
+}

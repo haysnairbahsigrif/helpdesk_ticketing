@@ -4,7 +4,7 @@ $kodePesan = $_GET['pesan'] ?? '';
 
 $daftarPesan = [
     'berhasil' => 'Tiket berhasil ditambahkan.',
-    'wajib-diisi' => 'Nama dan keluhan wajib diisi.',
+    'wajib-diisi' => 'Keluhan wajib diisi.',
     'nama-terlalu-panjang' => 'Nama tidak valid atau melebihi 100 karakter.',
     'data-tidak-valid' => 'Data formulir tidak valid.',
     'gagal' => 'Tiket belum tersimpan. Silakan coba lagi.',
@@ -38,10 +38,54 @@ $daftarPesan = [
 $pesan = is_string($kodePesan)
     ? ($daftarPesan[$kodePesan] ?? '')
     : '';
+
+$kodeBerhasil = [
+    'berhasil',
+    'status-berhasil',
+    'user-berhasil',
+    'reset-berhasil',
+    'akun-status-berhasil',
+    'edit-user-berhasil',
+];
+
+$kodeInformasi = [
+    'akun-status-tidak-berubah',
+];
+
+if (in_array($kodePesan, $kodeBerhasil, true)) {
+    $jenisPesan = 'success';
+    $labelPesan = 'Berhasil';
+    $rolePesan = 'status';
+} elseif (in_array($kodePesan, $kodeInformasi, true)) {
+    $jenisPesan = 'info';
+    $labelPesan = 'Informasi';
+    $rolePesan = 'status';
+} else {
+    $jenisPesan = 'error';
+    $labelPesan = 'Perlu diperiksa';
+    $rolePesan = 'alert';
+}
 ?>
 
 <?php if ($pesan !== ''): ?>
-    <p class="notification" role="status">
-        <?php echo htmlspecialchars($pesan, ENT_QUOTES, 'UTF-8'); ?>
-    </p>
+    <div
+        class="notification notification--<?php
+                                            echo htmlspecialchars($jenisPesan, ENT_QUOTES, 'UTF-8');
+                                            ?>"
+        role="<?php
+                echo htmlspecialchars($rolePesan, ENT_QUOTES, 'UTF-8');
+                ?>">
+
+        <strong class="notification-title">
+            <?php
+            echo htmlspecialchars($labelPesan, ENT_QUOTES, 'UTF-8');
+            ?>
+        </strong>
+
+        <p class="notification-message">
+            <?php
+            echo htmlspecialchars($pesan, ENT_QUOTES, 'UTF-8');
+            ?>
+        </p>
+    </div>
 <?php endif; ?>

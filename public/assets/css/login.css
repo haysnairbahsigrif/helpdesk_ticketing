@@ -9,3 +9,19 @@
 .login-button {
     width: 100%;
 }
+
+/* Lebar pesan mengikuti panel login */
+.login-notification {
+    width: 100%;
+    max-width: 440px;
+    margin-inline: auto;
+}
+
+/* Pesan penolakan login di bawah password */
+.login-panel .login-inline-error {
+    margin: 0 0 20px;
+    color: #b91c1c;
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}

@@ -3,32 +3,46 @@
 require __DIR__ . '/../../app/includes/cek-akses.php';
 wajibRole('user', true);
 
-$cssHalaman = '/assets/css/dashboard.css';
+$judulHalaman = 'Ganti Password';
 
-require __DIR__ . '/../../app/includes/header.php';
+$wajibGantiPassword =
+    (int) $_SESSION['akun']['must_change_password'] === 1;
+
+require __DIR__ . '/../../app/includes/header-user.php';
 ?>
 
-<main class="container main-content">
-    <div class="page-heading">
-        <h2>Keamanan akun</h2>
-        <p>Kelola password akun Anda.</p>
+<main class="user-main">
+    <section class="user-hero" aria-labelledby="judul-ganti-password">
+        <div class="container">
+            <h1 id="judul-ganti-password">Keamanan Akun</h1>
+            <p>Kelola password untuk melindungi akun Anda.</p>
+        </div>
+    </section>
 
-        <?php
-        require __DIR__ . '/../../app/components/form-logout.php';
-        ?>
+    <div class="container user-content">
+        <div class="user-password-content">
+            <?php if ($wajibGantiPassword): ?>
+                <p class="notification" role="status">
+                    Anda wajib mengganti password sementara
+                    sebelum menggunakan aplikasi.
+                </p>
+            <?php else: ?>
+                <div class="panel user-back-panel">
+                    <a href="/user/">
+                        <span aria-hidden="true">←</span>
+                        Kembali ke dashboard
+                    </a>
+                </div>
+            <?php endif; ?>
+
+            <?php
+            require __DIR__ . '/../../app/components/pesan.php';
+            require __DIR__ . '/../../app/components/form-ganti-password.php';
+            ?>
+        </div>
     </div>
-
-    <?php if ($_SESSION['akun']['must_change_password'] === 1): ?>
-        <p class="notification" role="status">
-            Anda wajib mengganti password sementara sebelum menggunakan aplikasi.
-        </p>
-    <?php endif; ?>
-
-    <?php require __DIR__ . '/../../app/components/pesan.php'; ?>
-
-    <?php
-    require __DIR__ . '/../../app/components/form-ganti-password.php';
-    ?>
 </main>
 
-<?php require __DIR__ . '/../../app/includes/footer.php'; ?>
+<?php
+require __DIR__ . '/../../app/includes/footer-user.php';
+?>

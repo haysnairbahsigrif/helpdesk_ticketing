@@ -14,6 +14,7 @@ $tokenSession = $_SESSION['csrf_token'] ?? '';
 
 if (
     !is_string($token)
+    || !is_string($tokenSession)
     || $tokenSession === ''
     || !hash_equals($tokenSession, $token)
 ) {
@@ -21,15 +22,23 @@ if (
     exit('Permintaan tidak valid. Kembali ke dashboard dan muat ulang halaman.');
 }
 
-// Periksa keluhan.
-$keluhan = $_POST['keluhan'] ?? '';
+// Hapus sisa input sementara dari pengiriman sebelumnya.
+unset($_SESSION['input_tiket']);
 
-if (!is_string($keluhan)) {
+// Periksa keluhan.
+$keluhanMasukan = $_POST['keluhan'] ?? '';
+
+if (!is_string($keluhanMasukan)) {
     header('Location: /user/?pesan=data-tidak-valid', true, 303);
     exit;
 }
 
-$keluhan = trim($keluhan);
+// Simpan teks asli untuk ditampilkan kembali jika terjadi kegagalan.
+$_SESSION['input_tiket'] = [
+    'keluhan' => $keluhanMasukan,
+];
+
+$keluhan = trim($keluhanMasukan);
 
 if ($keluhan === '') {
     header('Location: /user/?pesan=wajib-diisi', true, 303);
@@ -43,7 +52,7 @@ if ($panjangKeluhan === false || $panjangKeluhan > 5000) {
     exit;
 }
 
-// Identitas pemilik berasal dari session login.
+// Identitas pemilik berasal dari sesi login.
 $userId = (int) $_SESSION['akun']['id'];
 $nama = $_SESSION['akun']['nama'];
 
@@ -58,6 +67,9 @@ try {
     header('Location: /user/?pesan=gagal', true, 303);
     exit;
 }
+
+// Tiket berhasil disimpan, kosongkan input sementara.
+unset($_SESSION['input_tiket']);
 
 header('Location: /user/?pesan=berhasil', true, 303);
 exit;

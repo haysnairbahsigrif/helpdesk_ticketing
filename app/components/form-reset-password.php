@@ -42,14 +42,32 @@
         <div class="form-group">
             <label for="password_sementara">Password sementara baru</label>
 
-            <input
-                type="password"
-                id="password_sementara"
-                name="password_sementara"
-                minlength="12"
-                autocomplete="new-password"
-                aria-describedby="petunjuk-reset"
-                required>
+            <div class="password-field">
+                <input
+                    type="password"
+                    id="password_sementara"
+                    name="password_sementara"
+                    minlength="12"
+                    autocomplete="new-password"
+                    aria-describedby="petunjuk-reset"
+                    required>
+
+                <button
+                    type="button"
+                    class="password-toggle"
+                    data-password-toggle
+                    aria-controls="password_sementara"
+                    aria-label="Tampilkan password"
+                    title="Tampilkan password"
+                    hidden>
+                    <img
+                        src="/assets/icons/eye-line.svg"
+                        data-password-icon
+                        width="20"
+                        height="20"
+                        alt="">
+                </button>
+            </div>
 
             <small id="petunjuk-reset">
                 Minimal 12 karakter dan maksimal 72 byte.
@@ -61,13 +79,31 @@
                 Ulangi password sementara
             </label>
 
-            <input
-                type="password"
-                id="konfirmasi_password"
-                name="konfirmasi_password"
-                minlength="12"
-                autocomplete="new-password"
-                required>
+            <div class="password-field">
+                <input
+                    type="password"
+                    id="konfirmasi_password"
+                    name="konfirmasi_password"
+                    minlength="12"
+                    autocomplete="new-password"
+                    required>
+
+                <button
+                    type="button"
+                    class="password-toggle"
+                    data-password-toggle
+                    aria-controls="konfirmasi_password"
+                    aria-label="Tampilkan password"
+                    title="Tampilkan password"
+                    hidden>
+                    <img
+                        src="/assets/icons/eye-off-line.svg"
+                        data-password-icon
+                        width="20"
+                        height="20"
+                        alt="">
+                </button>
+            </div>
         </div>
 
         <p class="form-description">

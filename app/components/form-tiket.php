@@ -1,3 +1,15 @@
+<?php
+
+$keluhanLama = $_SESSION['input_tiket']['keluhan'] ?? '';
+
+if (!is_string($keluhanLama)) {
+    $keluhanLama = '';
+}
+
+// Input sementara hanya digunakan untuk satu kali tampilan.
+unset($_SESSION['input_tiket']);
+?>
+
 <section class="panel">
     <h2>Tambah tiket</h2>
 
@@ -17,13 +29,12 @@
             type="hidden"
             name="csrf_token"
             value="<?php
-                echo htmlspecialchars(
-                    $_SESSION['csrf_token'],
-                    ENT_QUOTES,
-                    'UTF-8'
-                );
-            ?>"
-        >
+                    echo htmlspecialchars(
+                        $_SESSION['csrf_token'],
+                        ENT_QUOTES,
+                        'UTF-8'
+                    );
+                    ?>">
 
         <div class="form-group">
             <label for="keluhan">Keluhan</label>
@@ -34,8 +45,19 @@
                 rows="5"
                 maxlength="5000"
                 placeholder="Jelaskan kendala yang Anda alami."
-                required
-            ></textarea>
+                aria-describedby="petunjuk-keluhan"
+                required><?php
+                            echo htmlspecialchars(
+                                $keluhanLama,
+                                ENT_QUOTES | ENT_SUBSTITUTE,
+                                'UTF-8'
+                            );
+                            ?></textarea>
+
+            <small id="petunjuk-keluhan">
+                Maksimal 5.000 karakter.
+                <span id="jumlah-karakter-keluhan"></span>
+            </small>
         </div>
 
         <button type="submit" class="button-primary">
