@@ -1,5 +1,13 @@
 <section class="panel ticket-list">
-    <h2>Seluruh tiket</h2>
+    <h2>
+        <?php
+        echo match ($tampilan ?? 'aktif') {
+            'semua' => 'Seluruh tiket',
+            'riwayat' => 'Riwayat tiket',
+            default => 'Daftar tiket aktif',
+        };
+        ?>
+    </h2>
 
     <?php if ($gagalMemuatTiket): ?>
 
@@ -40,22 +48,16 @@
                 </p>
 
                 <p class="ticket-complaint"><?php
-                    echo htmlspecialchars(
-                        $tiket['keluhan'],
-                        ENT_QUOTES,
-                        'UTF-8'
-                    );
-                ?></p>
+                                            echo htmlspecialchars(
+                                                $tiket['keluhan'],
+                                                ENT_QUOTES,
+                                                'UTF-8'
+                                            );
+                                            ?></p>
 
                 <p>
                     <strong>Status:</strong>
-                    <?php
-                    echo htmlspecialchars(
-                        $tiket['status'],
-                        ENT_QUOTES,
-                        'UTF-8'
-                    );
-                    ?>
+                    <?php require __DIR__ . '/badge-status-tiket.php'; ?>
                 </p>
 
                 <p class="ticket-date">
@@ -72,5 +74,9 @@
             </article>
         <?php endforeach; ?>
 
+    <?php endif; ?>
+
+    <?php if (!$gagalMemuatTiket && !empty($daftarTiket)): ?>
+        <?php require __DIR__ . '/pagination-tiket.php'; ?>
     <?php endif; ?>
 </section>

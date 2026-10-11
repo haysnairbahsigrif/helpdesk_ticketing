@@ -84,51 +84,67 @@
     }
 }
 
-/* Kartu sebagai tautan */
+/* Susun isi kartu dari atas ke bawah */
 .summary-card {
-    display: block;
+    display: flex;
+    flex-direction: column;
     color: inherit;
     text-decoration: none;
-    transition:
-        transform 150ms ease,
-        box-shadow 150ms ease;
 }
 
 .summary-label {
     margin: 0;
 }
 
-.summary-card:hover {
+/* Efek interaksi khusus kartu yang memiliki tautan */
+a.summary-card {
+    transition:
+        transform 150ms ease,
+        box-shadow 150ms ease;
+}
+
+a.summary-card:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 20px rgb(15 23 42 / 12%);
 }
 
-.summary-card:focus-visible {
+a.summary-card:focus-visible {
     outline: 3px solid #2563eb;
     outline-offset: 4px;
 }
 
-.summary-link-label {
+/* Dorong bagian terakhir ke bawah kartu */
+.summary-link-label,
+.summary-card-note {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    margin-top: 20px;
-    color: #1e40af;
+    margin-top: auto;
+    padding-top: 20px;
     font-size: 13px;
+    line-height: 1.5;
+}
+
+.summary-link-label {
+    color: #1e40af;
     font-weight: 600;
 }
 
-.summary-card:hover .summary-link-label {
+.summary-card-note {
+    color: #64748b;
+}
+
+a.summary-card:hover .summary-link-label {
     text-decoration: underline;
 }
 
 /* Hormati pengaturan pengguna yang mengurangi animasi */
 @media (prefers-reduced-motion: reduce) {
-    .summary-card {
+    a.summary-card {
         transition: none;
     }
 
-    .summary-card:hover {
+    a.summary-card:hover {
         transform: none;
     }
 }

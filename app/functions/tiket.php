@@ -25,13 +25,25 @@ function tambahTiket(
 function buatFilterTiketUser(
     int $userId,
     string $pencarian = '',
-    string $status = ''
+    string $status = '',
+    string $tampilan = 'semua'
 ): array {
+    if (!in_array($tampilan, ['semua', 'aktif', 'riwayat'], true)) {
+        throw new InvalidArgumentException('Tampilan tiket tidak valid.');
+    }
+
+    // Semua tampilan wajib dibatasi pada pemilik tiket.
     $where = ' WHERE user_id = :user_id';
 
     $parameter = [
         'user_id' => $userId,
     ];
+
+    if ($tampilan === 'aktif') {
+        $where .= " AND status IN ('Baru', 'Diproses')";
+    } elseif ($tampilan === 'riwayat') {
+        $where .= " AND status = 'Selesai'";
+    }
 
     if ($pencarian !== '') {
         $where .= " AND keluhan LIKE :pencarian ESCAPE '!'";
@@ -58,9 +70,15 @@ function hitungTiketUser(
     PDO $pdo,
     int $userId,
     string $pencarian = '',
-    string $status = ''
+    string $status = '',
+    string $tampilan = 'semua'
 ): int {
-    $filter = buatFilterTiketUser($userId, $pencarian, $status);
+    $filter = buatFilterTiketUser(
+        $userId,
+        $pencarian,
+        $status,
+        $tampilan
+    );
 
     $statement = $pdo->prepare(
         'SELECT COUNT(*) FROM tickets' . $filter['where']
@@ -77,7 +95,8 @@ function ambilTiketUser(
     string $pencarian = '',
     string $status = '',
     ?int $batas = null,
-    int $offset = 0
+    int $offset = 0,
+    string $tampilan = 'semua'
 ): array {
     if ($offset < 0 || ($batas !== null && $batas < 1)) {
         throw new InvalidArgumentException(
@@ -85,7 +104,12 @@ function ambilTiketUser(
         );
     }
 
-    $filter = buatFilterTiketUser($userId, $pencarian, $status);
+    $filter = buatFilterTiketUser(
+        $userId,
+        $pencarian,
+        $status,
+        $tampilan
+    );
 
     $sql = '
         SELECT id, keluhan, status, created_at
@@ -147,10 +171,24 @@ function ambilRingkasanTiketUser(PDO $pdo, int $userId): array
 
 function buatFilterTiket(
     string $pencarian = '',
-    string $status = ''
+    string $status = '',
+    string $tampilan = 'semua'
 ): array {
+    if (!in_array($tampilan, ['semua', 'aktif', 'riwayat'], true)) {
+        throw new InvalidArgumentException(
+            'Tampilan daftar tiket tidak valid.'
+        );
+    }
+
     $kondisi = [];
     $parameter = [];
+
+    // Batasi data berdasarkan bagian yang dibuka.
+    if ($tampilan === 'aktif') {
+        $kondisi[] = "tickets.status IN ('Baru', 'Diproses')";
+    } elseif ($tampilan === 'riwayat') {
+        $kondisi[] = "tickets.status = 'Selesai'";
+    }
 
     if ($pencarian !== '') {
         $kondisi[] = "
@@ -188,10 +226,10 @@ function buatFilterTiket(
 function hitungTiketAdmin(
     PDO $pdo,
     string $pencarian = '',
-    string $status = ''
+    string $status = '',
+    string $tampilan = 'semua'
 ): int {
-    $filter = buatFilterTiket($pencarian, $status);
-
+    $filter = buatFilterTiket($pencarian, $status, $tampilan);
     $statement = $pdo->prepare(
         'SELECT COUNT(*) FROM tickets' . $filter['where']
     );
@@ -206,7 +244,8 @@ function ambilSemuaTiket(
     string $pencarian = '',
     string $status = '',
     ?int $batas = null,
-    int $offset = 0
+    int $offset = 0,
+    string $tampilan = 'semua'
 ): array {
     if ($offset < 0 || ($batas !== null && $batas < 1)) {
         throw new InvalidArgumentException(
@@ -214,7 +253,7 @@ function ambilSemuaTiket(
         );
     }
 
-    $filter = buatFilterTiket($pencarian, $status);
+    $filter = buatFilterTiket($pencarian, $status, $tampilan);
 
     $sql = '
         SELECT
@@ -260,25 +299,28 @@ function ubahStatusTiket(
     int $tiketId,
     string $status
 ): bool {
+    $statusAsal = match ($status) {
+        'Diproses' => 'Baru',
+        'Selesai' => 'Diproses',
+        default => null,
+    };
+
+    if ($statusAsal === null) {
+        return false;
+    }
+
     $statement = $pdo->prepare(
         'UPDATE tickets
-        SET status = :status
-        WHERE id = :id'
+        SET status = :status_tujuan
+        WHERE id = :id
+        AND status = :status_asal'
     );
 
     $statement->execute([
-        'status' => $status,
+        'status_tujuan' => $status,
         'id' => $tiketId,
+        'status_asal' => $statusAsal,
     ]);
 
-    if ($statement->rowCount() > 0) {
-        return true;
-    }
-
-    // Status yang dipilih mungkin sama dengan status sebelumnya.
-    // Periksa apakah tiketnya memang ada.
-    $cek = $pdo->prepare('SELECT id FROM tickets WHERE id = :id');
-    $cek->execute(['id' => $tiketId]);
-
-    return $cek->fetchColumn() !== false;
+    return $statement->rowCount() === 1;
 }

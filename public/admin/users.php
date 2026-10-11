@@ -113,12 +113,6 @@ require __DIR__ . '/../../app/includes/header-admin.php';
         require __DIR__ . '/../../app/components/form-cari-user.php';
         require __DIR__ . '/../../app/components/daftar-user.php';
         ?>
-
-        <?php if (!$gagalMemuatUser): ?>
-            <?php
-            require __DIR__ . '/../../app/components/pagination-user.php';
-            ?>
-        <?php endif; ?>
     </div>
 </main>
 

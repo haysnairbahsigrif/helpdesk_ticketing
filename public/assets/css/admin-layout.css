@@ -314,3 +314,82 @@
 .sidebar-icon--users {
     --sidebar-icon: url('/assets/icons/group-line.svg');
 }
+
+/* Kelompok menu tiket */
+.admin-menu-parent {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    color: #cbd5e1;
+    font-weight: 600;
+}
+
+.admin-submenu {
+    display: grid;
+    gap: 4px;
+    margin: 4px 0 8px 24px;
+    padding-left: 10px;
+    border-left: 1px solid #475569;
+}
+
+.admin-submenu a {
+    font-size: 14px;
+}
+
+/* Tombol pembuka submenu sidebar */
+.admin-submenu-toggle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    min-height: 44px;
+    padding: 12px 14px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: #cbd5e1;
+    font: inherit;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+}
+
+.admin-submenu-toggle:hover,
+.admin-submenu-toggle[aria-expanded="true"] {
+    background: #1e293b;
+    color: #ffffff;
+}
+
+.admin-submenu-toggle:focus-visible {
+    outline: 3px solid #60a5fa;
+    outline-offset: 2px;
+}
+
+/* Panah ke kanan saat tertutup */
+.admin-submenu-arrow {
+    flex-shrink: 0;
+    width: 8px;
+    height: 8px;
+    margin-left: auto;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(-45deg);
+    transition: transform 0.2s ease;
+}
+
+/* Panah ke bawah saat terbuka */
+.admin-submenu-toggle[aria-expanded="true"] .admin-submenu-arrow {
+    transform: rotate(45deg);
+}
+
+/* Pastikan display: grid tidak menimpa atribut hidden */
+.admin-submenu[hidden] {
+    display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .admin-submenu-arrow {
+        transition: none;
+    }
+}

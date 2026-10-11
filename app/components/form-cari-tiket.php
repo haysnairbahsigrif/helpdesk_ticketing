@@ -2,8 +2,11 @@
 
 /** @var string $pencarian */
 /** @var string $status */
+/** @var string $tampilan */
 
-$pilihanStatus = ['Baru', 'Diproses', 'Selesai'];
+$urlResetFilter = '/admin/tiket.php?' . http_build_query([
+    'view' => $tampilan,
+]);
 ?>
 
 <section class="panel ticket-filter-panel">
@@ -13,6 +16,13 @@ $pilihanStatus = ['Baru', 'Diproses', 'Selesai'];
         class="ticket-filter-form"
         action="/admin/tiket.php"
         method="get">
+
+        <input
+            type="hidden"
+            name="view"
+            value="<?php
+                    echo htmlspecialchars($tampilan, ENT_QUOTES, 'UTF-8');
+                    ?>">
 
         <div class="form-group">
             <label for="pencarian-tiket">
@@ -26,50 +36,50 @@ $pilihanStatus = ['Baru', 'Diproses', 'Selesai'];
                 maxlength="100"
                 placeholder="Contoh: printer"
                 value="<?php
-                echo htmlspecialchars(
-                    $pencarian,
-                    ENT_QUOTES,
-                    'UTF-8'
-                );
-                ?>">
+                        echo htmlspecialchars($pencarian, ENT_QUOTES, 'UTF-8');
+                        ?>">
         </div>
 
-        <div class="form-group">
-            <label for="filter-status-tiket">Status tiket</label>
+        <?php if ($tampilan !== 'riwayat'): ?>
+            <div class="form-group">
+                <label for="filter-status-tiket">Status tiket</label>
 
-            <select id="filter-status-tiket" name="status">
-                <option value="">Semua status</option>
-
-                <?php foreach ($pilihanStatus as $pilihan): ?>
-                    <option
-                        value="<?php
-                        echo htmlspecialchars(
-                            $pilihan,
-                            ENT_QUOTES,
-                            'UTF-8'
-                        );
-                        ?>"
-                        <?php if ($status === $pilihan): ?>
-                            selected
-                        <?php endif; ?>>
+                <select id="filter-status-tiket" name="status">
+                    <option value="" <?php echo $status === '' ? 'selected' : ''; ?>>
                         <?php
-                        echo htmlspecialchars(
-                            $pilihan,
-                            ENT_QUOTES,
-                            'UTF-8'
-                        );
+                        echo $tampilan === 'aktif'
+                            ? 'Semua status aktif'
+                            : 'Semua status';
                         ?>
                     </option>
-                <?php endforeach; ?>
-            </select>
-        </div>
+
+                    <?php
+                    $pilihanStatus = $tampilan === 'aktif'
+                        ? ['Baru', 'Diproses']
+                        : ['Baru', 'Diproses', 'Selesai'];
+                    ?>
+
+                    <?php foreach ($pilihanStatus as $pilihan): ?>
+                        <option
+                            value="<?php echo htmlspecialchars($pilihan, ENT_QUOTES, 'UTF-8'); ?>"
+                            <?php echo $status === $pilihan ? 'selected' : ''; ?>>
+                            <?php echo htmlspecialchars($pilihan, ENT_QUOTES, 'UTF-8'); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        <?php endif; ?>
 
         <div class="ticket-filter-actions">
             <button type="submit" class="button-primary">
                 Terapkan
             </button>
 
-            <a href="/admin/tiket.php">Tampilkan semua</a>
+            <a href="<?php
+                        echo htmlspecialchars($urlResetFilter, ENT_QUOTES, 'UTF-8');
+                        ?>">
+                Reset filter
+            </a>
         </div>
     </form>
 </section>

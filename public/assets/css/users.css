@@ -159,7 +159,7 @@
     margin-bottom: 24px;
 }
 
-.users-toolbar > div {
+.users-toolbar>div {
     flex: 1;
     min-width: 0;
 }
@@ -205,4 +205,218 @@
 
 .users-back-panel a:hover {
     text-decoration: underline;
+}
+
+/* Switch status akun */
+.user-table .user-status-form {
+    margin: 0;
+}
+
+.user-status-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.user-status-switch {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 52px;
+    min-height: 44px;
+    padding: 4px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    cursor: pointer;
+}
+
+.user-status-track {
+    position: relative;
+    display: block;
+    width: 44px;
+    height: 24px;
+    border: 1px solid #64748b;
+    border-radius: 999px;
+    background: #64748b;
+}
+
+.user-status-thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+}
+
+.user-status-switch[aria-checked="true"] .user-status-track {
+    border-color: #2563eb;
+    background: #2563eb;
+}
+
+.user-status-switch[aria-checked="true"] .user-status-thumb {
+    transform: translateX(20px);
+}
+
+.user-status-switch:hover {
+    background: #e2e8f0;
+}
+
+.user-status-switch:focus-visible {
+    outline: 3px solid #2563eb;
+    outline-offset: 3px;
+}
+
+.user-status-text {
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Tampilan tabel Kelola User */
+.user-table {
+    font-size: 14px;
+}
+
+.user-table thead th {
+    background: #eff6ff;
+    color: #1e3a8a;
+    font-weight: 700;
+}
+
+.user-table tbody tr:nth-child(even) {
+    background: #f8fafc;
+}
+
+.user-table tbody tr:hover {
+    background: #eff6ff;
+}
+
+/* Garis tabel pada layar lebar */
+@media (min-width: 601px) {
+
+    .user-table th,
+    .user-table td {
+        padding: 14px;
+        border: 1px solid #e2e8f0;
+        vertical-align: middle;
+    }
+}
+
+/* Tautan tindakan berbentuk tombol */
+.user-action-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.user-action-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 8px 12px;
+    border: 1px solid;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+    text-align: center;
+    text-decoration: none;
+}
+
+.user-action-button--edit {
+    border-color: #1e40af;
+    background: #1e40af;
+    color: #fff;
+}
+
+.user-action-button--edit:hover {
+    border-color: #1e3a8a;
+    background: #1e3a8a;
+}
+
+.user-action-button--reset {
+    border-color: #cbd5e1;
+    background: #fff;
+    color: #334155;
+}
+
+.user-action-button--reset:hover {
+    background: #f1f5f9;
+}
+
+.user-action-button:focus-visible {
+    outline: 3px solid #2563eb;
+    outline-offset: 3px;
+}
+
+/* Pagination Kelola User */
+.user-pagination {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #e2e8f0;
+    text-align: center;
+}
+
+.user-pagination p {
+    margin: 0;
+    color: #475569;
+    font-size: 14px;
+}
+
+.user-pagination-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 8px;
+}
+
+.user-pagination-links a,
+.user-pagination-links .pagination-current {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 8px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #fff;
+    color: #1e40af;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.user-pagination-links a:hover {
+    background: #eff6ff;
+}
+
+.user-pagination-links .pagination-current {
+    border-color: #1e40af;
+    background: #1e40af;
+    color: #fff;
+}
+
+.user-pagination-links a:focus-visible {
+    outline: 3px solid #2563eb;
+    outline-offset: 3px;
+}
+
+.pagination-ellipsis {
+    padding-inline: 4px;
+    color: #64748b;
 }

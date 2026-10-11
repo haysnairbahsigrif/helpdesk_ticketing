@@ -25,6 +25,27 @@ if (!in_array($status, ['', 'Baru', 'Diproses', 'Selesai'], true)) {
     exit('Filter status tidak valid.');
 }
 
+// Periksa kelompok tiket yang ingin ditampilkan.
+$tampilan = $_GET['view']
+    ?? ($status === 'Selesai' ? 'riwayat' : 'aktif');
+
+if (
+    !is_string($tampilan)
+    || !in_array($tampilan, ['semua', 'aktif', 'riwayat'], true)
+) {
+    http_response_code(400);
+    exit('Tampilan tiket tidak valid.');
+}
+
+// Riwayat selalu berisi tiket selesai.
+// Filter Selesai tidak digunakan pada daftar tiket aktif.
+if (
+    $tampilan === 'riwayat'
+    || ($tampilan === 'aktif' && $status === 'Selesai')
+) {
+    $status = '';
+}
+
 // Periksa nomor halaman.
 $halamanMasukan = $_GET['page'] ?? '1';
 
@@ -64,7 +85,8 @@ try {
         $pdo,
         $userId,
         $pencarian,
-        $status
+        $status,
+        $tampilan
     );
 
     $totalHalaman = max(
@@ -81,14 +103,19 @@ try {
         $pencarian,
         $status,
         $perHalaman,
-        $offset
+        $offset,
+        $tampilan
     );
 } catch (PDOException $error) {
     error_log($error->getMessage());
     $gagalMemuatTiket = true;
 }
 
-$judulHalaman = 'Dashboard User';
+$judulHalaman = match ($tampilan) {
+    'semua' => 'Semua Tiket Saya',
+    'riwayat' => 'Riwayat Tiket Saya',
+    default => 'Tiket Aktif Saya',
+};
 
 require __DIR__ . '/../../app/includes/header-user.php';
 ?>

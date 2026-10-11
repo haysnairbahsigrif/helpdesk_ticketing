@@ -9,7 +9,15 @@
 ?>
 
 <section class="panel ticket-list">
-    <h2>Tiket saya</h2>
+    <h2>
+        <?php
+        echo match ($tampilan ?? 'aktif') {
+            'semua' => 'Semua tiket saya',
+            'riwayat' => 'Riwayat tiket saya',
+            default => 'Tiket aktif saya',
+        };
+        ?>
+    </h2>
 
     <?php
     require __DIR__ . '/form-cari-tiket-user.php';
@@ -26,7 +34,13 @@
                 Tidak ada tiket yang cocok dengan pencarian
                 atau filter yang dipilih.
             <?php else: ?>
-                Anda belum memiliki tiket.
+                <?php
+                echo match ($tampilan ?? 'aktif') {
+                    'semua' => 'Anda belum memiliki tiket.',
+                    'riwayat' => 'Belum ada tiket Anda yang selesai.',
+                    default => 'Anda tidak memiliki tiket aktif.',
+                };
+                ?>
             <?php endif; ?>
         </p>
 
@@ -53,13 +67,7 @@
 
                 <p>
                     <strong>Status:</strong>
-                    <?php
-                    echo htmlspecialchars(
-                        $tiket['status'],
-                        ENT_QUOTES,
-                        'UTF-8'
-                    );
-                    ?>
+                    <?php require __DIR__ . '/badge-status-tiket.php'; ?>
                 </p>
 
                 <p class="ticket-date">

@@ -67,7 +67,20 @@ if ($halaman === false) {
 }
 
 // Siapkan parameter untuk kembali ke daftar tiket.
-$parameterKembali = ['page' => $halaman];
+$tampilan = $_POST['view'] ?? 'aktif';
+
+if (
+    !is_string($tampilan)
+    || !in_array($tampilan, ['semua', 'aktif', 'riwayat'], true)
+) {
+    http_response_code(400);
+    exit('Tampilan daftar tiket tidak valid.');
+}
+
+$parameterKembali = [
+    'view' => $tampilan,
+    'page' => $halaman,
+];
 
 if ($pencarian !== '') {
     $parameterKembali['q'] = $pencarian;
@@ -89,7 +102,7 @@ $tiketId = is_string($idMasukan)
     )
     : false;
 
-$statusDiizinkan = ['Baru', 'Diproses', 'Selesai'];
+$statusDiizinkan = ['Diproses', 'Selesai'];
 
 if (
     $tiketId === false
@@ -110,7 +123,7 @@ if (
 
         $pesan = $berhasil
             ? 'status-berhasil'
-            : 'tiket-tidak-ditemukan';
+            : 'status-transisi-ditolak';
     } catch (PDOException $error) {
         error_log($error->getMessage());
         $pesan = 'status-gagal';

@@ -33,6 +33,7 @@ $daftarPesan = [
     'edit-user-gagal' => 'Data user belum dapat disimpan. Silakan coba lagi.',
     'edit-user-tidak-valid' => 'Periksa nama, format username, dan email.',
     'edit-user-tidak-ditemukan' => 'Akun user tidak ditemukan.',
+    'status-transisi-ditolak' => 'Status tidak diubah. Tiket tidak ditemukan atau statusnya sudah tidak sesuai dengan tindakan tersebut. Muat ulang daftar tiket.',
 ];
 
 $pesan = is_string($kodePesan)

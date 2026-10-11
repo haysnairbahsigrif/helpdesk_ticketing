@@ -70,25 +70,23 @@
                             </td>
 
                             <td data-label="Status akun">
-                                <?php
-                                echo (int) $user['is_active'] === 1
-                                    ? 'Aktif'
-                                    : 'Nonaktif';
-                                ?>
+                                <?php require __DIR__ . '/form-status-user.php'; ?>
                             </td>
 
                             <td data-label="Tindakan">
                                 <div class="user-action-links">
-                                    <a href="/admin/edit-user.php?id=<?php echo (int) $user['id']; ?>">
+                                    <a
+                                        class="user-action-button user-action-button--edit"
+                                        href="/admin/edit-user.php?id=<?php echo (int) $user['id']; ?>">
                                         Edit
                                     </a>
 
-                                    <a href="/admin/reset-password.php?id=<?php echo (int) $user['id']; ?>">
+                                    <a
+                                        class="user-action-button user-action-button--reset"
+                                        href="/admin/reset-password.php?id=<?php echo (int) $user['id']; ?>">
                                         Reset password
                                     </a>
                                 </div>
-
-                                <?php require __DIR__ . '/form-status-user.php'; ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -96,5 +94,9 @@
             </table>
         </div>
 
+    <?php endif; ?>
+
+    <?php if (!$gagalMemuatUser && !empty($daftarUser)): ?>
+        <?php require __DIR__ . '/pagination-user.php'; ?>
     <?php endif; ?>
 </section>

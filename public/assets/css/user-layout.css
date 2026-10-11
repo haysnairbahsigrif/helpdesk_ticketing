@@ -252,40 +252,69 @@
 }
 
 /* Navigasi halaman tiket user */
-.user-pagination {
-    margin-top: 24px;
-    padding-top: 20px;
+.user-body .user-pagination {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 20px;
+    padding-top: 16px;
     border-top: 1px solid #e2e8f0;
+    text-align: center;
 }
 
-.user-pagination p {
-    margin: 0 0 12px;
-    color: #64748b;
+.user-body .user-pagination p {
+    margin: 0;
+    color: #475569;
     font-size: 14px;
 }
 
-.user-pagination-links {
+.user-body .user-pagination-links {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 8px;
 }
 
-.user-pagination-links a {
+.user-body .user-pagination-links a,
+.user-body .user-pagination-links .pagination-current {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 8px;
+    min-width: 44px;
     min-height: 44px;
-    padding: 10px 16px;
+    padding: 8px 12px;
     border: 1px solid #cbd5e1;
     border-radius: 8px;
     background: #fff;
     color: #1e40af;
+    font-size: 14px;
     font-weight: 600;
     text-decoration: none;
 }
 
-.user-pagination-links a:hover {
+.user-body .user-pagination-links a:hover {
     background: #eff6ff;
+}
+
+.user-body .user-pagination-links .pagination-current {
+    border-color: #1e40af;
+    background: #1e40af;
+    color: #fff;
+}
+
+.user-body .user-pagination-links a:focus-visible {
+    outline: 3px solid #2563eb;
+    outline-offset: 3px;
+}
+
+.user-body .user-pagination-ellipsis {
+    padding-inline: 4px;
+    color: #64748b;
 }
 
 /* Kartu ringkasan sebagai tautan */

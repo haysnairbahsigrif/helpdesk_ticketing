@@ -79,6 +79,8 @@ session_regenerate_id(true);
 
 $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 $_SESSION['pesan_login'] = 'Password berhasil diganti. Silakan masuk dengan password baru.';
+$_SESSION['jenis_pesan_login'] = 'success';
+$_SESSION['posisi_pesan_login'] = 'atas';
 
 header('Location: /login.php', true, 303);
 exit;

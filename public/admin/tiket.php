@@ -25,6 +25,27 @@ if (!in_array($status, ['', 'Baru', 'Diproses', 'Selesai'], true)) {
     exit('Filter status tidak valid.');
 }
 
+// Periksa jenis daftar tiket.
+$tampilan = $_GET['view']
+    ?? ($status === 'Selesai' ? 'riwayat' : 'aktif');
+
+if (
+    !is_string($tampilan)
+    || !in_array($tampilan, ['semua', 'aktif', 'riwayat'], true)
+) {
+    http_response_code(400);
+    exit('Tampilan tiket tidak valid.');
+}
+
+// Riwayat selalu berisi tiket selesai.
+// Tiket aktif hanya berisi Baru dan Diproses.
+if (
+    $tampilan === 'riwayat'
+    || ($tampilan === 'aktif' && $status === 'Selesai')
+) {
+    $status = '';
+}
+
 // Periksa nomor halaman.
 $halamanMasukan = $_GET['page'] ?? '1';
 
@@ -53,7 +74,12 @@ try {
     require __DIR__ . '/../../app/config/database.php';
     require __DIR__ . '/../../app/functions/tiket.php';
 
-    $totalTiket = hitungTiketAdmin($pdo, $pencarian, $status);
+    $totalTiket = hitungTiketAdmin(
+        $pdo,
+        $pencarian,
+        $status,
+        $tampilan
+    );
 
     $totalHalaman = max(
         1,
@@ -69,7 +95,8 @@ try {
         $pencarian,
         $status,
         $perHalaman,
-        $offset
+        $offset,
+        $tampilan
     );
 } catch (PDOException $error) {
     error_log($error->getMessage());
@@ -77,16 +104,31 @@ try {
 }
 
 $menuAktif = 'tiket';
-$judulHalaman = 'Daftar Tiket';
-$cssHalaman = '/assets/css/admin-tickets.css';
+
+$judulHalaman = match ($tampilan) {
+    'semua' => 'Semua Tiket',
+    'riwayat' => 'Riwayat Tiket',
+    default => 'Tiket Aktif',
+};
+
+$deskripsiHalaman = match ($tampilan) {
+    'semua' => 'Lihat seluruh laporan pengguna dari semua status.',
+    'riwayat' => 'Lihat laporan yang penanganannya sudah selesai.',
+    default => 'Pantau laporan yang menunggu dan sedang ditangani.',
+};
 
 require __DIR__ . '/../../app/includes/header-admin.php';
 ?>
 
 <main class="admin-main">
     <section class="admin-hero" aria-labelledby="judul-tiket">
-        <h1 id="judul-tiket">Daftar Tiket</h1>
-        <p>Lihat keluhan pengguna dan perbarui status penanganannya.</p>
+        <h1 id="judul-tiket"><?php
+                                echo htmlspecialchars($judulHalaman, ENT_QUOTES, 'UTF-8');
+                                ?></h1>
+
+        <p><?php
+            echo htmlspecialchars($deskripsiHalaman, ENT_QUOTES, 'UTF-8');
+            ?></p>
     </section>
 
     <div class="admin-content">
@@ -108,7 +150,13 @@ require __DIR__ . '/../../app/includes/header-admin.php';
                         Tidak ada tiket yang cocok dengan pencarian
                         atau filter yang dipilih.
                     <?php else: ?>
-                        Belum ada tiket yang masuk.
+                        <?php
+                        echo match ($tampilan) {
+                            'semua' => 'Belum ada tiket yang masuk.',
+                            'riwayat' => 'Belum ada tiket yang selesai.',
+                            default => 'Tidak ada tiket aktif.',
+                        };
+                        ?>
                     <?php endif; ?>
                 </div>
 
@@ -116,17 +164,14 @@ require __DIR__ . '/../../app/includes/header-admin.php';
                 <p class="ticket-result-count">
                     Menampilkan
                     <?php echo $offset + 1; ?>–<?php
-                    echo $offset + count($daftarTiket);
-                    ?>
+                                                echo $offset + count($daftarTiket);
+                                                ?>
                     dari <?php echo $totalTiket; ?> tiket.
                 </p>
 
                 <?php
                 require __DIR__
                     . '/../../app/components/daftar-tiket-admin.php';
-
-                require __DIR__
-                    . '/../../app/components/pagination-tiket.php';
                 ?>
             <?php endif; ?>
         </div>
