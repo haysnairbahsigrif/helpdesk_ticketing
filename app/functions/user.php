@@ -9,7 +9,7 @@ function ambilDaftarUser(
 ): array {
     $filter = filterDaftarUser($pencarian, $status);
 
-    $sql = 'SELECT id, nama, username, email, is_active
+    $sql = 'SELECT id, nama, username, email, is_active, department_id
             FROM users '
         . $filter['kondisi']
         . ' ORDER BY id DESC';
@@ -46,15 +46,32 @@ function tambahUser(
     string $nama,
     string $username,
     ?string $email,
-    string $password
+    string $password,
+    int $departmentId
 ): void {
     $statement = $pdo->prepare(
         'INSERT INTO users
-        (nama, username, email, password_hash, 
-        role, is_active, must_change_password) 
+            (
+                nama,
+                username,
+                email,
+                password_hash,
+                department_id,
+                role,
+                is_active,
+                must_change_password
+            )
         VALUES
-        (:nama, :username, :email, :password_hash, 
-        \'user\', 1, 1)'
+            (
+                :nama,
+                :username,
+                :email,
+                :password_hash,
+                :department_id,
+                \'user\',
+                1,
+                1
+            )'
     );
 
     $statement->execute([
@@ -65,13 +82,14 @@ function tambahUser(
             $password,
             PASSWORD_DEFAULT
         ),
+        'department_id' => $departmentId,
     ]);
 }
 
 function cariUserById(PDO $pdo, int $userId): ?array
 {
     $statement = $pdo->prepare(
-        'SELECT id, nama, username, email, is_active
+        'SELECT id, nama, username, email, is_active, department_id
         FROM users
         WHERE id = :id AND role = :role'
     );
@@ -175,13 +193,15 @@ function ubahDataUser(
     int $userId,
     string $nama,
     string $username,
-    ?string $email
+    ?string $email,
+    int $departmentId
 ): bool {
     $statement = $pdo->prepare(
         'UPDATE users
         SET nama = :nama,
             username = :username,
-            email = :email
+            email = :email,
+            department_id = :department_id
         WHERE id = :id AND role = :role'
     );
 
@@ -189,6 +209,7 @@ function ubahDataUser(
         'nama' => $nama,
         'username' => $username,
         'email' => $email,
+        'department_id' => $departmentId,
         'id' => $userId,
         'role' => 'user',
     ]);

@@ -47,7 +47,7 @@
     gap: 16px;
 }
 
-.user-account-actions > a {
+.user-account-actions>a {
     display: inline-flex;
     align-items: center;
     min-height: 44px;
@@ -225,25 +225,82 @@
     text-decoration: underline;
 }
 
-/* Pencarian tiket milik user */
+/* Pencarian dan filter tiket user */
 .user-ticket-filter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 16px;
     margin: 20px 0;
     padding-bottom: 20px;
     border-bottom: 1px solid #e2e8f0;
 }
 
+.user-ticket-filter>.form-group {
+    flex: 1 1 180px;
+    min-width: 0;
+    margin: 0;
+}
+
+/* Kolom pencarian mendapat ruang lebih luas */
+.user-ticket-filter>.form-group:first-of-type {
+    flex: 2 1 280px;
+}
+
+.user-ticket-filter input[type="search"],
+.user-ticket-filter select {
+    width: 100%;
+    min-height: 46px;
+    box-sizing: border-box;
+}
+
 .user-ticket-filter-actions {
     display: flex;
+    flex: 0 1 auto;
     flex-wrap: wrap;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
+}
+
+.user-ticket-filter-actions .button-primary {
+    width: auto;
+    min-height: 46px;
 }
 
 .user-ticket-filter-actions a {
     display: inline-flex;
     align-items: center;
-    min-height: 44px;
+    justify-content: center;
+    min-height: 46px;
     color: #1e40af;
+    font-size: 14px;
+}
+
+.user-ticket-filter-actions a:focus-visible {
+    outline: 3px solid #2563eb;
+    outline-offset: 3px;
+}
+
+/* Susunan untuk layar kecil */
+@media (max-width: 700px) {
+    .user-ticket-filter {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .user-ticket-filter>.form-group,
+    .user-ticket-filter>.form-group:first-of-type {
+        flex: none;
+        width: 100%;
+    }
+
+    .user-ticket-filter-actions {
+        width: 100%;
+    }
+
+    .user-ticket-filter-actions .button-primary {
+        flex: 1;
+    }
 }
 
 .user-ticket-result {
@@ -366,4 +423,156 @@
 #jumlah-karakter-keluhan.keluhan-melebihi-batas {
     color: #b91c1c;
     font-weight: 600;
+}
+
+/* Navigasi daftar tiket pengguna */
+.user-ticket-navigation {
+    background: #ffffff;
+    border-bottom: 1px solid #dbeafe;
+}
+
+.user-ticket-menu {
+    padding: 12px 0;
+}
+
+.user-ticket-menu-toggle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: fit-content;
+    min-height: 44px;
+    padding: 10px 14px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    color: #1e40af;
+    font-weight: 600;
+    list-style: none;
+    cursor: pointer;
+}
+
+.user-ticket-menu-toggle::-webkit-details-marker {
+    display: none;
+}
+
+.user-ticket-menu-toggle::marker {
+    content: "";
+}
+
+.user-ticket-menu-toggle:hover {
+    background: #eff6ff;
+}
+
+.user-ticket-menu-toggle:focus-visible,
+.user-ticket-submenu a:focus-visible {
+    outline: 3px solid #2563eb;
+    outline-offset: 3px;
+}
+
+/* Panah menunjukkan keadaan submenu */
+.user-ticket-menu-arrow {
+    flex-shrink: 0;
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(-45deg);
+    transition: transform 150ms ease;
+}
+
+.user-ticket-menu[open] .user-ticket-menu-arrow {
+    transform: rotate(45deg);
+}
+
+/* Pilihan halaman tiket */
+.user-ticket-submenu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+    padding: 0 14px 4px;
+}
+
+.user-ticket-submenu a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 10px 16px;
+    box-sizing: border-box;
+    border: 1px solid #dbeafe;
+    border-radius: 8px;
+    color: #1e40af;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.user-ticket-submenu a:hover {
+    background: #eff6ff;
+}
+
+.user-ticket-submenu a[aria-current="page"] {
+    border-color: #2563eb;
+    background: #2563eb;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+@media (max-width: 600px) {
+    .user-ticket-menu-toggle {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .user-ticket-submenu {
+        flex-direction: column;
+    }
+
+    .user-ticket-submenu a {
+        width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .user-ticket-menu-arrow {
+        transition: none;
+    }
+}
+
+/* Tautan tindakan di atas isi halaman */
+.user-page-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding: 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #ffffff;
+}
+
+.user-page-actions>a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    box-sizing: border-box;
+}
+
+.user-page-actions>.button-primary {
+    text-decoration: none;
+}
+
+/* Batasi lebar formulir agar nyaman diisi */
+.user-ticket-form-container {
+    width: 100%;
+    max-width: 720px;
+    margin-inline: auto;
+}
+
+@media (max-width: 600px) {
+    .user-page-actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
 }

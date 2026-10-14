@@ -97,41 +97,60 @@
     }
 }
 
-/* Kolom password dengan tombol tampil/sembunyikan */
+/* Kolom password dengan ikon mata di dalamnya */
 .password-field {
-    display: flex;
-    align-items: stretch;
-    gap: 8px;
+    position: relative;
+    width: 100%;
 }
 
 .password-field input {
-    flex: 1;
+    display: block;
+    width: 100%;
     min-width: 0;
+    min-height: 48px;
+    box-sizing: border-box;
+
+    /* Ruang agar teks tidak tertutup ikon */
+    padding-right: 56px;
 }
 
-.password-toggle {
+.password-field .password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 4px;
+    transform: translateY(-50%);
+
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
-    min-width: 44px;
+
+    width: 44px;
+    height: 44px;
     min-height: 44px;
-    padding: 10px 12px;
-    border: 1px solid #cbd5e1;
-    border-radius: 8px;
-    background: #eff6ff;
-    color: #1e40af;
-    font: inherit;
-    font-size: 13px;
-    font-weight: 600;
+    margin: 0;
+    padding: 0;
+
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: #475569;
     cursor: pointer;
 }
 
-.password-toggle[hidden] {
+.password-field .password-toggle[hidden] {
     display: none;
 }
 
-.password-toggle img {
+.password-field .password-toggle:hover {
+    background: transparent;
+}
+
+.password-field .password-toggle:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: -3px;
+}
+
+.password-field .password-toggle img {
     display: block;
     width: 20px;
     height: 20px;

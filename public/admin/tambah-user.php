@@ -3,6 +3,19 @@
 require __DIR__ . '/../../app/includes/cek-akses.php';
 wajibRole('admin');
 
+$daftarDepartemen = [];
+$gagalMemuatDepartemen = false;
+
+try {
+    require __DIR__ . '/../../app/config/database.php';
+    require_once __DIR__ . '/../../app/functions/Departemen.php';
+
+    $daftarDepartemen = ambilDaftarDepartemen($pdo);
+} catch (PDOException $error) {
+    error_log($error->getMessage());
+    $gagalMemuatDepartemen = true;
+}
+
 $menuAktif = 'users';
 $judulHalaman = 'Tambah User';
 $cssHalaman = '/assets/css/users.css';

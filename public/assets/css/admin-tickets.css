@@ -1,3 +1,5 @@
+@import url("/assets/css/ticket-detail.css");
+
 /* Panel pencarian */
 .ticket-filter-panel {
     margin-bottom: 24px;
@@ -106,4 +108,38 @@
 .ticket-pagination-ellipsis {
     padding-inline: 4px;
     color: #64748b;
+}
+
+/* Nama pelapor dan Departemen pada tabel */
+.ticket-reporter {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    overflow-wrap: anywhere;
+}
+
+.ticket-reporter span {
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* Tindakan penanganan dalam modal */
+.ticket-dialog-handling {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.ticket-dialog-handling h3 {
+    margin: 0 0 16px;
+    font-size: 16px;
+}
+
+.ticket-dialog-header>div {
+    min-width: 0;
+}
+
+.ticket-dialog-header h2 {
+    overflow-wrap: anywhere;
 }

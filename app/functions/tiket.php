@@ -1,24 +1,71 @@
 <?php
 
+require_once __DIR__ . '/nomor-tiket.php';
+
 // Menyimpan tiket baru.
 function tambahTiket(
     PDO $pdo,
     int $userId,
     string $nama,
-    string $keluhan
+    string $keluhan,
+    string $DepartemenPelapor,
+    string $urgensi
 ): void {
-    $sql = 'INSERT INTO tickets
-                (user_id, nama_pengguna, keluhan)
-            VALUES
-                (:user_id, :nama, :keluhan)';
+    $statement = $pdo->prepare(
+        'INSERT INTO tickets
+            (
+                nomor_tiket,
+                user_id,
+                nama_pengguna,
+                keluhan,
+                Departemen_pelapor,
+                urgensi,
+                prioritas
+            )
+        VALUES
+            (
+                :nomor_tiket,
+                :user_id,
+                :nama,
+                :keluhan,
+                :Departemen_pelapor,
+                :urgensi,
+                :prioritas
+            )'
+    );
 
-    $statement = $pdo->prepare($sql);
+    // Maksimal lima percobaan jika nomor yang dibuat sudah digunakan.
+    for ($percobaan = 1; $percobaan <= 5; $percobaan++) {
+        $nomorTiket = buatNomorTiket();
 
-    $statement->execute([
-        'user_id' => $userId,
-        'nama' => $nama,
-        'keluhan' => $keluhan,
-    ]);
+        try {
+            $statement->execute([
+                'nomor_tiket' => $nomorTiket,
+                'user_id' => $userId,
+                'nama' => $nama,
+                'keluhan' => $keluhan,
+                'Departemen_pelapor' => $DepartemenPelapor,
+                'urgensi' => $urgensi,
+                'prioritas' => $urgensi,
+            ]);
+
+            return;
+        } catch (PDOException $error) {
+            $kodeMySQL = (int) ($error->errorInfo[1] ?? 0);
+            $pesanMySQL = (string) ($error->errorInfo[2] ?? '');
+
+            $nomorDuplikat = $kodeMySQL === 1062
+                && str_contains(
+                    $pesanMySQL,
+                    'uq_tickets_nomor_tiket'
+                );
+
+            // Kesalahan lain diteruskan ke action tambah tiket.
+            if (!$nomorDuplikat || $percobaan === 5) {
+                throw $error;
+            }
+        }
+    }
 }
 
 // Membaca tiket milik satu pengguna.
@@ -46,13 +93,21 @@ function buatFilterTiketUser(
     }
 
     if ($pencarian !== '') {
-        $where .= " AND keluhan LIKE :pencarian ESCAPE '!'";
+        $where .= "
+        AND (
+            nomor_tiket LIKE :cari_nomor ESCAPE '!'
+            OR keluhan LIKE :cari_keluhan ESCAPE '!'
+        )
+    ";
 
-        $parameter['pencarian'] = '%' . str_replace(
+        $kataKunci = '%' . str_replace(
             ['!', '%', '_'],
             ['!!', '!%', '!_'],
             $pencarian
         ) . '%';
+
+        $parameter['cari_nomor'] = $kataKunci;
+        $parameter['cari_keluhan'] = $kataKunci;
     }
 
     if ($status !== '') {
@@ -112,9 +167,17 @@ function ambilTiketUser(
     );
 
     $sql = '
-        SELECT id, keluhan, status, created_at
+        SELECT
+            id,
+            nomor_tiket,
+            keluhan,
+            Departemen_pelapor,
+            urgensi,
+            prioritas,
+            status,
+            created_at
         FROM tickets
-    ';
+        ';
 
     $sql .= $filter['where'];
     $sql .= ' ORDER BY id DESC';
@@ -256,16 +319,20 @@ function ambilSemuaTiket(
     $filter = buatFilterTiket($pencarian, $status, $tampilan);
 
     $sql = '
-        SELECT
-            tickets.id,
-            tickets.nama_pengguna,
-            tickets.keluhan,
-            tickets.status,
-            tickets.created_at,
-            users.email AS email_pemilik
-        FROM tickets
-        LEFT JOIN users ON tickets.user_id = users.id
-    ';
+    SELECT
+        tickets.id,
+        tickets.nomor_tiket,
+        tickets.nama_pengguna,
+        tickets.Departemen_pelapor,
+        tickets.keluhan,
+        tickets.urgensi,
+        tickets.prioritas,
+        tickets.status,
+        tickets.created_at,
+        users.email AS email_pemilik
+    FROM tickets
+    LEFT JOIN users ON tickets.user_id = users.id
+';
 
     $sql .= $filter['where'];
     $sql .= ' ORDER BY tickets.id DESC';

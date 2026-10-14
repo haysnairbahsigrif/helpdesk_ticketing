@@ -53,37 +53,8 @@
             dari <?php echo $totalTiket; ?> tiket.
         </p>
 
-        <?php foreach ($daftarTiket as $tiket): ?>
-            <article class="ticket-item">
-                <h3>Tiket #<?php echo (int) $tiket['id']; ?></h3>
-
-                <p class="ticket-complaint"><?php
-                                            echo htmlspecialchars(
-                                                $tiket['keluhan'],
-                                                ENT_QUOTES,
-                                                'UTF-8'
-                                            );
-                                            ?></p>
-
-                <p>
-                    <strong>Status:</strong>
-                    <?php require __DIR__ . '/badge-status-tiket.php'; ?>
-                </p>
-
-                <p class="ticket-date">
-                    Dibuat:
-                    <?php
-                    echo htmlspecialchars(
-                        $tiket['created_at'],
-                        ENT_QUOTES,
-                        'UTF-8'
-                    );
-                    ?>
-                </p>
-            </article>
-        <?php endforeach; ?>
-
         <?php
+        require __DIR__ . '/tabel-tiket-user.php';
         require __DIR__ . '/pagination-tiket-user.php';
         ?>
     <?php endif; ?>

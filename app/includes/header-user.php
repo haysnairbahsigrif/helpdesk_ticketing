@@ -6,12 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title><?php
-        echo htmlspecialchars(
-            $judulHalaman ?? 'Layanan Pengguna',
-            ENT_QUOTES,
-            'UTF-8'
-        );
-        ?> — Helpdesk Ticketing</title>
+            echo htmlspecialchars(
+                $judulHalaman ?? 'Layanan Pengguna',
+                ENT_QUOTES,
+                'UTF-8'
+            );
+            ?> — Helpdesk Ticketing</title>
+
+    <?php if (isset($cssHalaman)): ?>
+        <link
+            rel="stylesheet"
+            href="<?php
+                    echo htmlspecialchars($cssHalaman, ENT_QUOTES, 'UTF-8');
+                    ?>">
+    <?php endif; ?>
 
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/components.css">

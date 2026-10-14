@@ -21,8 +21,10 @@ if ($userId === false) {
 try {
     require __DIR__ . '/../../app/config/database.php';
     require __DIR__ . '/../../app/functions/user.php';
+    require_once __DIR__ . '/../../app/functions/Departemen.php';
 
     $user = cariUserById($pdo, $userId);
+    $daftarDepartemen = ambilDaftarDepartemen($pdo);
 } catch (PDOException $error) {
     error_log($error->getMessage());
 

@@ -4,14 +4,16 @@
 /** @var int $totalHalaman */
 /** @var string $pencarian */
 /** @var string $status */
+/** @var string $tampilan */
 
 $parameterHalaman = [
+    'view' => $tampilan,
     'q' => $pencarian,
     'status' => $status,
 ];
 
 $buatUrlTiketUser = static function (int $nomor) use ($parameterHalaman): string {
-    return '/user/?' . http_build_query(
+    return '/user/tiket.php?' . http_build_query(
         array_merge(
             $parameterHalaman,
             ['page' => $nomor]

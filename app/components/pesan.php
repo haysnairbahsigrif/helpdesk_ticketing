@@ -34,6 +34,9 @@ $daftarPesan = [
     'edit-user-tidak-valid' => 'Periksa nama, format username, dan email.',
     'edit-user-tidak-ditemukan' => 'Akun user tidak ditemukan.',
     'status-transisi-ditolak' => 'Status tidak diubah. Tiket tidak ditemukan atau statusnya sudah tidak sesuai dengan tindakan tersebut. Muat ulang daftar tiket.',
+    'Departemen-belum-diatur' => 'Departemen akun belum ditentukan. Hubungi admin sebelum membuat tiket.',
+    'urgensi-tidak-valid' => 'Pilih urgensi kendala: Rendah, Sedang, atau Tinggi.',
+    'user-Departemen-tidak-valid' => 'Pilih Departemen yang tersedia untuk akun user.',
 ];
 
 $pesan = is_string($kodePesan)

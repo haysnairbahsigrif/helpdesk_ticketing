@@ -1,0 +1,376 @@
+/* Daftar tiket ringkas */
+.ticket-compact-list {
+    margin-top: 16px;
+}
+
+.ticket-compact-item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 24px;
+    padding: 20px 0;
+    border-top: 1px solid #e2e8f0;
+}
+
+.ticket-compact-content {
+    min-width: 0;
+}
+
+.ticket-compact-content h3 {
+    margin: 0 0 8px;
+    color: #0f172a;
+    font-size: 17px;
+}
+
+.ticket-compact-preview {
+    margin: 0;
+    color: #334155;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+/* Ringkas teks setelah tombol modal siap digunakan */
+.ticket-detail-ready .ticket-compact-preview {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+
+.ticket-compact-date {
+    margin: 10px 0 0;
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.ticket-compact-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+}
+
+.ticket-detail-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 10px 14px;
+    border: 1px solid #bfdbfe;
+    border-radius: 8px;
+    background: #eff6ff;
+    color: #1e40af;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.ticket-detail-button[hidden] {
+    display: none;
+}
+
+.ticket-detail-button:hover {
+    background: #dbeafe;
+}
+
+.ticket-detail-button:focus-visible,
+.ticket-dialog-close:focus-visible {
+    outline: 3px solid #2563eb;
+    outline-offset: 3px;
+}
+
+/* Modal detail */
+.ticket-detail-dialog {
+    width: min(640px, calc(100% - 32px));
+    max-height: calc(100dvh - 32px);
+    margin: auto;
+    padding: 0;
+    box-sizing: border-box;
+    overflow: auto;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    background: #ffffff;
+    color: #0f172a;
+    box-shadow: 0 24px 70px rgb(15 23 42 / 25%);
+}
+
+.ticket-detail-dialog::backdrop {
+    background: rgb(15 23 42 / 50%);
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+}
+
+.ticket-dialog-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 24px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.ticket-dialog-eyebrow {
+    margin: 0 0 6px;
+    color: #64748b;
+    font-size: 13px;
+}
+
+.ticket-dialog-header h2 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.ticket-dialog-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: #f8fafc;
+    color: #334155;
+    font: inherit;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.ticket-dialog-close:hover {
+    background: #e2e8f0;
+}
+
+.ticket-dialog-body {
+    padding: 24px;
+}
+
+.ticket-dialog-meta {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    margin: 0 0 24px;
+}
+
+.ticket-dialog-meta dt {
+    margin-bottom: 8px;
+    color: #64748b;
+    font-size: 13px;
+}
+
+.ticket-dialog-meta dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.ticket-dialog-complaint h3 {
+    margin: 0 0 12px;
+    font-size: 16px;
+}
+
+.ticket-dialog-complaint p {
+    margin: 0;
+    padding: 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #f8fafc;
+    color: #334155;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.ticket-dialog-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 16px 24px;
+    border-top: 1px solid #e2e8f0;
+}
+
+/* Cegah halaman belakang bergulir saat modal terbuka */
+html.ticket-dialog-open,
+html.ticket-dialog-open body {
+    overflow: hidden;
+}
+
+@media (max-width: 600px) {
+    .ticket-compact-item {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .ticket-compact-actions {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    .ticket-dialog-header,
+    .ticket-dialog-body {
+        padding: 20px;
+    }
+
+    .ticket-dialog-meta {
+        grid-template-columns: 1fr;
+    }
+
+    .ticket-dialog-footer {
+        padding: 16px 20px;
+    }
+}
+
+/* Tabel tiket pengguna */
+.ticket-table-wrapper {
+    margin-top: 16px;
+    overflow-x: auto;
+}
+
+.ticket-user-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.ticket-user-table th,
+.ticket-user-table td {
+    padding: 16px 12px;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.ticket-user-table thead th {
+    background: #eff6ff;
+    color: #334155;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.ticket-user-table tbody th {
+    color: #0f172a;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.ticket-user-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+.ticket-table-complaint {
+    min-width: 140px;
+    max-width: 300px;
+    margin: 0;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.ticket-detail-ready .ticket-table-complaint {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+
+.ticket-table-caption {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+/* Label prioritas */
+.ticket-priority {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.ticket-priority--low,
+.ticket-priority--unknown {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.ticket-priority--medium {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.ticket-priority--high {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* Susun setiap baris menjadi kartu pada layar kecil */
+@media (max-width: 700px) {
+    .ticket-user-table,
+    .ticket-user-table tbody {
+        display: block;
+    }
+
+    .ticket-user-table thead {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+    }
+
+    .ticket-user-table tbody tr {
+        display: block;
+        margin-bottom: 16px;
+        padding: 8px 14px;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+    }
+
+    .ticket-user-table tbody th,
+    .ticket-user-table tbody td {
+        display: grid;
+        grid-template-columns: 110px minmax(0, 1fr);
+        align-items: start;
+        gap: 12px;
+        padding: 12px 0;
+    }
+
+    .ticket-user-table tbody th::before,
+    .ticket-user-table tbody td::before {
+        content: attr(data-label);
+        color: #64748b;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .ticket-user-table tbody td:last-child {
+        border-bottom: 0;
+    }
+
+    .ticket-table-complaint {
+        min-width: 0;
+        max-width: none;
+    }
+
+    .ticket-user-table .ticket-priority,
+    .ticket-user-table .ticket-detail-button {
+        justify-self: start;
+    }
+}
+
+/* Badge status mengikuti lebar isinya */
+.ticket-user-table td[data-label="Status"] > span {
+    justify-self: start;
+    width: fit-content;
+    max-width: 100%;
+}

@@ -19,7 +19,7 @@ if (
     || !hash_equals($tokenSession, $token)
 ) {
     http_response_code(403);
-    exit('Permintaan tidak valid. Kembali ke dashboard dan muat ulang halaman.');
+    exit('Permintaan tidak valid. Kembali ke halaman Tambah Tiket dan muat ulang halaman.');
 }
 
 // Hapus sisa input sementara dari pengiriman sebelumnya.
@@ -33,15 +33,35 @@ if (!is_string($keluhanMasukan)) {
     exit;
 }
 
-// Simpan teks asli untuk ditampilkan kembali jika terjadi kegagalan.
+$urgensiMasukan = $_POST['urgensi'] ?? '';
+
+$urgensiValid = is_string($urgensiMasukan)
+    && in_array($urgensiMasukan, ['Rendah', 'Sedang', 'Tinggi'], true);
+
 $_SESSION['input_tiket'] = [
     'keluhan' => $keluhanMasukan,
+    'urgensi' => $urgensiValid ? $urgensiMasukan : '',
 ];
+
+if (!$urgensiValid) {
+    header(
+        'Location: /user/tambah-tiket.php?pesan=urgensi-tidak-valid',
+        true,
+        303
+    );
+    exit;
+}
+
+$urgensi = $urgensiMasukan;
 
 $keluhan = trim($keluhanMasukan);
 
 if ($keluhan === '') {
-    header('Location: /user/?pesan=wajib-diisi', true, 303);
+    header(
+        'Location: /user/tambah-tiket.php?pesan=wajib-diisi',
+        true,
+        303
+    );
     exit;
 }
 
@@ -58,18 +78,46 @@ $nama = $_SESSION['akun']['nama'];
 
 try {
     require __DIR__ . '/../../app/config/database.php';
-    require __DIR__ . '/../../app/functions/tiket.php';
+    require_once __DIR__ . '/../../app/functions/tiket.php';
+    require_once __DIR__ . '/../../app/functions/Departemen.php';
 
-    tambahTiket($pdo, $userId, $nama, $keluhan);
+    // Ambil Departemen dari database berdasarkan akun yang login.
+    $DepartemenPelapor = ambilDepartemenUser($pdo, $userId);
+
+    if ($DepartemenPelapor === null) {
+        header(
+            'Location: /user/tambah-tiket.php?pesan=Departemen-belum-diatur',
+            true,
+            303
+        );
+        exit;
+    }
+
+    tambahTiket(
+        $pdo,
+        $userId,
+        $nama,
+        $keluhan,
+        $DepartemenPelapor,
+        $urgensi
+    );
 } catch (PDOException $error) {
     error_log($error->getMessage());
 
-    header('Location: /user/?pesan=gagal', true, 303);
+    header(
+        'Location: /user/tambah-tiket.php?pesan=gagal',
+        true,
+        303
+    );
     exit;
 }
 
 // Tiket berhasil disimpan, kosongkan input sementara.
 unset($_SESSION['input_tiket']);
 
-header('Location: /user/?pesan=berhasil', true, 303);
+header(
+    'Location: /user/tiket.php?view=semua&pesan=berhasil',
+    true,
+    303
+);
 exit;

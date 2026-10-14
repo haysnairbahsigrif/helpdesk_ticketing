@@ -26,6 +26,24 @@ $nama = $_POST['nama'] ?? '';
 $username = $_POST['username'] ?? '';
 $email = $_POST['email'] ?? '';
 $password = $_POST['password_sementara'] ?? '';
+$departmentIdMasukan = $_POST['department_id'] ?? '';
+
+$departmentId = is_string($departmentIdMasukan)
+    ? filter_var(
+        $departmentIdMasukan,
+        FILTER_VALIDATE_INT,
+        ['options' => ['min_range' => 1]]
+    )
+    : false;
+
+if ($departmentId === false) {
+    header(
+        'Location: /admin/tambah-user.php?pesan=user-Departemen-tidak-valid',
+        true,
+        303
+    );
+    exit;
+}
 
 if (
     !is_string($nama)
@@ -70,14 +88,25 @@ if (
 
 try {
     require __DIR__ . '/../../app/config/database.php';
-    require __DIR__ . '/../../app/functions/user.php';
+    require_once __DIR__ . '/../../app/functions/user.php';
+    require_once __DIR__ . '/../../app/functions/Departemen.php';
+
+    if (!DepartemenTersedia($pdo, $departmentId)) {
+        header(
+            'Location: /admin/tambah-user.php?pesan=user-Departemen-tidak-valid',
+            true,
+            303
+        );
+        exit;
+    }
 
     tambahUser(
         $pdo,
         $nama,
         $username,
         $email === '' ? null : $email,
-        $password
+        $password,
+        $departmentId
     );
 } catch (PDOException $error) {
     error_log($error->getMessage());

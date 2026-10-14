@@ -3,6 +3,10 @@
 require __DIR__ . '/../../app/includes/cek-akses.php';
 wajibRole('admin');
 
+require_once __DIR__ . '/../../app/functions/tanggal.php';
+
+$cssHalaman = '/assets/css/admin-tickets.css';
+
 // Periksa pencarian dan filter.
 $pencarian = $_GET['q'] ?? '';
 $status = $_GET['status'] ?? '';

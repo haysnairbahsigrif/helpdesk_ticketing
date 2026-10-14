@@ -39,6 +39,27 @@ if ($userId === false) {
 
 $alamatKembali = '/admin/edit-user.php?id=' . $userId;
 
+// Periksa ID Departemen pilihan.
+$departmentIdMasukan = $_POST['department_id'] ?? '';
+
+$departmentId = is_string($departmentIdMasukan)
+    ? filter_var(
+        $departmentIdMasukan,
+        FILTER_VALIDATE_INT,
+        ['options' => ['min_range' => 1]]
+    )
+    : false;
+
+if ($departmentId === false) {
+    header(
+        'Location: ' . $alamatKembali
+            . '&pesan=user-Departemen-tidak-valid',
+        true,
+        303
+    );
+    exit;
+}
+
 // Ambil dan periksa masukan.
 $nama = $_POST['nama'] ?? '';
 $username = $_POST['username'] ?? '';
@@ -88,14 +109,26 @@ if (
 
 try {
     require __DIR__ . '/../../app/config/database.php';
-    require __DIR__ . '/../../app/functions/user.php';
+    require_once __DIR__ . '/../../app/functions/user.php';
+    require_once __DIR__ . '/../../app/functions/Departemen.php';
+
+    if (!DepartemenTersedia($pdo, $departmentId)) {
+        header(
+            'Location: ' . $alamatKembali
+                . '&pesan=user-Departemen-tidak-valid',
+            true,
+            303
+        );
+        exit;
+    }
 
     $berhasil = ubahDataUser(
         $pdo,
         $userId,
         $nama,
         $username,
-        $email === '' ? null : $email
+        $email === '' ? null : $email,
+        $departmentId
     );
 } catch (PDOException $error) {
     error_log($error->getMessage());

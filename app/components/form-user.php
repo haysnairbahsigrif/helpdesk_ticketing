@@ -1,3 +1,9 @@
+<?php
+
+/** @var array $daftarDepartemen */
+/** @var bool $gagalMemuatDepartemen */
+?>
+
 <section class="panel">
     <h2>Tambah user</h2>
 
@@ -88,7 +94,53 @@
             </small>
         </div>
 
-        <button type="submit" class="button-primary">
+        <div class="form-group">
+            <label for="department_id">Departemen</label>
+
+            <select
+                id="department_id"
+                name="department_id"
+                aria-describedby="petunjuk-Departemen"
+                required
+                <?php if ($gagalMemuatDepartemen || $daftarDepartemen === []): ?>
+                disabled
+                <?php endif; ?>>
+                <option value="">Pilih Departemen</option>
+
+                <?php foreach ($daftarDepartemen as $Departemen): ?>
+                    <option value="<?php echo (int) $Departemen['id']; ?>">
+                        <?php
+                        echo htmlspecialchars(
+                            $Departemen['nama'],
+                            ENT_QUOTES,
+                            'UTF-8'
+                        );
+                        ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+
+            <small id="petunjuk-Departemen">
+                Departemen ini otomatis dicatat ketika user membuat tiket.
+            </small>
+
+            <?php if ($gagalMemuatDepartemen): ?>
+                <p role="alert">
+                    Daftar Departemen belum dapat dimuat. Silakan muat ulang halaman.
+                </p>
+            <?php elseif ($daftarDepartemen === []): ?>
+                <p role="status">
+                    Belum ada Departemen yang tersedia.
+                </p>
+            <?php endif; ?>
+        </div>
+
+        <button
+            type="submit"
+            class="button-primary"
+            <?php if ($gagalMemuatDepartemen || $daftarDepartemen === []): ?>
+            disabled
+            <?php endif; ?>>
             Buat akun
         </button>
     </form>

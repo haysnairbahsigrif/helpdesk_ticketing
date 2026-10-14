@@ -1,6 +1,7 @@
 <?php
 
 /** @var array $user */
+/** @var array $daftarDepartemen */
 ?>
 
 <section class="panel">
@@ -85,6 +86,54 @@
                             'UTF-8'
                         );
                         ?>">
+        </div>
+
+        <div class="form-group">
+            <label for="department_id">Departemen</label>
+
+            <select
+                id="department_id"
+                name="department_id"
+                aria-describedby="petunjuk-Departemen"
+                required
+                <?php if ($daftarDepartemen === []): ?>
+                disabled
+                <?php endif; ?>>
+                <option
+                    value=""
+                    <?php if ($user['department_id'] === null): ?>
+                    selected
+                    <?php endif; ?>>
+                    Pilih Departemen
+                </option>
+
+                <?php foreach ($daftarDepartemen as $Departemen): ?>
+                    <option
+                        value="<?php echo (int) $Departemen['id']; ?>"
+                        <?php if (
+                            (int) $user['department_id'] === (int) $Departemen['id']
+                        ): ?>
+                        selected
+                        <?php endif; ?>>
+                        <?php
+                        echo htmlspecialchars(
+                            $Departemen['nama'],
+                            ENT_QUOTES,
+                            'UTF-8'
+                        );
+                        ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+
+            <small id="petunjuk-Departemen">
+                Perubahan Departemen digunakan untuk tiket baru.
+                Departemen pada tiket lama tetap sesuai saat dilaporkan.
+            </small>
+
+            <?php if ($daftarDepartemen === []): ?>
+                <p role="alert">Belum ada Departemen yang tersedia.</p>
+            <?php endif; ?>
         </div>
 
         <button type="submit" class="button-primary">
