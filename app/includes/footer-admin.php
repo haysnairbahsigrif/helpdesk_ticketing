@@ -11,6 +11,7 @@
     <script src="/assets/js/admin-layout.js" defer></script>
     <script src="/assets/js/password-toggle.js" defer></script>
     <script src="/assets/js/ticket-detail.js" defer></script>
+    <script src="/assets/js/ticket-filter.js" defer></script>
 </body>
 
 </html>
