@@ -15,28 +15,28 @@ $kartuRingkasan = [
         'jumlah' => $ringkasan['total_tiket'],
         'keterangan' => 'Seluruh laporan pengguna',
         'kelas' => 'total',
-        'url' => '/admin/tiket.php?view=semua',
+        'url' => '/admin/tiket.php',
     ],
     [
         'label' => 'Tiket Baru',
         'jumlah' => $ringkasan['tiket_baru'],
         'keterangan' => 'Menunggu penanganan',
         'kelas' => 'baru',
-        'url' => '/admin/tiket.php?view=aktif&status=Baru',
+        'url' => '/admin/tiket.php?status=Baru',
     ],
     [
         'label' => 'Diproses',
         'jumlah' => $ringkasan['tiket_diproses'],
         'keterangan' => 'Sedang ditangani',
         'kelas' => 'diproses',
-        'url' => '/admin/tiket.php?view=aktif&status=Diproses',
+        'url' => '/admin/tiket.php?status=Diproses',
     ],
     [
         'label' => 'Selesai',
         'jumlah' => $ringkasan['tiket_selesai'],
         'keterangan' => 'Penanganan selesai',
         'kelas' => 'selesai',
-        'url' => '/admin/tiket.php?view=riwayat',
+        'url' => '/admin/tiket.php?status=Selesai',
     ],
 ];
 ?>

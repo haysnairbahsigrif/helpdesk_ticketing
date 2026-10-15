@@ -29,26 +29,9 @@ if (!in_array($status, ['', 'Baru', 'Diproses', 'Selesai'], true)) {
     exit('Filter status tidak valid.');
 }
 
-// Periksa jenis daftar tiket.
-$tampilan = $_GET['view']
-    ?? ($status === 'Selesai' ? 'riwayat' : 'aktif');
-
-if (
-    !is_string($tampilan)
-    || !in_array($tampilan, ['semua', 'aktif', 'riwayat'], true)
-) {
-    http_response_code(400);
-    exit('Tampilan tiket tidak valid.');
-}
-
-// Riwayat selalu berisi tiket selesai.
-// Tiket aktif hanya berisi Baru dan Diproses.
-if (
-    $tampilan === 'riwayat'
-    || ($tampilan === 'aktif' && $status === 'Selesai')
-) {
-    $status = '';
-}
+// Admin menggunakan satu daftar untuk seluruh tiket.
+// Variabel ini masih digunakan oleh fungsi dan komponen yang ada.
+$tampilan = 'semua';
 
 // Periksa nomor halaman.
 $halamanMasukan = $_GET['page'] ?? '1';
@@ -111,17 +94,10 @@ try {
 
 $menuAktif = 'tiket';
 
-$judulHalaman = match ($tampilan) {
-    'semua' => 'Semua Tiket',
-    'riwayat' => 'Riwayat Tiket',
-    default => 'Tiket Aktif',
-};
+$judulHalaman = 'Daftar Tiket';
 
-$deskripsiHalaman = match ($tampilan) {
-    'semua' => 'Lihat seluruh laporan pengguna dari semua status.',
-    'riwayat' => 'Lihat laporan yang penanganannya sudah selesai.',
-    default => 'Pantau laporan yang menunggu dan sedang ditangani.',
-};
+$deskripsiHalaman =
+    'Cari laporan pengguna dan pantau penanganannya melalui filter tiket.';
 
 if (!$gagalMemuatTiket && $daftarTiket !== []) {
     try {
@@ -177,11 +153,7 @@ require __DIR__ . '/../../app/includes/header-admin.php';
                         atau filter yang dipilih.
                     <?php else: ?>
                         <?php
-                        echo match ($tampilan) {
-                            'semua' => 'Belum ada tiket yang masuk.',
-                            'riwayat' => 'Belum ada tiket yang selesai.',
-                            default => 'Tidak ada tiket aktif.',
-                        };
+                        echo 'Belum ada tiket yang masuk.';
                         ?>
                     <?php endif; ?>
                 </div>

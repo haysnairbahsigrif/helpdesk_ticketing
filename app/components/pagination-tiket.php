@@ -4,10 +4,8 @@
 /** @var int $totalHalaman */
 /** @var string $pencarian */
 /** @var string $status */
-/** @var string $tampilan */
 
 $parameterHalaman = [
-    'view' => $tampilan,
     'q' => $pencarian,
     'status' => $status,
 ];

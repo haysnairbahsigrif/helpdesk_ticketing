@@ -26,60 +26,16 @@ $menuAktif = $menuAktif ?? '';
         <?php $submenuTiketTerbuka = $menuAktif === 'tiket'; ?>
 
         <div class="admin-menu-group">
-            <button
-                type="button"
-                class="admin-menu-parent admin-submenu-toggle"
-                aria-expanded="<?php echo $submenuTiketTerbuka ? 'true' : 'false'; ?>"
-                aria-controls="submenu-tiket">
+            <a
+                href="/admin/tiket.php"
+                <?php if ($menuAktif === 'tiket'): ?>
+                aria-current="page"
+                <?php endif; ?>>
                 <span
                     class="sidebar-icon sidebar-icon--ticket"
                     aria-hidden="true"></span>
-
                 <span>Daftar tiket</span>
-
-                <span class="admin-submenu-arrow" aria-hidden="true"></span>
-            </button>
-
-            <div
-                class="admin-submenu"
-                id="submenu-tiket"
-                <?php if (!$submenuTiketTerbuka): ?>
-                hidden
-                <?php endif; ?>>
-
-                <a
-                    href="/admin/tiket.php?view=semua"
-                    <?php if (
-                        $menuAktif === 'tiket'
-                        && ($tampilan ?? '') === 'semua'
-                    ): ?>
-                    aria-current="page"
-                    <?php endif; ?>>
-                    Semua Tiket
-                </a>
-
-                <a
-                    href="/admin/tiket.php?view=aktif"
-                    <?php if (
-                        $menuAktif === 'tiket'
-                        && ($tampilan ?? '') === 'aktif'
-                    ): ?>
-                    aria-current="page"
-                    <?php endif; ?>>
-                    Tiket Aktif
-                </a>
-
-                <a
-                    href="/admin/tiket.php?view=riwayat"
-                    <?php if (
-                        $menuAktif === 'tiket'
-                        && ($tampilan ?? '') === 'riwayat'
-                    ): ?>
-                    aria-current="page"
-                    <?php endif; ?>>
-                    Riwayat Tiket
-                </a>
-            </div>
+            </a>
         </div>
 
         <a
