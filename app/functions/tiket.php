@@ -256,11 +256,12 @@ function buatFilterTiket(
 
     if ($pencarian !== '') {
         $kondisi[] = "
-            (
-                tickets.nama_pengguna LIKE :nama ESCAPE '!'
-                OR tickets.keluhan LIKE :keluhan ESCAPE '!'
-            )
-        ";
+        (
+            tickets.nomor_tiket LIKE :nomor_tiket ESCAPE '!'
+            OR tickets.nama_pengguna LIKE :nama ESCAPE '!'
+            OR tickets.keluhan LIKE :keluhan ESCAPE '!'
+        )
+    ";
 
         $kataKunci = '%' . str_replace(
             ['!', '%', '_'],
@@ -268,6 +269,7 @@ function buatFilterTiket(
             $pencarian
         ) . '%';
 
+        $parameter['nomor_tiket'] = $kataKunci;
         $parameter['nama'] = $kataKunci;
         $parameter['keluhan'] = $kataKunci;
     }
