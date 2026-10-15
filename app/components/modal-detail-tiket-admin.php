@@ -154,6 +154,8 @@
 
             <?php require __DIR__ . '/form-prioritas-tiket.php'; ?>
         </section>
+
+        <?php require __DIR__ . '/riwayat-prioritas-tiket.php'; ?>
     </div>
 
     <div class="ticket-dialog-footer">

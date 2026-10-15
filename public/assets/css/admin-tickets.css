@@ -180,3 +180,39 @@
         word-break: normal;
     }
 }
+
+/* Riwayat perubahan prioritas */
+.priority-history {
+    display: grid;
+    gap: 12px;
+    margin: 16px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.priority-history-item {
+    padding: 16px;
+    border: 1px solid #e2e8f0;
+    border-left: 3px solid #2563eb;
+    border-radius: 8px;
+    background: #f8fafc;
+}
+
+.priority-history-change {
+    margin: 0;
+    color: #0f172a;
+}
+
+.priority-history-meta {
+    margin: 6px 0 10px;
+    color: #64748b;
+    font-size: 13px;
+    overflow-wrap: anywhere;
+}
+
+.priority-history-reason {
+    margin: 0;
+    color: #334155;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
