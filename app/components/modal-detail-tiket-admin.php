@@ -145,15 +145,23 @@
         </section>
 
         <section class="ticket-dialog-handling">
-            <h3>Ubah prioritas</h3>
+            <h3>Penanganan tiket</h3>
 
-            <p class="form-description">
-                Sesuaikan prioritas berdasarkan dampak kendala.
-                Urgensi pilihan user tetap tersimpan.
-            </p>
-
-            <?php require __DIR__ . '/form-prioritas-tiket.php'; ?>
+            <?php require __DIR__ . '/form-status.php'; ?>
         </section>
+
+        <?php if (in_array($tiket['status'], ['Baru', 'Diproses'], true)): ?>
+            <section class="ticket-dialog-handling">
+                <h3>Ubah prioritas</h3>
+
+                <p class="form-description">
+                    Sesuaikan prioritas berdasarkan dampak kendala.
+                    Urgensi pilihan user tetap tersimpan.
+                </p>
+
+                <?php require __DIR__ . '/form-prioritas-tiket.php'; ?>
+            </section>
+        <?php endif; ?>
 
         <?php require __DIR__ . '/riwayat-prioritas-tiket.php'; ?>
     </div>
