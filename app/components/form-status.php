@@ -46,43 +46,7 @@ $labelTindakanTiket = $tiket['status'] === 'Baru'
                     );
                     ?>">
 
-        <input
-            type="hidden"
-            name="q"
-            value="<?php
-                    echo htmlspecialchars(
-                        $pencarian ?? '',
-                        ENT_QUOTES,
-                        'UTF-8'
-                    );
-                    ?>">
-
-        <input
-            type="hidden"
-            name="filter_status"
-            value="<?php
-                    echo htmlspecialchars(
-                        $status ?? '',
-                        ENT_QUOTES,
-                        'UTF-8'
-                    );
-                    ?>">
-
-        <input
-            type="hidden"
-            name="page"
-            value="<?php echo (int) ($halaman ?? 1); ?>">
-
-        <input
-            type="hidden"
-            name="view"
-            value="<?php
-                    echo htmlspecialchars(
-                        $tampilan ?? 'aktif',
-                        ENT_QUOTES,
-                        'UTF-8'
-                    );
-                    ?>">
+        <?php require __DIR__ . '/parameter-filter-tiket.php'; ?>
 
         <button type="submit" class="button-primary">
             <?php

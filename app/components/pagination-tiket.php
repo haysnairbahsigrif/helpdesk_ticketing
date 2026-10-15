@@ -3,11 +3,13 @@
 /** @var int $halaman */
 /** @var int $totalHalaman */
 /** @var string $pencarian */
-/** @var string $status */
+/** @var string|array $status */
+/** @var array $filterPrioritas */
 
 $parameterHalaman = [
     'q' => $pencarian,
     'status' => $status,
+    'prioritas' => $filterPrioritas ?? [],
 ];
 
 $buatUrlTiket = static function (int $nomor) use ($parameterHalaman): string {

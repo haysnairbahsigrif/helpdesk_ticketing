@@ -22,13 +22,14 @@ if (
     exit('Permintaan tidak valid. Muat ulang halaman Daftar Tiket.');
 }
 
-// Periksa pencarian dan filter untuk halaman tujuan.
-$pencarian = $_POST['q'] ?? '';
-$filterStatus = $_POST['filter_status'] ?? '';
+require_once __DIR__ . '/../../app/functions/filter-tiket.php';
 
-if (!is_string($pencarian) || !is_string($filterStatus)) {
+// Periksa pencarian.
+$pencarian = $_POST['q'] ?? '';
+
+if (!is_string($pencarian)) {
     http_response_code(400);
-    exit('Parameter pencarian atau filter tidak valid.');
+    exit('Pencarian tidak valid.');
 }
 
 $pencarian = trim($pencarian);
@@ -36,18 +37,23 @@ $panjangPencarian = preg_match_all('/./us', $pencarian);
 
 if ($panjangPencarian === false || $panjangPencarian > 100) {
     http_response_code(400);
-    exit('Pencarian harus berupa teks valid, maksimal 100 karakter.');
+    exit('Pencarian maksimal 100 karakter dan harus berupa teks valid.');
 }
 
-if (
-    !in_array(
-        $filterStatus,
-        ['', 'Baru', 'Diproses', 'Selesai'],
-        true
-    )
-) {
+// Periksa filter daftar, terpisah dari status tujuan tiket.
+try {
+    $filterStatus = normalisasiPilihanFilter(
+        $_POST['filter_status'] ?? [],
+        ['Baru', 'Diproses', 'Selesai']
+    );
+
+    $filterPrioritas = normalisasiPilihanFilter(
+        $_POST['filter_prioritas'] ?? [],
+        ['Rendah', 'Sedang', 'Tinggi', 'belum-ditentukan']
+    );
+} catch (InvalidArgumentException $error) {
     http_response_code(400);
-    exit('Filter status tidak valid.');
+    exit('Pilihan filter tidak valid.');
 }
 
 // Periksa halaman asal.
@@ -66,19 +72,7 @@ if ($halaman === false) {
     exit('Nomor halaman tidak valid.');
 }
 
-// Siapkan parameter untuk kembali ke daftar tiket.
-$tampilan = $_POST['view'] ?? 'aktif';
-
-if (
-    !is_string($tampilan)
-    || !in_array($tampilan, ['semua', 'aktif', 'riwayat'], true)
-) {
-    http_response_code(400);
-    exit('Tampilan daftar tiket tidak valid.');
-}
-
 $parameterKembali = [
-    'view' => $tampilan,
     'page' => $halaman,
 ];
 
@@ -86,8 +80,15 @@ if ($pencarian !== '') {
     $parameterKembali['q'] = $pencarian;
 }
 
-if ($filterStatus !== '') {
-    $parameterKembali['status'] = $filterStatus;
+if ($filterStatus !== []) {
+    // Satu status tetap menghasilkan URL seperti ?status=Baru.
+    $parameterKembali['status'] = count($filterStatus) === 1
+        ? $filterStatus[0]
+        : $filterStatus;
+}
+
+if ($filterPrioritas !== []) {
+    $parameterKembali['prioritas'] = $filterPrioritas;
 }
 
 // Periksa ID tiket dan status tujuan.

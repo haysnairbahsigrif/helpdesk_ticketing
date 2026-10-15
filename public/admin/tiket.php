@@ -7,13 +7,14 @@ require_once __DIR__ . '/../../app/functions/tanggal.php';
 
 $cssHalaman = '/assets/css/admin-tickets.css';
 
-// Periksa pencarian dan filter.
-$pencarian = $_GET['q'] ?? '';
-$status = $_GET['status'] ?? '';
+require_once __DIR__ . '/../../app/functions/filter-tiket.php';
 
-if (!is_string($pencarian) || !is_string($status)) {
+// Periksa pencarian.
+$pencarian = $_GET['q'] ?? '';
+
+if (!is_string($pencarian)) {
     http_response_code(400);
-    exit('Parameter pencarian tidak valid.');
+    exit('Pencarian tidak valid.');
 }
 
 $pencarian = trim($pencarian);
@@ -21,12 +22,23 @@ $panjangPencarian = preg_match_all('/./us', $pencarian);
 
 if ($panjangPencarian === false || $panjangPencarian > 100) {
     http_response_code(400);
-    exit('Pencarian harus berupa teks valid, maksimal 100 karakter.');
+    exit('Pencarian maksimal 100 karakter dan harus berupa teks valid.');
 }
 
-if (!in_array($status, ['', 'Baru', 'Diproses', 'Selesai'], true)) {
+// Status tunggal dari kartu dashboard juga tetap diterima.
+try {
+    $status = normalisasiPilihanFilter(
+        $_GET['status'] ?? [],
+        ['Baru', 'Diproses', 'Selesai']
+    );
+
+    $filterPrioritas = normalisasiPilihanFilter(
+        $_GET['prioritas'] ?? [],
+        ['Rendah', 'Sedang', 'Tinggi', 'belum-ditentukan']
+    );
+} catch (InvalidArgumentException $error) {
     http_response_code(400);
-    exit('Filter status tidak valid.');
+    exit('Pilihan filter tidak valid.');
 }
 
 // Admin menggunakan satu daftar untuk seluruh tiket.
@@ -67,7 +79,8 @@ try {
         $pdo,
         $pencarian,
         $status,
-        $tampilan
+        $tampilan,
+        $filterPrioritas
     );
 
     $totalHalaman = max(
@@ -85,7 +98,8 @@ try {
         $status,
         $perHalaman,
         $offset,
-        $tampilan
+        $tampilan,
+        $filterPrioritas
     );
 } catch (PDOException $error) {
     error_log($error->getMessage());
@@ -136,43 +150,8 @@ require __DIR__ . '/../../app/includes/header-admin.php';
     <div class="admin-content">
         <?php
         require __DIR__ . '/../../app/components/pesan.php';
-        require __DIR__ . '/../../app/components/form-cari-tiket.php';
+        require __DIR__ . '/../../app/components/daftar-tiket-admin.php';
         ?>
-
-        <div id="daftar-tiket">
-            <?php if ($gagalMemuatTiket): ?>
-                <div class="notification" role="alert">
-                    Daftar tiket belum dapat dimuat.
-                    Silakan muat ulang halaman.
-                </div>
-
-            <?php elseif ($daftarTiket === []): ?>
-                <div class="notification" role="status">
-                    <?php if ($pencarian !== '' || $status !== ''): ?>
-                        Tidak ada tiket yang cocok dengan pencarian
-                        atau filter yang dipilih.
-                    <?php else: ?>
-                        <?php
-                        echo 'Belum ada tiket yang masuk.';
-                        ?>
-                    <?php endif; ?>
-                </div>
-
-            <?php else: ?>
-                <p class="ticket-result-count">
-                    Menampilkan
-                    <?php echo $offset + 1; ?>–<?php
-                                                echo $offset + count($daftarTiket);
-                                                ?>
-                    dari <?php echo $totalTiket; ?> tiket.
-                </p>
-
-                <?php
-                require __DIR__
-                    . '/../../app/components/daftar-tiket-admin.php';
-                ?>
-            <?php endif; ?>
-        </div>
     </div>
 </main>
 

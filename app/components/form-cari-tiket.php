@@ -1,174 +1,191 @@
 <?php
 
 /** @var string $pencarian */
-/** @var string $status */
-/** @var string $tampilan */
+/** @var array<int, string> $status */
+/** @var array<int, string> $filterPrioritas */
 
-$adaFilterStatus = $tampilan !== 'riwayat' && $status !== '';
+$kelompokFilterTiket = [
+    'status' => [
+        'label' => 'Status',
+        'pilihan' => [
+            'Baru' => 'Baru',
+            'Diproses' => 'Diproses',
+            'Selesai' => 'Selesai',
+        ],
+        'terpilih' => $status,
+    ],
+    'prioritas' => [
+        'label' => 'Prioritas',
+        'pilihan' => [
+            'Rendah' => 'Rendah',
+            'Sedang' => 'Sedang',
+            'Tinggi' => 'Tinggi',
+            'belum-ditentukan' => 'Belum ditentukan',
+        ],
+        'terpilih' => $filterPrioritas,
+    ],
+];
 
-$urlResetFilter = '/admin/tiket.php?' . http_build_query([
-    'view' => $tampilan,
-]);
+$buatUrlHapusFilter = static function (
+    string $kelompok,
+    string $nilai
+) use ($pencarian, $status, $filterPrioritas): string {
+    $parameter = [
+        'q' => $pencarian,
+        'status' => $status,
+        'prioritas' => $filterPrioritas,
+    ];
 
-// Hapus status saja, tetapi pertahankan pencarian.
-$urlHapusStatus = '/admin/tiket.php?' . http_build_query([
-    'view' => $tampilan,
-    'q' => $pencarian,
-]);
+    $parameter[$kelompok] = array_values(
+        array_diff($parameter[$kelompok], [$nilai])
+    );
 
-$pilihanStatus = $tampilan === 'aktif'
-    ? ['Baru', 'Diproses']
-    : ['Baru', 'Diproses', 'Selesai'];
+    return '/admin/tiket.php?' . http_build_query($parameter);
+};
 ?>
 
-<section class="panel ticket-filter-panel">
-    <h2>Cari tiket</h2>
+<form
+    class="ticket-toolbar-form"
+    action="/admin/tiket.php"
+    method="get"
+    data-ticket-filter
+>
+    <div class="ticket-toolbar">
+        <div class="ticket-toolbar-search">
+            <label class="ticket-toolbar-sr-only" for="pencarian-tiket">
+                Cari nomor tiket, nama pelapor, atau keluhan
+            </label>
 
-    <form
-        class="ticket-filter-form"
-        action="/admin/tiket.php"
-        method="get"
-        data-ticket-filter>
+            <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                aria-hidden="true"
+                focusable="false"
+            >
+                <circle cx="10.5" cy="10.5" r="6.5"></circle>
+                <path d="m16 16 5 5"></path>
+            </svg>
 
-        <input
-            type="hidden"
-            name="view"
-            value="<?php
-            echo htmlspecialchars($tampilan, ENT_QUOTES, 'UTF-8');
-            ?>">
-
-        <div class="ticket-search-toolbar">
-            <div class="ticket-search-field">
-                <label class="ticket-filter-sr-only" for="pencarian-tiket">
-                    Cari nomor tiket, nama pelapor, atau keluhan
-                </label>
-
-                <button
-                    type="submit"
-                    class="ticket-search-submit"
-                    aria-label="Cari tiket"
-                    title="Cari tiket">
-                    <svg
-                        width="22"
-                        height="22"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        aria-hidden="true">
-                        <circle cx="10.5" cy="10.5" r="6.5"></circle>
-                        <path d="m16 16 5 5"></path>
-                    </svg>
-                </button>
-
-                <input
-                    type="search"
-                    id="pencarian-tiket"
-                    name="q"
-                    maxlength="100"
-                    placeholder="Nomor tiket, nama pelapor, atau keluhan"
-                    value="<?php
-                    echo htmlspecialchars($pencarian, ENT_QUOTES, 'UTF-8');
-                    ?>">
-            </div>
-
-            <?php if ($tampilan !== 'riwayat'): ?>
-                <button
-                    type="button"
-                    class="ticket-filter-toggle"
-                    data-filter-toggle
-                    aria-controls="panel-filter-tiket"
-                    aria-expanded="true"
-                    aria-label="Filter status tiket"
-                    hidden>
-                    <svg
-                        width="22"
-                        height="22"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        aria-hidden="true">
-                        <path d="M3 6h18M3 12h18M3 18h18"></path>
-                        <circle cx="8" cy="6" r="2" fill="currentColor"></circle>
-                        <circle cx="16" cy="12" r="2" fill="currentColor"></circle>
-                        <circle cx="10" cy="18" r="2" fill="currentColor"></circle>
-                    </svg>
-
-                    <span class="ticket-filter-toggle-text">Filter</span>
-
-                    <?php if ($adaFilterStatus): ?>
-                        <span class="ticket-filter-count">1</span>
-                    <?php endif; ?>
-                </button>
-            <?php endif; ?>
+            <input
+                type="search"
+                id="pencarian-tiket"
+                name="q"
+                maxlength="100"
+                placeholder="Nomor tiket, pelapor, atau keluhan"
+                value="<?php
+                echo htmlspecialchars($pencarian, ENT_QUOTES, 'UTF-8');
+                ?>"
+            >
         </div>
 
-        <?php if ($tampilan !== 'riwayat'): ?>
-            <div class="ticket-filter-options" id="panel-filter-tiket">
-                <div class="form-group">
-                    <label for="filter-status-tiket">Status tiket</label>
+        <?php foreach ($kelompokFilterTiket as $namaFilter => $kelompok): ?>
+            <details class="ticket-dropdown" data-filter-dropdown>
+                <summary>
+                    <span>
+                        <?php
+                        echo htmlspecialchars(
+                            $kelompok['label'],
+                            ENT_QUOTES,
+                            'UTF-8'
+                        );
+                        ?>
 
-                    <select id="filter-status-tiket" name="status">
-                        <option value="" <?php echo $status === '' ? 'selected' : ''; ?>>
+                        <span data-filter-count>
                             <?php
-                            echo $tampilan === 'aktif'
-                                ? 'Semua status aktif'
-                                : 'Semua status';
+                            $jumlahPilihan = count($kelompok['terpilih']);
+                            echo $jumlahPilihan > 0
+                                ? '(' . $jumlahPilihan . ')'
+                                : '';
                             ?>
-                        </option>
+                        </span>
+                    </span>
 
-                        <?php foreach ($pilihanStatus as $pilihan): ?>
-                            <option
-                                value="<?php echo $pilihan; ?>"
-                                <?php echo $status === $pilihan ? 'selected' : ''; ?>>
-                                <?php echo $pilihan; ?>
-                            </option>
+                    <span class="ticket-dropdown-arrow" aria-hidden="true"></span>
+                </summary>
+
+                <div class="ticket-dropdown-panel">
+                    <fieldset>
+                        <legend class="ticket-toolbar-sr-only">
+                            <?php
+                            echo htmlspecialchars(
+                                'Pilih ' . $kelompok['label'],
+                                ENT_QUOTES,
+                                'UTF-8'
+                            );
+                            ?>
+                        </legend>
+
+                        <?php foreach ($kelompok['pilihan'] as $nilai => $label): ?>
+                            <label class="ticket-dropdown-choice">
+                                <input
+                                    type="checkbox"
+                                    name="<?php echo $namaFilter; ?>[]"
+                                    value="<?php
+                                    echo htmlspecialchars($nilai, ENT_QUOTES, 'UTF-8');
+                                    ?>"
+                                    <?php
+                                    echo in_array(
+                                        $nilai,
+                                        $kelompok['terpilih'],
+                                        true
+                                    ) ? 'checked' : '';
+                                    ?>
+                                >
+
+                                <span><?php
+                                    echo htmlspecialchars($label, ENT_QUOTES, 'UTF-8');
+                                ?></span>
+                            </label>
                         <?php endforeach; ?>
-                    </select>
+                    </fieldset>
                 </div>
+            </details>
+        <?php endforeach; ?>
 
-                <div class="ticket-filter-actions">
-                    <button type="submit" class="button-primary">
-                        Terapkan
-                    </button>
+        <button type="submit" class="button-primary ticket-toolbar-apply">
+            Terapkan
+        </button>
 
-                    <a href="<?php
-                    echo htmlspecialchars($urlResetFilter, ENT_QUOTES, 'UTF-8');
-                    ?>">
-                        Reset semua
+        <a class="ticket-toolbar-reset" href="/admin/tiket.php">
+            Reset filter
+        </a>
+    </div>
+
+    <?php if ($status !== [] || $filterPrioritas !== []): ?>
+        <div class="ticket-toolbar-chips" aria-label="Filter yang diterapkan">
+            <?php foreach ($kelompokFilterTiket as $namaFilter => $kelompok): ?>
+                <?php foreach ($kelompok['terpilih'] as $nilai): ?>
+                    <?php
+                    $labelChip = $kelompok['label'] . ': '
+                        . $kelompok['pilihan'][$nilai];
+                    ?>
+
+                    <a
+                        class="ticket-toolbar-chip"
+                        href="<?php
+                        echo htmlspecialchars(
+                            $buatUrlHapusFilter($namaFilter, $nilai),
+                            ENT_QUOTES,
+                            'UTF-8'
+                        );
+                        ?>"
+                        aria-label="<?php
+                        echo htmlspecialchars(
+                            'Hapus filter ' . $labelChip,
+                            ENT_QUOTES,
+                            'UTF-8'
+                        );
+                        ?>"
+                    >
+                        <?php echo htmlspecialchars($labelChip, ENT_QUOTES, 'UTF-8'); ?>
+                        <span aria-hidden="true">×</span>
                     </a>
-                </div>
-            </div>
-        <?php endif; ?>
-
-        <?php if ($adaFilterStatus): ?>
-            <div class="ticket-active-filters">
-                <a
-                    class="ticket-filter-chip"
-                    href="<?php
-                    echo htmlspecialchars($urlHapusStatus, ENT_QUOTES, 'UTF-8');
-                    ?>"
-                    aria-label="<?php
-                    echo htmlspecialchars(
-                        'Hapus filter status ' . $status,
-                        ENT_QUOTES,
-                        'UTF-8'
-                    );
-                    ?>">
-                    Status:
-                    <?php echo htmlspecialchars($status, ENT_QUOTES, 'UTF-8'); ?>
-                    <span aria-hidden="true">×</span>
-                </a>
-            </div>
-        <?php endif; ?>
-
-        <?php if ($tampilan === 'riwayat' && $pencarian !== ''): ?>
-            <a href="<?php
-            echo htmlspecialchars($urlResetFilter, ENT_QUOTES, 'UTF-8');
-            ?>">
-                Hapus pencarian
-            </a>
-        <?php endif; ?>
-    </form>
-</section>
+                <?php endforeach; ?>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
+</form>

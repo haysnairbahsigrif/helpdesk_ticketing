@@ -1,35 +1,33 @@
 document.querySelectorAll('[data-ticket-filter]').forEach(function (form) {
-    const toggle = form.querySelector('[data-filter-toggle]');
+    const dropdowns = form.querySelectorAll('[data-filter-dropdown]');
 
-    if (!toggle) {
-        return;
-    }
+    dropdowns.forEach(function (dropdown) {
+        const counter = dropdown.querySelector('[data-filter-count]');
+        const summary = dropdown.querySelector('summary');
 
-    const panelId = toggle.getAttribute('aria-controls');
-    const panel = document.getElementById(panelId);
+        // Perbarui jumlah pilihan tanpa memindahkan fokus.
+        dropdown.addEventListener('change', function () {
+            const jumlah = dropdown.querySelectorAll(
+                'input[type="checkbox"]:checked'
+            ).length;
 
-    if (!panel) {
-        return;
-    }
+            if (counter) {
+                counter.textContent = jumlah > 0 ? `(${jumlah})` : '';
+            }
+        });
 
-    function setFilterOpen(isOpen) {
-        panel.hidden = !isOpen;
-        toggle.setAttribute('aria-expanded', String(isOpen));
-    }
+        // Tutup menggunakan Escape.
+        dropdown.addEventListener('keydown', function (event) {
+            if (event.key !== 'Escape' || !dropdown.open) {
+                return;
+            }
 
-    // Saat JavaScript tersedia, mulai dengan panel tertutup.
-    setFilterOpen(false);
-    toggle.hidden = false;
-
-    toggle.addEventListener('click', function () {
-        setFilterOpen(panel.hidden);
-    });
-
-    panel.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape') {
             event.preventDefault();
-            setFilterOpen(false);
-            toggle.focus();
-        }
+            dropdown.open = false;
+
+            if (summary) {
+                summary.focus();
+            }
+        });
     });
 });

@@ -235,8 +235,9 @@ function ambilRingkasanTiketUser(PDO $pdo, int $userId): array
 
 function buatFilterTiket(
     string $pencarian = '',
-    string $status = '',
-    string $tampilan = 'semua'
+    string|array $status = '',
+    string $tampilan = 'semua',
+    array $prioritas = []
 ): array {
     if (!in_array($tampilan, ['semua', 'aktif', 'riwayat'], true)) {
         throw new InvalidArgumentException(
@@ -244,10 +245,40 @@ function buatFilterTiket(
         );
     }
 
+    // Terima status tunggal dari tautan lama maupun array checkbox.
+    $daftarStatus = is_string($status)
+        ? ($status === '' ? [] : [$status])
+        : $status;
+
+    foreach ($daftarStatus as $nilai) {
+        if (
+            !is_string($nilai)
+            || !in_array($nilai, ['Baru', 'Diproses', 'Selesai'], true)
+        ) {
+            throw new InvalidArgumentException('Filter status tidak valid.');
+        }
+    }
+
+    foreach ($prioritas as $nilai) {
+        if (
+            !is_string($nilai)
+            || !in_array(
+                $nilai,
+                ['Rendah', 'Sedang', 'Tinggi', 'belum-ditentukan'],
+                true
+            )
+        ) {
+            throw new InvalidArgumentException('Filter prioritas tidak valid.');
+        }
+    }
+
+    $daftarStatus = array_values(array_unique($daftarStatus));
+    $daftarPrioritas = array_values(array_unique($prioritas));
+
     $kondisi = [];
     $parameter = [];
 
-    // Batasi data berdasarkan bagian yang dibuka.
+    // Pertahankan dukungan pemanggilan fungsi yang sudah ada.
     if ($tampilan === 'aktif') {
         $kondisi[] = "tickets.status IN ('Baru', 'Diproses')";
     } elseif ($tampilan === 'riwayat') {
@@ -256,12 +287,12 @@ function buatFilterTiket(
 
     if ($pencarian !== '') {
         $kondisi[] = "
-        (
-            tickets.nomor_tiket LIKE :nomor_tiket ESCAPE '!'
-            OR tickets.nama_pengguna LIKE :nama ESCAPE '!'
-            OR tickets.keluhan LIKE :keluhan ESCAPE '!'
-        )
-    ";
+            (
+                tickets.nomor_tiket LIKE :nomor_tiket ESCAPE '!'
+                OR tickets.nama_pengguna LIKE :nama ESCAPE '!'
+                OR tickets.keluhan LIKE :keluhan ESCAPE '!'
+            )
+        ";
 
         $kataKunci = '%' . str_replace(
             ['!', '%', '_'],
@@ -274,17 +305,48 @@ function buatFilterTiket(
         $parameter['keluhan'] = $kataKunci;
     }
 
-    if ($status !== '') {
-        $kondisi[] = 'tickets.status = :status';
-        $parameter['status'] = $status;
+    if ($daftarStatus !== []) {
+        $placeholderStatus = [];
+
+        foreach ($daftarStatus as $indeks => $nilai) {
+            $namaParameter = 'status_' . $indeks;
+            $placeholderStatus[] = ':' . $namaParameter;
+            $parameter[$namaParameter] = $nilai;
+        }
+
+        $kondisi[] = 'tickets.status IN ('
+            . implode(', ', $placeholderStatus)
+            . ')';
     }
 
-    $where = $kondisi !== []
-        ? ' WHERE ' . implode(' AND ', $kondisi)
-        : '';
+    if ($daftarPrioritas !== []) {
+        $kondisiPrioritas = [];
+        $placeholderPrioritas = [];
+
+        foreach ($daftarPrioritas as $indeks => $nilai) {
+            if ($nilai === 'belum-ditentukan') {
+                $kondisiPrioritas[] = 'tickets.prioritas IS NULL';
+                continue;
+            }
+
+            $namaParameter = 'prioritas_' . $indeks;
+            $placeholderPrioritas[] = ':' . $namaParameter;
+            $parameter[$namaParameter] = $nilai;
+        }
+
+        if ($placeholderPrioritas !== []) {
+            $kondisiPrioritas[] = 'tickets.prioritas IN ('
+                . implode(', ', $placeholderPrioritas)
+                . ')';
+        }
+
+        $kondisi[] = '(' . implode(' OR ', $kondisiPrioritas) . ')';
+    }
 
     return [
-        'where' => $where,
+        'where' => $kondisi !== []
+            ? ' WHERE ' . implode(' AND ', $kondisi)
+            : '',
         'parameter' => $parameter,
     ];
 }
@@ -292,10 +354,17 @@ function buatFilterTiket(
 function hitungTiketAdmin(
     PDO $pdo,
     string $pencarian = '',
-    string $status = '',
-    string $tampilan = 'semua'
+    string|array $status = '',
+    string $tampilan = 'semua',
+    array $prioritas = []
 ): int {
-    $filter = buatFilterTiket($pencarian, $status, $tampilan);
+    $filter = buatFilterTiket(
+        $pencarian,
+        $status,
+        $tampilan,
+        $prioritas
+    );
+
     $statement = $pdo->prepare(
         'SELECT COUNT(*) FROM tickets' . $filter['where']
     );
@@ -308,10 +377,11 @@ function hitungTiketAdmin(
 function ambilSemuaTiket(
     PDO $pdo,
     string $pencarian = '',
-    string $status = '',
+    string|array $status = '',
     ?int $batas = null,
     int $offset = 0,
-    string $tampilan = 'semua'
+    string $tampilan = 'semua',
+    array $prioritas = []
 ): array {
     if ($offset < 0 || ($batas !== null && $batas < 1)) {
         throw new InvalidArgumentException(
@@ -319,7 +389,12 @@ function ambilSemuaTiket(
         );
     }
 
-    $filter = buatFilterTiket($pencarian, $status, $tampilan);
+    $filter = buatFilterTiket(
+        $pencarian,
+        $status,
+        $tampilan,
+        $prioritas
+    );
 
     $sql = '
     SELECT
