@@ -121,3 +121,62 @@ function ubahPrioritasTiket(
         throw $error;
     }
 }
+
+function ambilRiwayatPrioritasAdmin(
+    PDO $pdo,
+    array $daftarIdTiket
+): array {
+    if ($daftarIdTiket === []) {
+        return [];
+    }
+
+    foreach ($daftarIdTiket as $idTiket) {
+        if (!is_int($idTiket) || $idTiket < 1) {
+            throw new InvalidArgumentException(
+                'ID tiket harus berupa bilangan bulat positif.'
+            );
+        }
+    }
+
+    $daftarIdTiket = array_values(array_unique($daftarIdTiket));
+
+    // Buat satu placeholder untuk setiap ID tiket.
+    $placeholder = implode(
+        ', ',
+        array_fill(0, count($daftarIdTiket), '?')
+    );
+
+    $statement = $pdo->prepare(
+        'SELECT
+            riwayat.id,
+            riwayat.ticket_id,
+            riwayat.prioritas_lama,
+            riwayat.prioritas_baru,
+            riwayat.alasan,
+            riwayat.created_at,
+            users.nama AS nama_admin
+         FROM ticket_priority_history AS riwayat
+         LEFT JOIN users ON riwayat.admin_id = users.id
+         WHERE riwayat.ticket_id IN (' . $placeholder . ')
+         ORDER BY riwayat.id DESC'
+    );
+
+    foreach ($daftarIdTiket as $posisi => $idTiket) {
+        $statement->bindValue(
+            $posisi + 1,
+            $idTiket,
+            PDO::PARAM_INT
+        );
+    }
+
+    $statement->execute();
+
+    $riwayatPerTiket = [];
+
+    foreach ($statement->fetchAll(PDO::FETCH_ASSOC) as $riwayat) {
+        $idTiket = (int) $riwayat['ticket_id'];
+        $riwayatPerTiket[$idTiket][] = $riwayat;
+    }
+
+    return $riwayatPerTiket;
+}
