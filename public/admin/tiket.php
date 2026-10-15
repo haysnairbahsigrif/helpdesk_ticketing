@@ -69,6 +69,8 @@ if ($halaman === false) {
 $perHalaman = 10;
 
 $daftarTiket = [];
+$riwayatPrioritasPerTiket = [];
+$gagalMemuatRiwayatPrioritas = false;
 $totalTiket = 0;
 $totalHalaman = 1;
 $offset = 0;
@@ -120,6 +122,26 @@ $deskripsiHalaman = match ($tampilan) {
     'riwayat' => 'Lihat laporan yang penanganannya sudah selesai.',
     default => 'Pantau laporan yang menunggu dan sedang ditangani.',
 };
+
+if (!$gagalMemuatTiket && $daftarTiket !== []) {
+    try {
+        require_once __DIR__ . '/../../app/functions/prioritas.php';
+
+        $daftarIdTiket = [];
+
+        foreach ($daftarTiket as $tiketDaftar) {
+            $daftarIdTiket[] = (int) $tiketDaftar['id'];
+        }
+
+        $riwayatPrioritasPerTiket = ambilRiwayatPrioritasAdmin(
+            $pdo,
+            $daftarIdTiket
+        );
+    } catch (PDOException $error) {
+        error_log($error->getMessage());
+        $gagalMemuatRiwayatPrioritas = true;
+    }
+}
 
 require __DIR__ . '/../../app/includes/header-admin.php';
 ?>
