@@ -37,6 +37,12 @@ $daftarPesan = [
     'Departemen-belum-diatur' => 'Departemen akun belum ditentukan. Hubungi admin sebelum membuat tiket.',
     'urgensi-tidak-valid' => 'Pilih urgensi kendala: Rendah, Sedang, atau Tinggi.',
     'user-Departemen-tidak-valid' => 'Pilih Departemen yang tersedia untuk akun user.',
+    'prioritas-berhasil' => 'Prioritas tiket berhasil diperbarui.',
+    'prioritas-tidak-valid' => 'Pilih prioritas yang valid dan isi alasan maksimal 1.000 karakter.',
+    'prioritas-tiket-selesai' => 'Prioritas tiket yang sudah selesai tidak dapat diubah.',
+    'prioritas-tidak-berubah' => 'Prioritas yang dipilih sama dengan prioritas saat ini.',
+    'prioritas-admin-tidak-valid' => 'Perubahan memerlukan akun admin yang aktif.',
+    'prioritas-gagal' => 'Prioritas belum dapat diperbarui. Silakan coba lagi.',
 ];
 
 $pesan = is_string($kodePesan)
@@ -50,10 +56,12 @@ $kodeBerhasil = [
     'reset-berhasil',
     'akun-status-berhasil',
     'edit-user-berhasil',
+    'prioritas-berhasil',
 ];
 
 $kodeInformasi = [
     'akun-status-tidak-berubah',
+    'prioritas-tidak-berubah',
 ];
 
 if (in_array($kodePesan, $kodeBerhasil, true)) {

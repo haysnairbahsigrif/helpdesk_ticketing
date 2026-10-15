@@ -54,12 +54,30 @@
                 </dd>
             </div>
 
+            <?php if ($tiket['status'] === 'Selesai'): ?>
+                <div>
+                    <dt>Tanggal selesai</dt>
+                    <dd>
+                        <?php
+                        echo htmlspecialchars(
+                            formatTanggalTiket(
+                                $tiket['completed_at'] ?? null,
+                                true
+                            ),
+                            ENT_QUOTES,
+                            'UTF-8'
+                        );
+                        ?>
+                    </dd>
+                </div>
+            <?php endif; ?>
+
             <div>
                 <dt>Departemen saat pelaporan</dt>
                 <dd>
                     <?php
                     echo htmlspecialchars(
-                        $tiket['Departemen_pelapor'] ?? 'Belum tercatat',
+                        $tiket['departemen_pelapor'] ?? 'Belum tercatat',
                         ENT_QUOTES,
                         'UTF-8'
                     );

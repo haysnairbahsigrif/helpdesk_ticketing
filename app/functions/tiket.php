@@ -18,7 +18,7 @@ function tambahTiket(
                 user_id,
                 nama_pengguna,
                 keluhan,
-                Departemen_pelapor,
+                departemen_pelapor,
                 urgensi,
                 prioritas
             )
@@ -28,7 +28,7 @@ function tambahTiket(
                 :user_id,
                 :nama,
                 :keluhan,
-                :Departemen_pelapor,
+                :departemen_pelapor,
                 :urgensi,
                 :prioritas
             )'
@@ -44,7 +44,7 @@ function tambahTiket(
                 'user_id' => $userId,
                 'nama' => $nama,
                 'keluhan' => $keluhan,
-                'Departemen_pelapor' => $DepartemenPelapor,
+                'departemen_pelapor' => $DepartemenPelapor,
                 'urgensi' => $urgensi,
                 'prioritas' => $urgensi,
             ]);
@@ -171,11 +171,12 @@ function ambilTiketUser(
             id,
             nomor_tiket,
             keluhan,
-            Departemen_pelapor,
+            departemen_pelapor,
             urgensi,
             prioritas,
             status,
-            created_at
+            created_at,
+            completed_at
         FROM tickets
         ';
 
@@ -323,12 +324,13 @@ function ambilSemuaTiket(
         tickets.id,
         tickets.nomor_tiket,
         tickets.nama_pengguna,
-        tickets.Departemen_pelapor,
+        tickets.departemen_pelapor,
         tickets.keluhan,
         tickets.urgensi,
         tickets.prioritas,
         tickets.status,
         tickets.created_at,
+        tickets.completed_at,
         users.email AS email_pemilik
     FROM tickets
     LEFT JOIN users ON tickets.user_id = users.id
@@ -366,6 +368,7 @@ function ubahStatusTiket(
     int $tiketId,
     string $status
 ): bool {
+    // Tentukan status asal yang diizinkan.
     $statusAsal = match ($status) {
         'Diproses' => 'Baru',
         'Selesai' => 'Diproses',
@@ -376,12 +379,17 @@ function ubahStatusTiket(
         return false;
     }
 
-    $statement = $pdo->prepare(
-        'UPDATE tickets
+    // Catat waktu selesai hanya saat tiket diselesaikan.
+    $sql = $status === 'Selesai'
+        ? 'UPDATE tickets
+        SET status = :status_tujuan,
+            completed_at = CURRENT_TIMESTAMP
+        WHERE id = :id AND status = :status_asal'
+        : 'UPDATE tickets
         SET status = :status_tujuan
-        WHERE id = :id
-        AND status = :status_asal'
-    );
+        WHERE id = :id AND status = :status_asal';
+
+    $statement = $pdo->prepare($sql);
 
     $statement->execute([
         'status_tujuan' => $status,

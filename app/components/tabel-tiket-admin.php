@@ -1,10 +1,16 @@
 <?php
 
 /** @var array $daftarTiket */
+
+$tampilkanTanggalSelesai = ($tampilan ?? 'aktif') === 'riwayat';
+
+$labelTanggal = $tampilkanTanggalSelesai
+    ? 'Tanggal selesai'
+    : 'Tanggal dibuat';
 ?>
 
 <div class="ticket-table-wrapper">
-    <table class="ticket-user-table">
+    <table class="ticket-user-table ticket-admin-table">
         <caption class="ticket-table-caption">
             Daftar tiket seluruh pengguna
         </caption>
@@ -12,11 +18,12 @@
         <thead>
             <tr>
                 <th scope="col">Nomor tiket</th>
-                <th scope="col">Keluhan</th>
-                <th scope="col">Pelapor / Departemen</th>
+                <th scope="col">Pelapor</th>
                 <th scope="col">Prioritas</th>
                 <th scope="col">Status</th>
-                <th scope="col">Tanggal dibuat</th>
+                <th scope="col">
+                    <?php echo htmlspecialchars($labelTanggal, ENT_QUOTES, 'UTF-8'); ?>
+                </th>
                 <th scope="col">Detail</th>
             </tr>
         </thead>
@@ -34,17 +41,7 @@
                         ?>
                     </th>
 
-                    <td data-label="Keluhan">
-                        <p class="ticket-table-complaint"><?php
-                                                            echo htmlspecialchars(
-                                                                $tiket['keluhan'],
-                                                                ENT_QUOTES,
-                                                                'UTF-8'
-                                                            );
-                                                            ?></p>
-                    </td>
-
-                    <td data-label="Pelapor / Departemen">
+                    <td data-label="Pelapor">
                         <div class="ticket-reporter">
                             <strong>
                                 <?php
@@ -59,7 +56,7 @@
                             <span>
                                 <?php
                                 echo htmlspecialchars(
-                                    $tiket['Departemen_pelapor'] ?? 'Departemen belum tercatat',
+                                    $tiket['departemen_pelapor'] ?? 'Departemen belum tercatat',
                                     ENT_QUOTES,
                                     'UTF-8'
                                 );
@@ -76,10 +73,16 @@
                         <?php require __DIR__ . '/badge-status-tiket.php'; ?>
                     </td>
 
-                    <td data-label="Tanggal dibuat">
+                    <td data-label="<?php
+                                    echo htmlspecialchars($labelTanggal, ENT_QUOTES, 'UTF-8');
+                                    ?>">
                         <?php
+                        $tanggalTiket = $tampilkanTanggalSelesai
+                            ? ($tiket['completed_at'] ?? null)
+                            : ($tiket['created_at'] ?? null);
+
                         echo htmlspecialchars(
-                            formatTanggalTiket($tiket['created_at']),
+                            explode(',', formatTanggalTiket($tanggalTiket), 2)[0],
                             ENT_QUOTES,
                             'UTF-8'
                         );
@@ -102,7 +105,7 @@
                                         );
                                         ?>"
                             hidden>
-                            Lihat detail
+                            Detail
                         </button>
                     </td>
                 </tr>

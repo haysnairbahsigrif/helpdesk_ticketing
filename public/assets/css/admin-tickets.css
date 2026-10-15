@@ -143,3 +143,40 @@
 .ticket-dialog-header h2 {
     overflow-wrap: anywhere;
 }
+
+/* Tabel tiket admin yang lebih ringkas */
+.ticket-admin-table .ticket-detail-button {
+    white-space: nowrap;
+    padding: 8px 12px;
+    min-height: 44px;
+}
+
+.ticket-admin-table .ticket-reporter {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.ticket-admin-table .ticket-reporter strong,
+.ticket-admin-table .ticket-reporter span {
+    margin: 0;
+}
+
+@media (min-width: 701px) {
+    .ticket-admin-table {
+        table-layout: auto;
+    }
+
+    .ticket-admin-table th,
+    .ticket-admin-table td {
+        padding: 12px;
+        vertical-align: middle;
+    }
+
+    .ticket-admin-table th[scope="row"],
+    .ticket-admin-table td:nth-child(5) {
+        white-space: nowrap;
+        overflow-wrap: normal;
+        word-break: normal;
+    }
+}

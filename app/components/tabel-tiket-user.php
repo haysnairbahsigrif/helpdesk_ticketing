@@ -1,6 +1,12 @@
 <?php
 
 /** @var array $daftarTiket */
+
+$tampilkanTanggalSelesai = ($tampilan ?? 'aktif') === 'riwayat';
+
+$labelTanggal = $tampilkanTanggalSelesai
+    ? 'Tanggal selesai'
+    : 'Tanggal dibuat';
 ?>
 
 <div class="ticket-table-wrapper">
@@ -15,7 +21,9 @@
                 <th scope="col">Keluhan</th>
                 <th scope="col">Prioritas</th>
                 <th scope="col">Status</th>
-                <th scope="col">Tanggal dibuat</th>
+                <th scope="col">
+                    <?php echo htmlspecialchars($labelTanggal, ENT_QUOTES, 'UTF-8'); ?>
+                </th>
                 <th scope="col">Detail</th>
             </tr>
         </thead>

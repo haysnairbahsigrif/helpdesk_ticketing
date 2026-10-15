@@ -52,7 +52,7 @@
                 <dd>
                     <?php
                     echo htmlspecialchars(
-                        $tiket['Departemen_pelapor'] ?? 'Belum tercatat',
+                        $tiket['departemen_pelapor'] ?? 'Belum tercatat',
                         ENT_QUOTES,
                         'UTF-8'
                     );
@@ -85,6 +85,24 @@
                     ?>
                 </dd>
             </div>
+
+            <?php if ($tiket['status'] === 'Selesai'): ?>
+                <div>
+                    <dt>Tanggal selesai</dt>
+                    <dd>
+                        <?php
+                        echo htmlspecialchars(
+                            formatTanggalTiket(
+                                $tiket['completed_at'] ?? null,
+                                true
+                            ),
+                            ENT_QUOTES,
+                            'UTF-8'
+                        );
+                        ?>
+                    </dd>
+                </div>
+            <?php endif; ?>
 
             <div>
                 <dt>Status</dt>
@@ -127,9 +145,14 @@
         </section>
 
         <section class="ticket-dialog-handling">
-            <h3>Penanganan tiket</h3>
+            <h3>Ubah prioritas</h3>
 
-            <?php require __DIR__ . '/form-status.php'; ?>
+            <p class="form-description">
+                Sesuaikan prioritas berdasarkan dampak kendala.
+                Urgensi pilihan user tetap tersimpan.
+            </p>
+
+            <?php require __DIR__ . '/form-prioritas-tiket.php'; ?>
         </section>
     </div>
 
