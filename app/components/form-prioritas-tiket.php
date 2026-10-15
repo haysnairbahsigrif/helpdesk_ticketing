@@ -12,43 +12,19 @@ $prioritasSekarang = $tiket['prioritas'] ?? '';
             type="hidden"
             name="csrf_token"
             value="<?php
-            echo htmlspecialchars(
-                $_SESSION['csrf_token'],
-                ENT_QUOTES,
-                'UTF-8'
-            );
-            ?>">
+                    echo htmlspecialchars(
+                        $_SESSION['csrf_token'],
+                        ENT_QUOTES,
+                        'UTF-8'
+                    );
+                    ?>">
 
         <input
             type="hidden"
             name="tiket_id"
             value="<?php echo $idTiketPrioritas; ?>">
 
-        <input
-            type="hidden"
-            name="q"
-            value="<?php
-            echo htmlspecialchars($pencarian ?? '', ENT_QUOTES, 'UTF-8');
-            ?>">
-
-        <input
-            type="hidden"
-            name="filter_status"
-            value="<?php
-            echo htmlspecialchars($status ?? '', ENT_QUOTES, 'UTF-8');
-            ?>">
-
-        <input
-            type="hidden"
-            name="view"
-            value="<?php
-            echo htmlspecialchars($tampilan ?? 'aktif', ENT_QUOTES, 'UTF-8');
-            ?>">
-
-        <input
-            type="hidden"
-            name="page"
-            value="<?php echo (int) ($halaman ?? 1); ?>">
+        <?php require __DIR__ . '/parameter-filter-tiket.php'; ?>
 
         <div class="form-group">
             <label for="prioritas-<?php echo $idTiketPrioritas; ?>">
