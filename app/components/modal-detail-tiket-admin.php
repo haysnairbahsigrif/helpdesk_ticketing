@@ -1,25 +1,36 @@
 <?php
 
 /** @var array $tiket */
+
+$bolehUbahPrioritas = in_array(
+    $tiket['status'],
+    ['Baru', 'Diproses'],
+    true
+);
 ?>
 
 <dialog
     class="ticket-detail-dialog"
     id="detail-admin-<?php echo (int) $tiket['id']; ?>"
     aria-labelledby="judul-detail-admin-<?php echo (int) $tiket['id']; ?>">
+
     <div class="ticket-dialog-header">
         <div>
             <p class="ticket-dialog-eyebrow">Detail tiket</p>
 
-            <h2 id="judul-detail-admin-<?php echo (int) $tiket['id']; ?>">
-                <?php
-                echo htmlspecialchars(
-                    $tiket['nomor_tiket'] ?? ('Tiket #' . $tiket['id']),
-                    ENT_QUOTES,
-                    'UTF-8'
-                );
-                ?>
-            </h2>
+            <div class="ticket-dialog-title-row">
+                <h2 id="judul-detail-admin-<?php echo (int) $tiket['id']; ?>">
+                    <?php
+                    echo htmlspecialchars(
+                        $tiket['nomor_tiket'] ?? ('Tiket #' . $tiket['id']),
+                        ENT_QUOTES,
+                        'UTF-8'
+                    );
+                    ?>
+                </h2>
+
+                <?php require __DIR__ . '/badge-status-tiket.php'; ?>
+            </div>
         </div>
 
         <button
@@ -28,7 +39,9 @@
             data-close-ticket-dialog
             aria-label="Tutup detail tiket"
             autofocus>
-            <span class="remix-icon remix-icon--close" aria-hidden="true"></span>
+            <span
+                class="remix-icon remix-icon--close"
+                aria-hidden="true"></span>
         </button>
     </div>
 
@@ -65,7 +78,7 @@
                 <dd>
                     <?php
                     echo htmlspecialchars(
-                        $tiket['email_pemilik'] ?: 'Tidak tersedia',
+                        ($tiket['email_pemilik'] ?? '') ?: 'Tidak tersedia',
                         ENT_QUOTES,
                         'UTF-8'
                     );
@@ -83,31 +96,6 @@
                         'UTF-8'
                     );
                     ?>
-                </dd>
-            </div>
-
-            <?php if ($tiket['status'] === 'Selesai'): ?>
-                <div>
-                    <dt>Tanggal selesai</dt>
-                    <dd>
-                        <?php
-                        echo htmlspecialchars(
-                            formatTanggalTiket(
-                                $tiket['completed_at'] ?? null,
-                                true
-                            ),
-                            ENT_QUOTES,
-                            'UTF-8'
-                        );
-                        ?>
-                    </dd>
-                </div>
-            <?php endif; ?>
-
-            <div>
-                <dt>Status</dt>
-                <dd>
-                    <?php require __DIR__ . '/badge-status-tiket.php'; ?>
                 </dd>
             </div>
 
@@ -141,10 +129,30 @@
                     ENT_QUOTES,
                     'UTF-8'
                 );
-                ?></p>
+            ?></p>
         </section>
 
-        <!-- Catatan ditampilkan untuk semua status tiket. -->
+        <?php if ($bolehUbahPrioritas): ?>
+            <details class="ticket-disclosure ticket-priority-editor">
+                <summary>
+                    <span
+                        class="remix-icon remix-icon--right ticket-disclosure-arrow"
+                        aria-hidden="true"></span>
+                    <span>Ubah prioritas</span>
+                </summary>
+
+                <div class="ticket-disclosure-body">
+                    <p class="ticket-priority-help">
+                        Sesuaikan prioritas berdasarkan dampak kendala.
+                        Urgensi pilihan user tetap tersimpan.
+                    </p>
+
+                    <?php require __DIR__ . '/form-prioritas-tiket.php'; ?>
+                </div>
+            </details>
+        <?php endif; ?>
+
+        <!-- Catatan tetap terlihat setelah tiket selesai. -->
         <?php require __DIR__ . '/catatan-tiket-admin.php'; ?>
 
         <?php if ($tiket['status'] === 'Selesai'): ?>
@@ -160,19 +168,6 @@
                 </h3>
 
                 <?php require __DIR__ . '/form-status.php'; ?>
-            </section>
-        <?php endif; ?>
-
-        <?php if (in_array($tiket['status'], ['Baru', 'Diproses'], true)): ?>
-            <section class="ticket-dialog-handling">
-                <h3>Ubah prioritas</h3>
-
-                <p class="form-description">
-                    Sesuaikan prioritas berdasarkan dampak kendala.
-                    Urgensi pilihan user tetap tersimpan.
-                </p>
-
-                <?php require __DIR__ . '/form-prioritas-tiket.php'; ?>
             </section>
         <?php endif; ?>
 
