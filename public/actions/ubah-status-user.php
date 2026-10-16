@@ -22,13 +22,12 @@ if (
     exit('Permintaan tidak valid. Muat ulang daftar user.');
 }
 
-// Periksa pencarian dan filter halaman asal.
+// Periksa pencarian halaman asal.
 $pencarian = $_POST['q'] ?? '';
-$filterStatus = $_POST['filter_status'] ?? '';
 
-if (!is_string($pencarian) || !is_string($filterStatus)) {
+if (!is_string($pencarian)) {
     http_response_code(400);
-    exit('Parameter pencarian atau filter tidak valid.');
+    exit('Parameter pencarian tidak valid.');
 }
 
 $pencarian = trim($pencarian);
@@ -39,10 +38,35 @@ if ($panjangPencarian === false || $panjangPencarian > 100) {
     exit('Pencarian harus berupa teks valid, maksimal 100 karakter.');
 }
 
-if (!in_array($filterStatus, ['', 'aktif', 'nonaktif'], true)) {
+// Terima pilihan checkbox dan formulir lama dengan status tunggal.
+$filterStatusMasukan = $_POST['filter_status'] ?? [];
+
+if (is_string($filterStatusMasukan)) {
+    $filterStatusMasukan = $filterStatusMasukan === ''
+        ? []
+        : [$filterStatusMasukan];
+}
+
+if (!is_array($filterStatusMasukan)) {
     http_response_code(400);
     exit('Filter status tidak valid.');
 }
+
+$filterStatus = [];
+
+foreach ($filterStatusMasukan as $nilaiFilterStatus) {
+    if (
+        !is_string($nilaiFilterStatus)
+        || !in_array($nilaiFilterStatus, ['aktif', 'nonaktif'], true)
+    ) {
+        http_response_code(400);
+        exit('Filter status tidak valid.');
+    }
+
+    $filterStatus[] = $nilaiFilterStatus;
+}
+
+$filterStatus = array_values(array_unique($filterStatus));
 
 // Periksa nomor halaman asal.
 $halamanMasukan = $_POST['page'] ?? '1';
@@ -110,7 +134,7 @@ if ($pencarian !== '') {
     $parameterKembali['q'] = $pencarian;
 }
 
-if ($filterStatus !== '') {
+if ($filterStatus !== []) {
     $parameterKembali['status'] = $filterStatus;
 }
 

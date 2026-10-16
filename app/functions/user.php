@@ -9,10 +9,22 @@ function ambilDaftarUser(
 ): array {
     $filter = filterDaftarUser($pencarian, $status);
 
-    $sql = 'SELECT id, nama, username, email, is_active, department_id
-            FROM users '
+    $sql = '
+    SELECT
+        users.id,
+        users.nama,
+        users.username,
+        users.email,
+        users.is_active,
+        users.department_id,
+        (
+            SELECT departments.nama
+            FROM departments
+            WHERE departments.id = users.department_id
+        ) AS nama_departemen
+    FROM users '
         . $filter['kondisi']
-        . ' ORDER BY id DESC';
+        . ' ORDER BY users.id DESC';
 
     if ($batas !== null) {
         if ($batas < 1 || $offset < 0) {

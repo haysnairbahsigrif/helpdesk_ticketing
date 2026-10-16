@@ -32,7 +32,10 @@ $riwayatTiket = $riwayatPrioritasPerTiket[(int) $tiket['id']] ?? [];
                                 'UTF-8'
                             );
                             ?>
-                            →
+                            <span
+                                class="remix-icon remix-icon--right"
+                                role="img"
+                                aria-label="menjadi"></span>
                             <?php
                             echo htmlspecialchars(
                                 $perubahan['prioritas_baru'],
@@ -66,12 +69,12 @@ $riwayatTiket = $riwayatPrioritasPerTiket[(int) $tiket['id']] ?? [];
                     </p>
 
                     <p class="priority-history-reason"><?php
-                        echo htmlspecialchars(
-                            $perubahan['alasan'],
-                            ENT_QUOTES,
-                            'UTF-8'
-                        );
-                    ?></p>
+                                                        echo htmlspecialchars(
+                                                            $perubahan['alasan'],
+                                                            ENT_QUOTES,
+                                                            'UTF-8'
+                                                        );
+                                                        ?></p>
                 </li>
             <?php endforeach; ?>
         </ol>

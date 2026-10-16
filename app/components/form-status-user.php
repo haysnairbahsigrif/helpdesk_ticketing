@@ -1,6 +1,7 @@
 <?php
 
 /** @var array $user */
+/** @var array<int, string> $pilihanStatusUser */
 
 $akunAktif = (int) $user['is_active'] === 1;
 $statusTujuan = $akunAktif ? 0 : 1;
@@ -51,16 +52,18 @@ $pesanKonfirmasi = $akunAktif
                 );
                 ?>">
 
-    <input
-        type="hidden"
-        name="filter_status"
-        value="<?php
-                echo htmlspecialchars(
-                    $status ?? '',
-                    ENT_QUOTES,
-                    'UTF-8'
-                );
-                ?>">
+    <?php foreach ($pilihanStatusUser as $statusFilterUser): ?>
+        <input
+            type="hidden"
+            name="filter_status[]"
+            value="<?php
+                    echo htmlspecialchars(
+                        $statusFilterUser,
+                        ENT_QUOTES,
+                        'UTF-8'
+                    );
+                    ?>">
+    <?php endforeach; ?>
 
     <input
         type="hidden"

@@ -49,7 +49,7 @@
                     type="button"
                     aria-controls="admin-sidebar"
                     aria-expanded="false">
-                    <span aria-hidden="true">☰</span>
+                    <span class="remix-icon remix-icon--menu" aria-hidden="true"></span>
                     <span>Menu</span>
                 </button>
 

@@ -32,7 +32,7 @@ require __DIR__ . '/../../app/includes/header-admin.php';
     <div class="admin-content">
         <div class="panel users-back-panel">
             <a href="/admin/users.php">
-                <span aria-hidden="true">←</span>
+                <span class="remix-icon remix-icon--left" aria-hidden="true"></span>
                 Kembali ke daftar user
             </a>
         </div>

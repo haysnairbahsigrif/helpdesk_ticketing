@@ -23,7 +23,7 @@
     background: #fff;
 }
 
-.ticket-toolbar-search > svg {
+.ticket-toolbar-search>.remix-icon {
     flex-shrink: 0;
     color: #64748b;
 }
@@ -57,7 +57,7 @@
     min-width: 0;
 }
 
-.ticket-dropdown > summary {
+.ticket-dropdown>summary {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -74,11 +74,11 @@
     box-sizing: border-box;
 }
 
-.ticket-dropdown > summary::-webkit-details-marker {
+.ticket-dropdown>summary::-webkit-details-marker {
     display: none;
 }
 
-.ticket-dropdown[open] > summary {
+.ticket-dropdown[open]>summary {
     border-color: #2563eb;
     color: #1e40af;
 }
@@ -88,16 +88,17 @@
 }
 
 .ticket-dropdown-arrow {
-    width: 8px;
-    height: 8px;
+    display: inline-block;
     flex-shrink: 0;
-    border-right: 2px solid currentColor;
-    border-bottom: 2px solid currentColor;
-    transform: translateY(-2px) rotate(45deg);
+    width: 20px;
+    height: 20px;
+    background-color: currentColor;
+    -webkit-mask: url('/assets/icons/arrow-down-s-line.svg') center / contain no-repeat;
+    mask: url('/assets/icons/arrow-down-s-line.svg') center / contain no-repeat;
 }
 
 .ticket-dropdown[open] .ticket-dropdown-arrow {
-    transform: translateY(2px) rotate(225deg);
+    transform: rotate(180deg);
 }
 
 .ticket-dropdown-panel {
@@ -215,7 +216,7 @@
     background: #dbeafe;
 }
 
-.ticket-dropdown > summary:focus-visible,
+.ticket-dropdown>summary:focus-visible,
 .ticket-dropdown-choice input:focus-visible,
 .ticket-toolbar-reset:focus-visible,
 .ticket-toolbar-chip:focus-visible {

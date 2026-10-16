@@ -178,7 +178,7 @@
     padding: 0 32px 32px;
 }
 
-.admin-content > .notification {
+.admin-content>.notification {
     margin-bottom: 20px;
 }
 
@@ -368,14 +368,19 @@
 
 /* Panah ke kanan saat tertutup */
 .admin-submenu-arrow {
+    display: inline-block;
     flex-shrink: 0;
-    width: 8px;
-    height: 8px;
+    width: 20px;
+    height: 20px;
     margin-left: auto;
-    border-right: 2px solid currentColor;
-    border-bottom: 2px solid currentColor;
-    transform: rotate(-45deg);
+    background-color: currentColor;
+    -webkit-mask: url('/assets/icons/arrow-right-s-line.svg') center / contain no-repeat;
+    mask: url('/assets/icons/arrow-right-s-line.svg') center / contain no-repeat;
     transition: transform 0.2s ease;
+}
+
+.admin-submenu-toggle[aria-expanded="true"] .admin-submenu-arrow {
+    transform: rotate(90deg);
 }
 
 /* Panah ke bawah saat terbuka */

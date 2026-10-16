@@ -257,3 +257,43 @@
         display: none;
     }
 }
+
+/* Ikon Remix mengikuti warna teks */
+.remix-icon {
+    display: inline-block;
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    background-color: currentColor;
+    -webkit-mask: var(--remix-icon) center / contain no-repeat;
+    mask: var(--remix-icon) center / contain no-repeat;
+}
+
+.remix-icon--add {
+    --remix-icon: url('/assets/icons/add-line.svg');
+}
+
+.remix-icon--ticket {
+    --remix-icon: url('/assets/icons/ticket-line.svg');
+}
+
+.remix-icon--menu {
+    --remix-icon: url('/assets/icons/menu-line.svg');
+}
+
+.remix-icon--close {
+    --remix-icon: url('/assets/icons/close-line.svg');
+}
+
+.remix-icon--search {
+    --remix-icon: url('/assets/icons/search-line.svg');
+}
+
+.remix-icon--right {
+    --remix-icon: url('/assets/icons/arrow-right-s-line.svg');
+}
+
+.remix-icon--left {
+    --remix-icon: url('/assets/icons/arrow-left-s-line.svg');
+}

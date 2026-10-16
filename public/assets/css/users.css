@@ -88,16 +88,170 @@
     }
 }
 
-/* Pencarian akun */
+/* Bilah pencarian dan filter akun */
 .user-search {
-    margin-bottom: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 24px;
 }
 
+.user-search-field {
+    display: flex;
+    flex: 1 1 280px;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    padding: 0 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.user-search-field > svg {
+    flex-shrink: 0;
+    color: #64748b;
+}
+
+.user-search-field input {
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+    min-height: 46px;
+    margin: 0;
+    padding: 10px 0;
+    border: 0;
+    background: transparent;
+    color: #0f172a;
+    font: inherit;
+}
+
+.user-search-field input:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.user-search-field:focus-within {
+    outline: 3px solid #2563eb;
+    outline-offset: 2px;
+}
+
+/* Dropdown status akun */
+.user-search-status {
+    position: relative;
+    flex: 0 0 180px;
+    min-width: 0;
+}
+
+.user-search-status select {
+    display: block;
+    width: 100%;
+    min-height: 48px;
+    margin: 0;
+    padding: 10px 40px 10px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #fff;
+    color: #334155;
+    font: inherit;
+    font-weight: 600;
+    appearance: none;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+/* Tombol Terapkan dan Reset */
 .user-search-actions {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
+}
+
+.user-search-actions .button-primary,
+.user-search-reset {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 10px 16px;
+    font: inherit;
+    font-weight: 600;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+
+.user-search-reset {
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #fff;
+    color: #475569;
+    text-decoration: none;
+}
+
+.user-search-reset:hover {
+    border-color: #94a3b8;
+    background: #f8fafc;
+    color: #0f172a;
+    text-decoration: none;
+}
+
+.user-search-status select:focus-visible,
+.user-search-reset:focus-visible,
+.user-search-actions .button-primary:focus-visible {
+    outline: 3px solid #2563eb;
+    outline-offset: 3px;
+}
+
+/* Label tetap tersedia untuk pembaca layar */
+.user-search-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Pencarian satu baris penuh pada layar lebih sempit */
+@media (max-width: 1100px) {
+    .user-search-field {
+        flex-basis: 100%;
+    }
+}
+
+/* Susunan pada HP */
+@media (max-width: 600px) {
+    .user-search {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .user-search-field,
+    .user-search-status {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .user-search-field input,
+    .user-search-status select {
+        font-size: 16px;
+    }
+
+    .user-search-actions {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .user-search-actions .button-primary,
+    .user-search-reset {
+        width: 100%;
+        padding-inline: 10px;
+    }
 }
 
 /* Jarak tombol status dari tautan reset */
@@ -330,14 +484,15 @@
 }
 
 .user-action-button--edit {
-    border-color: #1e40af;
-    background: #1e40af;
-    color: #fff;
+    border-color: #2563eb;
+    background: #fff;
+    color: #1e40af;
 }
 
 .user-action-button--edit:hover {
-    border-color: #1e3a8a;
-    background: #1e3a8a;
+    border-color: #1e40af;
+    background: #eff6ff;
+    color: #1e3a8a;
 }
 
 .user-action-button--reset {
@@ -419,4 +574,289 @@
 .pagination-ellipsis {
     padding-inline: 4px;
     color: #64748b;
+}
+
+/* Judul dan tombol tambah di dalam card daftar user */
+.users-list-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.users-list-heading > div {
+    min-width: 0;
+}
+
+.users-list-heading h2 {
+    margin: 0;
+}
+
+.users-list-heading p {
+    margin: 6px 0 0;
+    color: #64748b;
+    line-height: 1.5;
+}
+
+.users-list-heading .users-add-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    min-height: 44px;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+    .users-list-heading {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .users-list-heading .users-add-button {
+        align-self: flex-start;
+    }
+}
+
+/* Area judul ringkas untuk halaman Kelola user */
+.admin-users-page .admin-hero {
+    min-height: 0;
+    padding: 24px 32px;
+}
+
+.admin-users-page .admin-content {
+    margin-top: 0;
+    padding: 20px 32px 32px;
+}
+
+@media (max-width: 600px) {
+    .admin-users-page .admin-hero {
+        padding: 20px 16px;
+    }
+
+    .admin-users-page .admin-hero h1 {
+        font-size: 24px;
+    }
+
+    .admin-users-page .admin-content {
+        padding: 16px;
+    }
+}
+
+/* Penyempurnaan card khusus halaman Kelola user */
+.admin-users-page .users-list-heading {
+    margin-bottom: 16px;
+}
+
+.admin-users-page .user-search {
+    margin-bottom: 16px;
+}
+
+.admin-users-page .user-table {
+    margin-top: 0;
+}
+
+/* Nama pengguna lebih mudah dikenali */
+.admin-users-page .user-table td[data-label="Nama"] {
+    font-weight: 600;
+}
+
+/* Tampilan kartu akun pada HP */
+@media (max-width: 600px) {
+    .admin-users-page .user-table tr {
+        padding: 12px;
+        box-sizing: border-box;
+    }
+
+    .admin-users-page .user-table td {
+        display: grid;
+        grid-template-columns: 88px minmax(0, 1fr);
+        align-items: center;
+        gap: 8px;
+        padding: 8px 0;
+        text-align: left;
+        box-sizing: border-box;
+    }
+
+    .admin-users-page .user-table td::before {
+        margin: 0;
+        color: #64748b;
+        font-weight: 500;
+        text-align: left;
+    }
+
+    .admin-users-page .user-table td > * {
+        min-width: 0;
+    }
+
+    .admin-users-page .user-status-control {
+        justify-content: flex-start;
+    }
+
+    .admin-users-page .user-table td[data-label="Tindakan"] {
+        display: block;
+        margin-top: 8px;
+        padding-top: 12px;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    .admin-users-page .user-table td[data-label="Tindakan"]::before {
+        margin-bottom: 10px;
+    }
+
+    .admin-users-page .user-action-links {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .admin-users-page .user-action-button {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+        box-sizing: border-box;
+    }
+}
+
+/* Ikon tombol tambah akun */
+.admin-users-page .users-add-icon {
+    flex-shrink: 0;
+    filter: brightness(0) invert(1);
+}
+
+.admin-users-page .users-add-button svg {
+    flex-shrink: 0;
+}
+
+/* Samakan lebar tombol pada desktop */
+@media (min-width: 601px) {
+    .admin-users-page .users-add-button,
+    .admin-users-page .user-search-reset {
+        width: 160px;
+        flex-shrink: 0;
+        padding-inline: 12px;
+    }
+
+    .admin-users-page .user-search-actions {
+        margin-left: auto;
+    }
+}
+
+/* Dropdown filter status akun */
+.admin-users-page .user-status-dropdown {
+    position: relative;
+    flex: 0 0 180px;
+    min-width: 0;
+}
+
+.admin-users-page .user-status-dropdown > summary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 48px;
+    padding: 10px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #fff;
+    color: #334155;
+    font-weight: 600;
+    list-style: none;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.admin-users-page .user-status-dropdown > summary::-webkit-details-marker {
+    display: none;
+}
+
+.admin-users-page .user-status-dropdown > summary:hover {
+    background: #f8fafc;
+}
+
+.admin-users-page .user-status-dropdown > summary:focus-visible {
+    outline: 3px solid #2563eb;
+    outline-offset: 3px;
+}
+
+.admin-users-page .user-status-dropdown-arrow {
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
+.admin-users-page .user-status-dropdown[open] .user-status-dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.admin-users-page .user-status-selected-count {
+    color: #2563eb;
+}
+
+.admin-users-page .user-status-dropdown-panel {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    z-index: 20;
+    width: 220px;
+    max-width: calc(100vw - 64px);
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 8px 24px rgb(15 23 42 / 12%);
+    box-sizing: border-box;
+}
+
+.admin-users-page .user-status-dropdown-panel fieldset {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.admin-users-page .user-status-dropdown-panel legend {
+    margin-bottom: 8px;
+    padding: 0;
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.admin-users-page .user-status-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    margin: 0;
+    padding: 8px;
+    border-radius: 6px;
+    color: #334155;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.admin-users-page .user-status-option:hover {
+    background: #eff6ff;
+}
+
+.admin-users-page .user-status-option input[type="checkbox"] {
+    flex: 0 0 18px;
+    width: 18px;
+    height: 18px;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    accent-color: #2563eb;
+}
+
+@media (max-width: 600px) {
+    .admin-users-page .user-status-dropdown {
+        width: 100%;
+    }
+
+    .admin-users-page .user-status-dropdown-panel {
+        width: 100%;
+        max-width: none;
+    }
 }

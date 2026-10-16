@@ -29,7 +29,7 @@ require __DIR__ . '/../../app/includes/header-user.php';
             <?php else: ?>
                 <div class="panel user-back-panel">
                     <a href="/user/">
-                        <span aria-hidden="true">←</span>
+                        <span class="remix-icon remix-icon--left" aria-hidden="true"></span>
                         Kembali ke dashboard
                     </a>
                 </div>

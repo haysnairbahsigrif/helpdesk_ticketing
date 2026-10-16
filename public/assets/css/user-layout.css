@@ -470,17 +470,20 @@
 
 /* Panah menunjukkan keadaan submenu */
 .user-ticket-menu-arrow {
+    display: inline-block;
     flex-shrink: 0;
-    width: 8px;
-    height: 8px;
-    border-right: 2px solid currentColor;
-    border-bottom: 2px solid currentColor;
-    transform: rotate(-45deg);
+    width: 20px;
+    height: 20px;
+    background-color: currentColor;
+    -webkit-mask: url('/assets/icons/arrow-right-s-line.svg')
+        center / contain no-repeat;
+    mask: url('/assets/icons/arrow-right-s-line.svg')
+        center / contain no-repeat;
     transition: transform 150ms ease;
 }
 
 .user-ticket-menu[open] .user-ticket-menu-arrow {
-    transform: rotate(45deg);
+    transform: rotate(90deg);
 }
 
 /* Pilihan halaman tiket */

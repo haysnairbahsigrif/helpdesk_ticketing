@@ -48,27 +48,14 @@ $buatUrlHapusFilter = static function (
     class="ticket-toolbar-form"
     action="/admin/tiket.php"
     method="get"
-    data-ticket-filter
->
+    data-ticket-filter>
     <div class="ticket-toolbar">
         <div class="ticket-toolbar-search">
             <label class="ticket-toolbar-sr-only" for="pencarian-tiket">
                 Cari nomor tiket, nama pelapor, atau keluhan
             </label>
 
-            <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                aria-hidden="true"
-                focusable="false"
-            >
-                <circle cx="10.5" cy="10.5" r="6.5"></circle>
-                <path d="m16 16 5 5"></path>
-            </svg>
+            <span class="remix-icon remix-icon--search" aria-hidden="true"></span>
 
             <input
                 type="search"
@@ -77,9 +64,8 @@ $buatUrlHapusFilter = static function (
                 maxlength="100"
                 placeholder="Nomor tiket, pelapor, atau keluhan"
                 value="<?php
-                echo htmlspecialchars($pencarian, ENT_QUOTES, 'UTF-8');
-                ?>"
-            >
+                        echo htmlspecialchars($pencarian, ENT_QUOTES, 'UTF-8');
+                        ?>">
         </div>
 
         <?php foreach ($kelompokFilterTiket as $namaFilter => $kelompok): ?>
@@ -125,20 +111,19 @@ $buatUrlHapusFilter = static function (
                                     type="checkbox"
                                     name="<?php echo $namaFilter; ?>[]"
                                     value="<?php
-                                    echo htmlspecialchars($nilai, ENT_QUOTES, 'UTF-8');
-                                    ?>"
+                                            echo htmlspecialchars($nilai, ENT_QUOTES, 'UTF-8');
+                                            ?>"
                                     <?php
                                     echo in_array(
                                         $nilai,
                                         $kelompok['terpilih'],
                                         true
                                     ) ? 'checked' : '';
-                                    ?>
-                                >
+                                    ?>>
 
                                 <span><?php
-                                    echo htmlspecialchars($label, ENT_QUOTES, 'UTF-8');
-                                ?></span>
+                                        echo htmlspecialchars($label, ENT_QUOTES, 'UTF-8');
+                                        ?></span>
                             </label>
                         <?php endforeach; ?>
                     </fieldset>
@@ -167,22 +152,21 @@ $buatUrlHapusFilter = static function (
                     <a
                         class="ticket-toolbar-chip"
                         href="<?php
-                        echo htmlspecialchars(
-                            $buatUrlHapusFilter($namaFilter, $nilai),
-                            ENT_QUOTES,
-                            'UTF-8'
-                        );
-                        ?>"
+                                echo htmlspecialchars(
+                                    $buatUrlHapusFilter($namaFilter, $nilai),
+                                    ENT_QUOTES,
+                                    'UTF-8'
+                                );
+                                ?>"
                         aria-label="<?php
-                        echo htmlspecialchars(
-                            'Hapus filter ' . $labelChip,
-                            ENT_QUOTES,
-                            'UTF-8'
-                        );
-                        ?>"
-                    >
+                                    echo htmlspecialchars(
+                                        'Hapus filter ' . $labelChip,
+                                        ENT_QUOTES,
+                                        'UTF-8'
+                                    );
+                                    ?>">
                         <?php echo htmlspecialchars($labelChip, ENT_QUOTES, 'UTF-8'); ?>
-                        <span aria-hidden="true">×</span>
+                        <span class="remix-icon remix-icon--close" aria-hidden="true"></span>
                     </a>
                 <?php endforeach; ?>
             <?php endforeach; ?>

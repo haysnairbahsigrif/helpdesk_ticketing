@@ -19,16 +19,41 @@ if ($panjang === false || $panjang > 100) {
     exit('Pencarian maksimal 100 karakter.');
 }
 
-// Periksa filter status.
-$status = $_GET['status'] ?? '';
+// Terima checkbox dan tautan lama yang memakai status tunggal.
+$statusMasukan = $_GET['status'] ?? [];
 
-if (
-    !is_string($status)
-    || !in_array($status, ['', 'aktif', 'nonaktif'], true)
-) {
+if (is_string($statusMasukan)) {
+    $statusMasukan = $statusMasukan === ''
+        ? []
+        : [$statusMasukan];
+}
+
+if (!is_array($statusMasukan)) {
     http_response_code(400);
     exit('Filter status tidak valid.');
 }
+
+$pilihanStatusUser = [];
+
+foreach ($statusMasukan as $nilaiStatusUser) {
+    if (
+        !is_string($nilaiStatusUser)
+        || !in_array($nilaiStatusUser, ['aktif', 'nonaktif'], true)
+    ) {
+        http_response_code(400);
+        exit('Filter status tidak valid.');
+    }
+
+    $pilihanStatusUser[] = $nilaiStatusUser;
+}
+
+$pilihanStatusUser = array_values(array_unique($pilihanStatusUser));
+
+// Satu pilihan membatasi status.
+// Dua pilihan atau kosong menampilkan semua status.
+$status = count($pilihanStatusUser) === 1
+    ? $pilihanStatusUser[0]
+    : '';
 
 // Periksa nomor halaman.
 $halamanMasukan = $_GET['page'] ?? '1';
@@ -88,29 +113,15 @@ $cssHalaman = '/assets/css/users.css';
 require __DIR__ . '/../../app/includes/header-admin.php';
 ?>
 
-<main class="admin-main">
+<main class="admin-main admin-users-page">
     <section class="admin-hero" aria-labelledby="judul-users">
         <h1 id="judul-users">Kelola User</h1>
         <p>Kelola akun pengguna layanan IT Support.</p>
     </section>
 
     <div class="admin-content">
-        <section class="panel users-toolbar">
-            <div>
-                <h2>Akun pengguna</h2>
-                <p>Tambahkan akun atau kelola pengguna yang terdaftar.</p>
-            </div>
-
-            <a
-                class="button-primary users-add-button"
-                href="/admin/tambah-user.php">
-                Tambah user
-            </a>
-        </section>
-
         <?php
         require __DIR__ . '/../../app/components/pesan.php';
-        require __DIR__ . '/../../app/components/form-cari-user.php';
         require __DIR__ . '/../../app/components/daftar-user.php';
         ?>
     </div>

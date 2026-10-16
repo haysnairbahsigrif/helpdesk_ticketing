@@ -94,7 +94,7 @@ $kartuRingkasan = [
 
                     <?php if ($punyaTautan): ?>
                         <span class="summary-link-label">
-                            Lihat daftar <span aria-hidden="true">→</span>
+                            Lihat daftar <span class="remix-icon remix-icon--right" aria-hidden="true"></span>
                         </span>
                     <?php else: ?>
                         <span class="summary-card-note">

@@ -32,12 +32,12 @@ $kartuUser = [
             <a
                 class="user-summary-card"
                 href="<?php
-                echo htmlspecialchars(
-                    $kartu['url'],
-                    ENT_QUOTES,
-                    'UTF-8'
-                );
-                ?>">
+                        echo htmlspecialchars(
+                            $kartu['url'],
+                            ENT_QUOTES,
+                            'UTF-8'
+                        );
+                        ?>">
 
                 <h2 class="user-summary-label">
                     <?php
@@ -61,7 +61,7 @@ $kartuUser = [
                 </p>
 
                 <span class="user-summary-link">
-                    Lihat tiket <span aria-hidden="true">→</span>
+                    Lihat tiket <span class="remix-icon remix-icon--right" aria-hidden="true"></span>
                 </span>
             </a>
         <?php endforeach; ?>

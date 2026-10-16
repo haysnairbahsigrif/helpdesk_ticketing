@@ -5,10 +5,11 @@
 /** @var int $totalUser */
 /** @var string $pencarian */
 /** @var string $status */
+/** @var array<int, string> $pilihanStatusUser */
 
 $parameterDasar = [
     'q' => $pencarian,
-    'status' => $status,
+    'status' => $pilihanStatusUser,
 ];
 
 $buatUrlHalaman = static function (int $nomor) use ($parameterDasar): string {

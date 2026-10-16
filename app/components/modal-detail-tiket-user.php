@@ -28,7 +28,7 @@
             data-close-ticket-dialog
             aria-label="Tutup detail tiket"
             autofocus>
-            <span aria-hidden="true">×</span>
+            <span class="remix-icon remix-icon--close" aria-hidden="true"></span>
         </button>
     </div>
 

@@ -8,10 +8,7 @@
 <div class="user-home-grid">
     <section class="user-home-card" aria-labelledby="judul-kartu-tambah">
         <div class="user-home-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" focusable="false">
-                <path d="M4 4h16v5a3 3 0 0 0 0 6v5H4v-5a3 3 0 0 0 0-6Z"/>
-                <path d="M12 8v8M8 12h8"/>
-            </svg>
+            <span class="remix-icon remix-icon--add"></span>
         </div>
 
         <h2 id="judul-kartu-tambah">Tambah Tiket</h2>
@@ -26,19 +23,14 @@
 
         <a
             class="user-home-button user-home-button--primary"
-            href="/user/tambah-tiket.php"
-        >
-            <span aria-hidden="true">＋</span>
+            href="/user/tambah-tiket.php"><span class="remix-icon remix-icon--add" aria-hidden="true"></span>
             Buat tiket baru
         </a>
     </section>
 
     <section class="user-home-card" aria-labelledby="judul-kartu-tiket">
         <div class="user-home-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" focusable="false">
-                <path d="M4 4h16v5a3 3 0 0 0 0 6v5H4v-5a3 3 0 0 0 0-6Z"/>
-                <path d="M8 9h1m3 0h4M8 15h1m3 0h4"/>
-            </svg>
+            <span class="remix-icon remix-icon--ticket"></span>
         </div>
 
         <h2 id="judul-kartu-tiket">Tiket Saya</h2>
@@ -67,10 +59,9 @@
 
         <a
             class="user-home-button user-home-button--outline"
-            href="/user/tiket.php?view=semua"
-        >
+            href="/user/tiket.php?view=semua">
             Lihat tiket saya
-            <span aria-hidden="true">→</span>
+            <span class="remix-icon remix-icon--right" aria-hidden="true"></span>
         </a>
     </section>
 </div>
