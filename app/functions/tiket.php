@@ -403,14 +403,20 @@ function ambilSemuaTiket(
         tickets.nama_pengguna,
         tickets.departemen_pelapor,
         tickets.keluhan,
+        tickets.solusi,
         tickets.urgensi,
         tickets.prioritas,
         tickets.status,
         tickets.created_at,
         tickets.completed_at,
-        users.email AS email_pemilik
+        tickets.completed_by,
+        users.email AS email_pemilik,
+        admin_penyelesai.nama AS nama_admin_penyelesai
     FROM tickets
-    LEFT JOIN users ON tickets.user_id = users.id
+    LEFT JOIN users
+        ON tickets.user_id = users.id
+    LEFT JOIN users AS admin_penyelesai
+        ON tickets.completed_by = admin_penyelesai.id
 ';
 
     $sql .= $filter['where'];

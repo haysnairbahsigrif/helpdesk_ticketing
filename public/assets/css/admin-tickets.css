@@ -252,3 +252,52 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* Solusi penyelesaian tiket */
+.ticket-resolution .ticket-resolution-text {
+    margin: 0;
+    padding: 16px;
+    border: 1px solid #bbf7d0;
+    border-radius: 8px;
+    background: #f0fdf4;
+    color: #14532d;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.ticket-resolution .ticket-resolution-empty {
+    margin: 0;
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.ticket-resolution-meta {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin: 16px 0 0;
+}
+
+.ticket-resolution-meta > div {
+    min-width: 0;
+}
+
+.ticket-resolution-meta dt {
+    margin: 0 0 6px;
+    color: #64748b;
+    font-size: 13px;
+}
+
+.ticket-resolution-meta dd {
+    margin: 0;
+    color: #334155;
+    font-size: 14px;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+    .ticket-resolution-meta {
+        grid-template-columns: 1fr;
+    }
+}

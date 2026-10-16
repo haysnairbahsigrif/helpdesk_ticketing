@@ -144,11 +144,21 @@
                 ?></p>
         </section>
 
-        <section class="ticket-dialog-handling">
-            <h3>Penanganan tiket</h3>
+        <?php if ($tiket['status'] === 'Selesai'): ?>
+            <?php require __DIR__ . '/solusi-tiket.php'; ?>
+        <?php else: ?>
+            <section class="ticket-dialog-handling">
+                <h3>
+                    <?php
+                    echo $tiket['status'] === 'Diproses'
+                        ? 'Selesaikan tiket'
+                        : 'Penanganan tiket';
+                    ?>
+                </h3>
 
-            <?php require __DIR__ . '/form-status.php'; ?>
-        </section>
+                <?php require __DIR__ . '/form-status.php'; ?>
+            </section>
+        <?php endif; ?>
 
         <?php if (in_array($tiket['status'], ['Baru', 'Diproses'], true)): ?>
             <section class="ticket-dialog-handling">
