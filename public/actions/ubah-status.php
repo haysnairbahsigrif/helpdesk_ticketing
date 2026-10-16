@@ -112,22 +112,58 @@ if (
 ) {
     $pesan = 'status-tidak-valid';
 } else {
-    try {
-        require __DIR__ . '/../../app/config/database.php';
-        require __DIR__ . '/../../app/functions/tiket.php';
+    $solusi = null;
+    $solusiValid = true;
 
-        $berhasil = ubahStatusTiket(
-            $pdo,
-            $tiketId,
-            $statusTujuan
-        );
+    if ($statusTujuan === 'Selesai') {
+        $solusiMasukan = $_POST['solusi'] ?? '';
 
-        $pesan = $berhasil
-            ? 'status-berhasil'
-            : 'status-transisi-ditolak';
-    } catch (PDOException $error) {
-        error_log($error->getMessage());
-        $pesan = 'status-gagal';
+        if (!is_string($solusiMasukan)) {
+            $solusiValid = false;
+        } else {
+            $solusi = trim($solusiMasukan);
+            $panjangSolusi = preg_match_all('/./us', $solusi);
+
+            $solusiValid = $solusi !== ''
+                && $panjangSolusi !== false
+                && $panjangSolusi <= 5000;
+
+            // Simpan input valid agar tidak hilang jika database gagal.
+            if ($solusiValid) {
+                $_SESSION['input_solusi_tiket'][$tiketId] = $solusi;
+            }
+        }
+    }
+
+    if (!$solusiValid) {
+        $pesan = 'solusi-tidak-valid';
+    } else {
+        // Identitas admin berasal dari sesi, bukan formulir.
+        $adminId = (int) $_SESSION['akun']['id'];
+
+        try {
+            require __DIR__ . '/../../app/config/database.php';
+            require __DIR__ . '/../../app/functions/tiket.php';
+
+            $berhasil = ubahStatusTiket(
+                $pdo,
+                $tiketId,
+                $statusTujuan,
+                $adminId,
+                $solusi
+            );
+
+            $pesan = $berhasil
+                ? 'status-berhasil'
+                : 'status-transisi-ditolak';
+
+            if ($berhasil) {
+                unset($_SESSION['input_solusi_tiket'][$tiketId]);
+            }
+        } catch (PDOException $error) {
+            error_log($error->getMessage());
+            $pesan = 'status-gagal';
+        }
     }
 }
 

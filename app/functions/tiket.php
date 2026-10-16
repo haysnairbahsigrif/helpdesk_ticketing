@@ -443,36 +443,76 @@ function ambilSemuaTiket(
 function ubahStatusTiket(
     PDO $pdo,
     int $tiketId,
-    string $status
+    string $status,
+    int $adminId,
+    ?string $solusi = null
 ): bool {
-    // Tentukan status asal yang diizinkan.
     $statusAsal = match ($status) {
         'Diproses' => 'Baru',
         'Selesai' => 'Diproses',
         default => null,
     };
 
-    if ($statusAsal === null) {
+    if ($statusAsal === null || $tiketId < 1 || $adminId < 1) {
         return false;
     }
 
-    // Catat waktu selesai hanya saat tiket diselesaikan.
-    $sql = $status === 'Selesai'
-        ? 'UPDATE tickets
-        SET status = :status_tujuan,
-            completed_at = CURRENT_TIMESTAMP
-        WHERE id = :id AND status = :status_asal'
-        : 'UPDATE tickets
-        SET status = :status_tujuan
-        WHERE id = :id AND status = :status_asal';
-
-    $statement = $pdo->prepare($sql);
-
-    $statement->execute([
+    $parameter = [
         'status_tujuan' => $status,
         'id' => $tiketId,
         'status_asal' => $statusAsal,
-    ]);
+        'admin_id' => $adminId,
+    ];
+
+    if ($status === 'Selesai') {
+        $solusi = trim($solusi ?? '');
+        $panjangSolusi = preg_match_all('/./us', $solusi);
+
+        if (
+            $solusi === ''
+            || $panjangSolusi === false
+            || $panjangSolusi > 5000
+        ) {
+            return false;
+        }
+
+        $sql = '
+            UPDATE tickets
+            SET status = :status_tujuan,
+                solusi = :solusi,
+                completed_by = :completed_by,
+                completed_at = CURRENT_TIMESTAMP
+            WHERE id = :id
+              AND status = :status_asal
+              AND EXISTS (
+                  SELECT 1
+                  FROM users
+                  WHERE users.id = :admin_id
+                    AND users.role = \'admin\'
+                    AND users.is_active = 1
+              )
+        ';
+
+        $parameter['solusi'] = $solusi;
+        $parameter['completed_by'] = $adminId;
+    } else {
+        $sql = '
+            UPDATE tickets
+            SET status = :status_tujuan
+            WHERE id = :id
+              AND status = :status_asal
+              AND EXISTS (
+                  SELECT 1
+                  FROM users
+                  WHERE users.id = :admin_id
+                    AND users.role = \'admin\'
+                    AND users.is_active = 1
+              )
+        ';
+    }
+
+    $statement = $pdo->prepare($sql);
+    $statement->execute($parameter);
 
     return $statement->rowCount() === 1;
 }

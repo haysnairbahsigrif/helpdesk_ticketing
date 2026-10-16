@@ -43,6 +43,7 @@ $daftarPesan = [
     'prioritas-tidak-berubah' => 'Prioritas yang dipilih sama dengan prioritas saat ini.',
     'prioritas-admin-tidak-valid' => 'Perubahan memerlukan akun admin yang aktif.',
     'prioritas-gagal' => 'Prioritas belum dapat diperbarui. Silakan coba lagi.',
+    'solusi-tidak-valid' => 'Isi solusi penyelesaian berupa teks valid, maksimal 5.000 karakter.',
 ];
 
 $pesan = is_string($kodePesan)
