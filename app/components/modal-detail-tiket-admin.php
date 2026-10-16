@@ -144,6 +144,9 @@
                 ?></p>
         </section>
 
+        <!-- Catatan ditampilkan untuk semua status tiket. -->
+        <?php require __DIR__ . '/catatan-tiket-admin.php'; ?>
+
         <?php if ($tiket['status'] === 'Selesai'): ?>
             <?php require __DIR__ . '/solusi-tiket.php'; ?>
         <?php else: ?>

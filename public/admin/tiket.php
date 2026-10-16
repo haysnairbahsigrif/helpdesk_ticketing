@@ -133,6 +133,29 @@ if (!$gagalMemuatTiket && $daftarTiket !== []) {
     }
 }
 
+// Muat catatan hanya untuk tiket pada halaman ini.
+$catatanPerTiket = [];
+$gagalMemuatCatatan = false;
+
+if (!$gagalMemuatTiket && $daftarTiket !== []) {
+    try {
+        require_once __DIR__ . '/../../app/functions/catatan-tiket.php';
+
+        $idTiketUntukCatatan = array_map(
+            static fn(array $item): int => (int) $item['id'],
+            $daftarTiket
+        );
+
+        $catatanPerTiket = ambilCatatanTiketAdmin(
+            $pdo,
+            $idTiketUntukCatatan
+        );
+    } catch (PDOException $error) {
+        error_log($error->getMessage());
+        $gagalMemuatCatatan = true;
+    }
+}
+
 require __DIR__ . '/../../app/includes/header-admin.php';
 ?>
 

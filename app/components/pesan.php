@@ -44,6 +44,10 @@ $daftarPesan = [
     'prioritas-admin-tidak-valid' => 'Perubahan memerlukan akun admin yang aktif.',
     'prioritas-gagal' => 'Prioritas belum dapat diperbarui. Silakan coba lagi.',
     'solusi-tidak-valid' => 'Isi solusi penyelesaian berupa teks valid, maksimal 5.000 karakter.',
+    'catatan-berhasil' => 'Catatan penanganan berhasil disimpan.',
+    'catatan-tidak-valid' => 'Isi catatan berupa teks valid, maksimal 5.000 karakter.',
+    'catatan-ditolak' => 'Catatan tidak disimpan. Tiket harus berstatus Diproses dan akun admin harus aktif.',
+    'catatan-gagal' => 'Catatan belum dapat disimpan. Silakan coba lagi.',
 ];
 
 $pesan = is_string($kodePesan)
@@ -58,6 +62,7 @@ $kodeBerhasil = [
     'akun-status-berhasil',
     'edit-user-berhasil',
     'prioritas-berhasil',
+    'catatan-berhasil',
 ];
 
 $kodeInformasi = [

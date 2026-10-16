@@ -301,3 +301,45 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* Catatan internal penanganan tiket */
+.ticket-notes .ticket-notes-hint {
+    margin: 0 0 16px;
+    color: #64748b;
+    font-size: 13px;
+}
+
+.ticket-notes-list {
+    display: grid;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.ticket-note {
+    min-width: 0;
+    padding: 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: #f8fafc;
+}
+
+.ticket-note .ticket-note-text {
+    margin: 0;
+    color: #334155;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.ticket-note .ticket-note-meta {
+    margin: 10px 0 0;
+    color: #64748b;
+    font-size: 13px;
+    overflow-wrap: anywhere;
+}
+
+.ticket-note-form {
+    margin-top: 20px;
+}
