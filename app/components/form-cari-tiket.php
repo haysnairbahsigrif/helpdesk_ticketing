@@ -48,14 +48,17 @@ $buatUrlHapusFilter = static function (
     class="ticket-toolbar-form"
     action="/admin/tiket.php"
     method="get"
-    data-ticket-filter>
+    aria-label="Pencarian dan filter tiket">
+
     <div class="ticket-toolbar">
         <div class="ticket-toolbar-search">
             <label class="ticket-toolbar-sr-only" for="pencarian-tiket">
                 Cari nomor tiket, nama pelapor, atau keluhan
             </label>
 
-            <span class="remix-icon remix-icon--search" aria-hidden="true"></span>
+            <span
+                class="remix-icon remix-icon--search"
+                aria-hidden="true"></span>
 
             <input
                 type="search"
@@ -64,80 +67,85 @@ $buatUrlHapusFilter = static function (
                 maxlength="100"
                 placeholder="Nomor tiket, pelapor, atau keluhan"
                 value="<?php
-                        echo htmlspecialchars($pencarian, ENT_QUOTES, 'UTF-8');
-                        ?>">
+                echo htmlspecialchars($pencarian, ENT_QUOTES, 'UTF-8');
+                ?>">
         </div>
 
-        <?php foreach ($kelompokFilterTiket as $namaFilter => $kelompok): ?>
-            <details class="ticket-dropdown" data-filter-dropdown>
-                <summary>
-                    <span>
-                        <?php
-                        echo htmlspecialchars(
-                            $kelompok['label'],
-                            ENT_QUOTES,
-                            'UTF-8'
-                        );
-                        ?>
+        <details class="ticket-filter-menu">
+            <summary aria-label="Filter tiket" title="Filter tiket">
+                <span
+                    class="remix-icon remix-icon--filter"
+                    aria-hidden="true"></span>
 
-                        <span data-filter-count>
-                            <?php
-                            $jumlahPilihan = count($kelompok['terpilih']);
-                            echo $jumlahPilihan > 0
-                                ? '(' . $jumlahPilihan . ')'
-                                : '';
-                            ?>
-                        </span>
-                    </span>
+                <span class="ticket-filter-menu-label">Filter</span>
+            </summary>
 
-                    <span class="ticket-dropdown-arrow" aria-hidden="true"></span>
-                </summary>
+            <div class="ticket-filter-menu-panel">
+                <?php foreach ($kelompokFilterTiket as $namaFilter => $kelompok): ?>
+                    <div class="ticket-filter-group">
+                        <fieldset>
+                            <legend><?php
+                                echo htmlspecialchars(
+                                    $kelompok['label'],
+                                    ENT_QUOTES,
+                                    'UTF-8'
+                                );
+                            ?></legend>
 
-                <div class="ticket-dropdown-panel">
-                    <fieldset>
-                        <legend class="ticket-toolbar-sr-only">
-                            <?php
-                            echo htmlspecialchars(
-                                'Pilih ' . $kelompok['label'],
-                                ENT_QUOTES,
-                                'UTF-8'
-                            );
-                            ?>
-                        </legend>
+                            <?php foreach ($kelompok['pilihan'] as $nilai => $label): ?>
+                                <label class="ticket-dropdown-choice">
+                                    <input
+                                        type="checkbox"
+                                        name="<?php
+                                        echo htmlspecialchars(
+                                            $namaFilter,
+                                            ENT_QUOTES,
+                                            'UTF-8'
+                                        );
+                                        ?>[]"
+                                        value="<?php
+                                        echo htmlspecialchars(
+                                            $nilai,
+                                            ENT_QUOTES,
+                                            'UTF-8'
+                                        );
+                                        ?>"
+                                        <?php
+                                        echo in_array(
+                                            $nilai,
+                                            $kelompok['terpilih'],
+                                            true
+                                        ) ? 'checked' : '';
+                                        ?>>
 
-                        <?php foreach ($kelompok['pilihan'] as $nilai => $label): ?>
-                            <label class="ticket-dropdown-choice">
-                                <input
-                                    type="checkbox"
-                                    name="<?php echo $namaFilter; ?>[]"
-                                    value="<?php
-                                            echo htmlspecialchars($nilai, ENT_QUOTES, 'UTF-8');
-                                            ?>"
-                                    <?php
-                                    echo in_array(
-                                        $nilai,
-                                        $kelompok['terpilih'],
-                                        true
-                                    ) ? 'checked' : '';
-                                    ?>>
+                                    <span><?php
+                                        echo htmlspecialchars(
+                                            $label,
+                                            ENT_QUOTES,
+                                            'UTF-8'
+                                        );
+                                    ?></span>
+                                </label>
+                            <?php endforeach; ?>
+                        </fieldset>
+                    </div>
+                <?php endforeach; ?>
 
-                                <span><?php
-                                        echo htmlspecialchars($label, ENT_QUOTES, 'UTF-8');
-                                        ?></span>
-                            </label>
-                        <?php endforeach; ?>
-                    </fieldset>
+                <div class="ticket-filter-menu-actions">
+                    <button
+                        type="submit"
+                        class="button-primary ticket-toolbar-apply">
+                        Terapkan
+                    </button>
+
+                    <a
+                        class="ticket-toolbar-reset"
+                        href="/admin/tiket.php">
+                        Reset filter
+                    </a>
                 </div>
-            </details>
-        <?php endforeach; ?>
-
-        <button type="submit" class="button-primary ticket-toolbar-apply">
-            Terapkan
-        </button>
-
-        <a class="ticket-toolbar-reset" href="/admin/tiket.php">
-            Reset filter
-        </a>
+            </div>
+        </details>
     </div>
 
     <?php if ($status !== [] || $filterPrioritas !== []): ?>
@@ -152,21 +160,26 @@ $buatUrlHapusFilter = static function (
                     <a
                         class="ticket-toolbar-chip"
                         href="<?php
-                                echo htmlspecialchars(
-                                    $buatUrlHapusFilter($namaFilter, $nilai),
-                                    ENT_QUOTES,
-                                    'UTF-8'
-                                );
-                                ?>"
+                        echo htmlspecialchars(
+                            $buatUrlHapusFilter($namaFilter, $nilai),
+                            ENT_QUOTES,
+                            'UTF-8'
+                        );
+                        ?>"
                         aria-label="<?php
-                                    echo htmlspecialchars(
-                                        'Hapus filter ' . $labelChip,
-                                        ENT_QUOTES,
-                                        'UTF-8'
-                                    );
-                                    ?>">
-                        <?php echo htmlspecialchars($labelChip, ENT_QUOTES, 'UTF-8'); ?>
-                        <span class="remix-icon remix-icon--close" aria-hidden="true"></span>
+                        echo htmlspecialchars(
+                            'Hapus filter ' . $labelChip,
+                            ENT_QUOTES,
+                            'UTF-8'
+                        );
+                        ?>">
+                        <?php
+                        echo htmlspecialchars($labelChip, ENT_QUOTES, 'UTF-8');
+                        ?>
+
+                        <span
+                            class="remix-icon remix-icon--close"
+                            aria-hidden="true"></span>
                     </a>
                 <?php endforeach; ?>
             <?php endforeach; ?>

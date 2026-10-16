@@ -10,7 +10,7 @@
     margin: 0 0 8px;
 }
 
-.panel p {
+:where(.panel) p {
     margin: 0;
 }
 
@@ -296,4 +296,8 @@
 
 .remix-icon--left {
     --remix-icon: url('/assets/icons/arrow-left-s-line.svg');
+}
+
+.remix-icon--filter {
+    --remix-icon: url('/assets/icons/filter-3-line.svg');
 }

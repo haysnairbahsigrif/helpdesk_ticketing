@@ -5,6 +5,7 @@
 /** @var bool $gagalMemuatUser */
 /** @var array $daftarUser */
 /** @var int $totalUser */
+/** @var array<int, int> $departmentIds */
 ?>
 
 <section class="panel users-list-panel" aria-labelledby="judul-daftar-user">
@@ -42,7 +43,7 @@
 
         <p>
             <?php
-            echo $pencarian !== '' || $status !== ''
+            echo $pencarian !== '' || $status !== '' || $departmentIds !== []
                 ? 'Tidak ada user yang cocok dengan pencarian dan filter.'
                 : 'Belum ada akun user.';
             ?>

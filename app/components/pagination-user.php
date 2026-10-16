@@ -6,10 +6,12 @@
 /** @var string $pencarian */
 /** @var string $status */
 /** @var array<int, string> $pilihanStatusUser */
+/** @var array<int, int> $departmentIds */
 
 $parameterDasar = [
     'q' => $pencarian,
     'status' => $pilihanStatusUser,
+    'departemen' => $departmentIds,
 ];
 
 $buatUrlHalaman = static function (int $nomor) use ($parameterDasar): string {

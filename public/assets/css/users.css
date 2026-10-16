@@ -12,89 +12,98 @@
     color: #526075;
 }
 
-/* Tabel akun */
-.user-table-wrapper {
-    max-width: 100%;
-    overflow-x: auto;
+/* Toolbar pengelolaan akun */
+.users-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 24px;
 }
 
-.user-table {
-    width: 100%;
-    margin-top: 16px;
-    border-collapse: collapse;
+.users-toolbar>div {
+    flex: 1;
+    min-width: 0;
 }
 
-.user-table th,
-.user-table td {
-    padding: 12px;
-    border-bottom: 1px solid #dce3ee;
-    text-align: left;
-    vertical-align: top;
-    overflow-wrap: anywhere;
+.users-toolbar p {
+    color: #64748b;
 }
 
-.user-table th {
-    background-color: #f3f6fb;
+/* Judul di dalam panel daftar user */
+.users-list-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
 }
 
-@media (max-width: 600px) {
-    .user-table {
-        min-width: 0;
-    }
-
-    /* Sembunyikan judul kolom secara visual. */
-    .user-table thead {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip-path: inset(50%);
-        white-space: nowrap;
-    }
-
-    .user-table,
-    .user-table tbody,
-    .user-table tr,
-    .user-table td {
-        display: block;
-        width: 100%;
-    }
-
-    .user-table tr {
-        margin-bottom: 16px;
-        padding: 12px;
-        border: 1px solid #dce3ee;
-        border-radius: 8px;
-    }
-
-    .user-table tr:last-child {
-        margin-bottom: 0;
-    }
-
-    .user-table td {
-        padding: 8px 0;
-        border: 0;
-        overflow-wrap: anywhere;
-    }
-
-    .user-table td::before {
-        content: attr(data-label);
-        display: block;
-        margin-bottom: 4px;
-        font-weight: bold;
-        color: #526075;
-    }
+.users-list-heading>div {
+    min-width: 0;
 }
 
-/* Bilah pencarian dan filter akun */
+.users-list-heading h2 {
+    margin: 0;
+}
+
+.users-list-heading p {
+    margin: 6px 0 0;
+    color: #64748b;
+    line-height: 1.5;
+}
+
+.admin-users-page .users-list-heading {
+    margin-bottom: 16px;
+}
+
+/* Tombol tambah user */
+.users-add-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    min-height: 44px;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.admin-users-page .users-add-icon {
+    flex-shrink: 0;
+    filter: brightness(0) invert(1);
+}
+
+/* Tautan kembali pada halaman tambah, edit, dan reset */
+.users-back-panel {
+    margin-bottom: 24px;
+}
+
+.users-back-panel a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    color: #1e40af;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.users-back-panel a:hover {
+    text-decoration: underline;
+}
+
+/* Bilah pencarian */
 .user-search {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 12px;
     margin: 0 0 24px;
+}
+
+.admin-users-page .user-search {
+    margin-bottom: 16px;
 }
 
 .user-search-field {
@@ -109,8 +118,12 @@
     background: #fff;
 }
 
-.user-search-field > svg {
+.user-search-field>.user-search-icon,
+.user-search-field>.remix-icon {
     flex-shrink: 0;
+}
+
+.user-search-field>.remix-icon {
     color: #64748b;
 }
 
@@ -137,36 +150,114 @@
     outline-offset: 2px;
 }
 
-/* Dropdown status akun */
-.user-search-status {
+/* Satu tombol Filter */
+.admin-users-page .user-filter-menu {
     position: relative;
-    flex: 0 0 180px;
+    flex: 0 0 160px;
     min-width: 0;
 }
 
-.user-search-status select {
-    display: block;
-    width: 100%;
+.admin-users-page .user-filter-menu>summary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     min-height: 48px;
-    margin: 0;
-    padding: 10px 40px 10px 14px;
+    padding: 10px 14px;
     border: 1px solid #cbd5e1;
     border-radius: 8px;
     background: #fff;
     color: #334155;
-    font: inherit;
     font-weight: 600;
-    appearance: none;
+    list-style: none;
     cursor: pointer;
     box-sizing: border-box;
 }
 
-/* Tombol Terapkan dan Reset */
-.user-search-actions {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
+.admin-users-page .user-filter-menu>summary::-webkit-details-marker {
+    display: none;
+}
+
+/* Panel status dan departemen */
+.admin-users-page .user-filter-menu-panel {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 30;
+    display: grid;
     gap: 12px;
+    width: 320px;
+    max-width: calc(100vw - 64px);
+    max-height: 70vh;
+    padding: 16px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 8px 24px rgb(15 23 42 / 12%);
+    box-sizing: border-box;
+}
+
+.admin-users-page .user-filter-group {
+    min-width: 0;
+}
+
+.admin-users-page .user-filter-group+.user-filter-group {
+    padding-top: 16px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.admin-users-page .user-filter-group fieldset {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.admin-users-page .user-filter-group legend {
+    margin-bottom: 8px;
+    padding: 0;
+    color: #334155;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+/* Pilihan checkbox */
+.admin-users-page .user-status-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    margin: 0;
+    padding: 8px;
+    border-radius: 6px;
+    color: #334155;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.admin-users-page .user-status-option:hover {
+    background: #eff6ff;
+}
+
+.admin-users-page .user-status-option input[type="checkbox"] {
+    flex: 0 0 18px;
+    width: 18px;
+    height: 18px;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    accent-color: #2563eb;
+}
+
+/* Tombol Terapkan dan Reset di dalam panel */
+.user-search-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: center;
+    gap: 8px;
+    margin: 0;
 }
 
 .user-search-actions .button-primary,
@@ -174,8 +265,10 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    min-width: 0;
     min-height: 48px;
-    padding: 10px 16px;
+    padding: 10px 8px;
     font: inherit;
     font-weight: 600;
     white-space: nowrap;
@@ -197,14 +290,7 @@
     text-decoration: none;
 }
 
-.user-search-status select:focus-visible,
-.user-search-reset:focus-visible,
-.user-search-actions .button-primary:focus-visible {
-    outline: 3px solid #2563eb;
-    outline-offset: 3px;
-}
-
-/* Label tetap tersedia untuk pembaca layar */
+/* Label untuk pembaca layar */
 .user-search-sr-only {
     position: absolute;
     width: 1px;
@@ -217,151 +303,59 @@
     border: 0;
 }
 
-/* Pencarian satu baris penuh pada layar lebih sempit */
-@media (max-width: 1100px) {
-    .user-search-field {
-        flex-basis: 100%;
-    }
+/* Tabel akun */
+.user-table-wrapper {
+    max-width: 100%;
+    overflow-x: auto;
 }
 
-/* Susunan pada HP */
-@media (max-width: 600px) {
-    .user-search {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr);
-    }
-
-    .user-search-field,
-    .user-search-status {
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    .user-search-field input,
-    .user-search-status select {
-        font-size: 16px;
-    }
-
-    .user-search-actions {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .user-search-actions .button-primary,
-    .user-search-reset {
-        width: 100%;
-        padding-inline: 10px;
-    }
+.user-table {
+    width: 100%;
+    margin-top: 16px;
+    border-collapse: collapse;
+    font-size: 14px;
 }
 
-/* Jarak tombol status dari tautan reset */
+.admin-users-page .user-table {
+    margin-top: 0;
+}
+
+.user-table th,
+.user-table td {
+    padding: 12px;
+    border-bottom: 1px solid #dce3ee;
+    text-align: left;
+    vertical-align: top;
+    overflow-wrap: anywhere;
+}
+
+.user-table th {
+    background: #f3f6fb;
+}
+
+.user-table thead th {
+    background: #eff6ff;
+    color: #1e3a8a;
+    font-weight: 700;
+}
+
+.user-table tbody tr:nth-child(even) {
+    background: #f8fafc;
+}
+
+.user-table tbody tr:hover {
+    background: #eff6ff;
+}
+
+.admin-users-page .user-table td[data-label="Nama"] {
+    font-weight: 600;
+}
+
+/* Switch status akun */
 .user-status-form {
     margin-top: 12px;
 }
 
-/* Navigasi halaman daftar user */
-.user-pagination {
-    margin-top: 20px;
-}
-
-.user-pagination p {
-    margin: 0 0 12px;
-    color: #526075;
-}
-
-.user-pagination-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-}
-
-.user-pagination-links a {
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    padding: 8px 14px;
-    border: 1px solid #94a3b8;
-    border-radius: 8px;
-    color: #1e3a8a;
-    background-color: #ffffff;
-    text-decoration: none;
-}
-
-.user-pagination-links a:hover {
-    background-color: #e8eefb;
-}
-
-.user-pagination-links a:focus-visible {
-    outline: 3px solid #1e293b;
-    outline-offset: 3px;
-}
-
-/* Tautan tindakan akun */
-.user-action-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-}
-
-/* Bagian judul daftar dan tombol tambah user */
-.users-toolbar {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    margin-bottom: 24px;
-}
-
-.users-toolbar>div {
-    flex: 1;
-    min-width: 0;
-}
-
-.users-toolbar p {
-    color: #64748b;
-}
-
-.users-add-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    text-decoration: none;
-}
-
-/* Susunan pada HP */
-@media (max-width: 600px) {
-    .users-toolbar {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .users-add-button {
-        width: 100%;
-    }
-}
-
-/* Navigasi kembali pada halaman pengelolaan akun */
-.users-back-panel {
-    margin-bottom: 24px;
-}
-
-.users-back-panel a {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    min-height: 44px;
-    color: #1e40af;
-    font-weight: 600;
-    text-decoration: none;
-}
-
-.users-back-panel a:hover {
-    text-decoration: underline;
-}
-
-/* Switch status akun */
 .user-table .user-status-form {
     margin: 0;
 }
@@ -419,48 +413,13 @@
     background: #e2e8f0;
 }
 
-.user-status-switch:focus-visible {
-    outline: 3px solid #2563eb;
-    outline-offset: 3px;
-}
-
 .user-status-text {
     font-size: 13px;
     font-weight: 600;
     white-space: nowrap;
 }
 
-/* Tampilan tabel Kelola User */
-.user-table {
-    font-size: 14px;
-}
-
-.user-table thead th {
-    background: #eff6ff;
-    color: #1e3a8a;
-    font-weight: 700;
-}
-
-.user-table tbody tr:nth-child(even) {
-    background: #f8fafc;
-}
-
-.user-table tbody tr:hover {
-    background: #eff6ff;
-}
-
-/* Garis tabel pada layar lebar */
-@media (min-width: 601px) {
-
-    .user-table th,
-    .user-table td {
-        padding: 14px;
-        border: 1px solid #e2e8f0;
-        vertical-align: middle;
-    }
-}
-
-/* Tautan tindakan berbentuk tombol */
+/* Tombol tindakan akun */
 .user-action-links {
     display: flex;
     flex-wrap: wrap;
@@ -505,12 +464,7 @@
     background: #f1f5f9;
 }
 
-.user-action-button:focus-visible {
-    outline: 3px solid #2563eb;
-    outline-offset: 3px;
-}
-
-/* Pagination Kelola User */
+/* Pagination */
 .user-pagination {
     display: flex;
     flex-direction: column;
@@ -534,8 +488,8 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    width: 100%;
     gap: 8px;
+    width: 100%;
 }
 
 .user-pagination-links a,
@@ -566,107 +520,152 @@
     color: #fff;
 }
 
-.user-pagination-links a:focus-visible {
-    outline: 3px solid #2563eb;
-    outline-offset: 3px;
-}
-
 .pagination-ellipsis {
     padding-inline: 4px;
     color: #64748b;
 }
 
-/* Judul dan tombol tambah di dalam card daftar user */
-.users-list-heading {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    margin-bottom: 20px;
+/* Fokus navigasi keyboard */
+.admin-users-page .user-filter-menu>summary:focus-visible,
+.admin-users-page .user-status-option input:focus-visible,
+.user-search-reset:focus-visible,
+.user-search-actions .button-primary:focus-visible,
+.user-status-switch:focus-visible,
+.user-action-button:focus-visible,
+.user-pagination-links a:focus-visible {
+    outline: 3px solid #2563eb;
+    outline-offset: 3px;
 }
 
-.users-list-heading > div {
-    min-width: 0;
+/* Desktop */
+@media (min-width: 601px) {
+
+    .user-table th,
+    .user-table td {
+        padding: 14px;
+        border: 1px solid #e2e8f0;
+        vertical-align: middle;
+    }
+
+    .admin-users-page .users-add-button {
+        width: 160px;
+        padding-inline: 12px;
+    }
 }
 
-.users-list-heading h2 {
-    margin: 0;
+/* Tablet: pencarian mendapat satu baris penuh */
+@media (min-width: 601px) and (max-width: 1100px) {
+    .user-search-field {
+        flex-basis: 100%;
+    }
 }
 
-.users-list-heading p {
-    margin: 6px 0 0;
-    color: #64748b;
-    line-height: 1.5;
-}
-
-.users-list-heading .users-add-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    min-height: 44px;
-    text-decoration: none;
-    white-space: nowrap;
-}
-
+/* HP */
 @media (max-width: 600px) {
+
+    .users-toolbar,
     .users-list-heading {
         flex-direction: column;
         align-items: stretch;
     }
 
+    .users-add-button {
+        width: 100%;
+    }
+
     .users-list-heading .users-add-button {
         align-self: flex-start;
     }
-}
 
-/* Area judul ringkas untuk halaman Kelola user */
-.admin-users-page .admin-hero {
-    min-height: 0;
-    padding: 24px 32px;
-}
-
-.admin-users-page .admin-content {
-    margin-top: 0;
-    padding: 20px 32px 32px;
-}
-
-@media (max-width: 600px) {
-    .admin-users-page .admin-hero {
-        padding: 20px 16px;
+    /* Pencarian dan ikon Filter berdampingan */
+    .admin-users-page .user-search {
+        position: relative;
+        flex-wrap: nowrap;
+        align-items: flex-start;
+        gap: 8px;
     }
 
-    .admin-users-page .admin-hero h1 {
-        font-size: 24px;
+    .admin-users-page .user-search-field {
+        flex: 1 1 0;
+        width: auto;
+        box-sizing: border-box;
     }
 
-    .admin-users-page .admin-content {
-        padding: 16px;
+    .user-search-field input {
+        font-size: 16px;
     }
-}
 
-/* Penyempurnaan card khusus halaman Kelola user */
-.admin-users-page .users-list-heading {
-    margin-bottom: 16px;
-}
+    .admin-users-page .user-filter-menu {
+        position: static;
+        flex: 0 0 48px;
+        width: 48px;
+    }
 
-.admin-users-page .user-search {
-    margin-bottom: 16px;
-}
+    .admin-users-page .user-filter-menu>summary {
+        width: 48px;
+        padding: 0;
+    }
 
-.admin-users-page .user-table {
-    margin-top: 0;
-}
+    .admin-users-page .user-filter-menu-label {
+        display: none;
+    }
 
-/* Nama pengguna lebih mudah dikenali */
-.admin-users-page .user-table td[data-label="Nama"] {
-    font-weight: 600;
-}
+    .admin-users-page .user-filter-menu-panel {
+        right: 0;
+        left: 0;
+        width: 100%;
+        max-width: none;
+    }
 
-/* Tampilan kartu akun pada HP */
-@media (max-width: 600px) {
-    .admin-users-page .user-table tr {
+    /* Tabel menjadi kartu akun */
+    .user-table {
+        min-width: 0;
+    }
+
+    .user-table thead {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+    }
+
+    .user-table,
+    .user-table tbody,
+    .user-table tr,
+    .user-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .user-table tr {
+        margin-bottom: 16px;
         padding: 12px;
+        border: 1px solid #dce3ee;
+        border-radius: 8px;
+    }
+
+    .user-table tr:last-child {
+        margin-bottom: 0;
+    }
+
+    .user-table td {
+        padding: 8px 0;
+        border: 0;
+    }
+
+    .user-table td::before {
+        content: attr(data-label);
+        display: block;
+        margin-bottom: 4px;
+        color: #526075;
+        font-weight: bold;
+    }
+
+    .admin-users-page .user-table tr {
         box-sizing: border-box;
     }
 
@@ -675,8 +674,6 @@
         grid-template-columns: 88px minmax(0, 1fr);
         align-items: center;
         gap: 8px;
-        padding: 8px 0;
-        text-align: left;
         box-sizing: border-box;
     }
 
@@ -687,7 +684,7 @@
         text-align: left;
     }
 
-    .admin-users-page .user-table td > * {
+    .admin-users-page .user-table td>* {
         min-width: 0;
     }
 
@@ -709,154 +706,10 @@
     .admin-users-page .user-action-links {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 8px;
     }
 
     .admin-users-page .user-action-button {
         width: 100%;
-        justify-content: center;
-        text-align: center;
         box-sizing: border-box;
-    }
-}
-
-/* Ikon tombol tambah akun */
-.admin-users-page .users-add-icon {
-    flex-shrink: 0;
-    filter: brightness(0) invert(1);
-}
-
-.admin-users-page .users-add-button svg {
-    flex-shrink: 0;
-}
-
-/* Samakan lebar tombol pada desktop */
-@media (min-width: 601px) {
-    .admin-users-page .users-add-button,
-    .admin-users-page .user-search-reset {
-        width: 160px;
-        flex-shrink: 0;
-        padding-inline: 12px;
-    }
-
-    .admin-users-page .user-search-actions {
-        margin-left: auto;
-    }
-}
-
-/* Dropdown filter status akun */
-.admin-users-page .user-status-dropdown {
-    position: relative;
-    flex: 0 0 180px;
-    min-width: 0;
-}
-
-.admin-users-page .user-status-dropdown > summary {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    min-height: 48px;
-    padding: 10px 14px;
-    border: 1px solid #cbd5e1;
-    border-radius: 8px;
-    background: #fff;
-    color: #334155;
-    font-weight: 600;
-    list-style: none;
-    cursor: pointer;
-    box-sizing: border-box;
-}
-
-.admin-users-page .user-status-dropdown > summary::-webkit-details-marker {
-    display: none;
-}
-
-.admin-users-page .user-status-dropdown > summary:hover {
-    background: #f8fafc;
-}
-
-.admin-users-page .user-status-dropdown > summary:focus-visible {
-    outline: 3px solid #2563eb;
-    outline-offset: 3px;
-}
-
-.admin-users-page .user-status-dropdown-arrow {
-    flex-shrink: 0;
-    margin-left: auto;
-}
-
-.admin-users-page .user-status-dropdown[open] .user-status-dropdown-arrow {
-    transform: rotate(180deg);
-}
-
-.admin-users-page .user-status-selected-count {
-    color: #2563eb;
-}
-
-.admin-users-page .user-status-dropdown-panel {
-    position: absolute;
-    top: calc(100% + 8px);
-    left: 0;
-    z-index: 20;
-    width: 220px;
-    max-width: calc(100vw - 64px);
-    padding: 12px;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    background: #fff;
-    box-shadow: 0 8px 24px rgb(15 23 42 / 12%);
-    box-sizing: border-box;
-}
-
-.admin-users-page .user-status-dropdown-panel fieldset {
-    min-width: 0;
-    margin: 0;
-    padding: 0;
-    border: 0;
-}
-
-.admin-users-page .user-status-dropdown-panel legend {
-    margin-bottom: 8px;
-    padding: 0;
-    color: #64748b;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-.admin-users-page .user-status-option {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    min-height: 44px;
-    margin: 0;
-    padding: 8px;
-    border-radius: 6px;
-    color: #334155;
-    cursor: pointer;
-    box-sizing: border-box;
-}
-
-.admin-users-page .user-status-option:hover {
-    background: #eff6ff;
-}
-
-.admin-users-page .user-status-option input[type="checkbox"] {
-    flex: 0 0 18px;
-    width: 18px;
-    height: 18px;
-    min-height: 0;
-    margin: 0;
-    padding: 0;
-    accent-color: #2563eb;
-}
-
-@media (max-width: 600px) {
-    .admin-users-page .user-status-dropdown {
-        width: 100%;
-    }
-
-    .admin-users-page .user-status-dropdown-panel {
-        width: 100%;
-        max-width: none;
     }
 }

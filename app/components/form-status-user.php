@@ -2,6 +2,7 @@
 
 /** @var array $user */
 /** @var array<int, string> $pilihanStatusUser */
+/** @var array<int, int> $departmentIds */
 
 $akunAktif = (int) $user['is_active'] === 1;
 $statusTujuan = $akunAktif ? 0 : 1;
@@ -69,6 +70,13 @@ $pesanKonfirmasi = $akunAktif
         type="hidden"
         name="page"
         value="<?php echo (int) ($halaman ?? 1); ?>">
+
+    <?php foreach ($departmentIds as $idDepartemenFilter): ?>
+        <input
+            type="hidden"
+            name="filter_departemen[]"
+            value="<?php echo (int) $idDepartemenFilter; ?>">
+    <?php endforeach; ?>
 
     <div class="user-status-control">
         <button

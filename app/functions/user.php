@@ -5,9 +5,14 @@ function ambilDaftarUser(
     string $pencarian = '',
     string $status = '',
     ?int $batas = null,
-    int $offset = 0
+    int $offset = 0,
+    array $departmentIds = []
 ): array {
-    $filter = filterDaftarUser($pencarian, $status);
+    $filter = filterDaftarUser(
+        $pencarian,
+        $status,
+        $departmentIds
+    );
 
     $sql = '
     SELECT
@@ -150,7 +155,8 @@ function ubahStatusUser(
 
 function filterDaftarUser(
     string $pencarian,
-    string $status
+    string $status,
+    array $departmentIds = []
 ): array {
     $kondisi = 'WHERE role = :role';
     $parameter = ['role' => 'user'];
@@ -178,6 +184,27 @@ function filterDaftarUser(
         $parameter['is_active'] = $status === 'aktif' ? 1 : 0;
     }
 
+    // Batasi akun berdasarkan departemen yang dipilih.
+    if ($departmentIds !== []) {
+        $placeholderDepartemen = [];
+
+        foreach (array_values($departmentIds) as $urutan => $departmentId) {
+            if (!is_int($departmentId) || $departmentId < 1) {
+                throw new InvalidArgumentException(
+                    'ID departemen harus berupa bilangan bulat positif.'
+                );
+            }
+
+            $namaParameter = 'department_' . $urutan;
+            $placeholderDepartemen[] = ':' . $namaParameter;
+            $parameter[$namaParameter] = $departmentId;
+        }
+
+        $kondisi .= ' AND users.department_id IN ('
+            . implode(', ', $placeholderDepartemen)
+            . ')';
+    }
+
     return [
         'kondisi' => $kondisi,
         'parameter' => $parameter,
@@ -187,9 +214,14 @@ function filterDaftarUser(
 function hitungUser(
     PDO $pdo,
     string $pencarian = '',
-    string $status = ''
+    string $status = '',
+    array $departmentIds = []
 ): int {
-    $filter = filterDaftarUser($pencarian, $status);
+    $filter = filterDaftarUser(
+        $pencarian,
+        $status,
+        $departmentIds
+    );
 
     $statement = $pdo->prepare(
         'SELECT COUNT(*) FROM users ' . $filter['kondisi']

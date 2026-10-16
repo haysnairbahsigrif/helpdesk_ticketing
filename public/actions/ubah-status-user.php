@@ -68,6 +68,35 @@ foreach ($filterStatusMasukan as $nilaiFilterStatus) {
 
 $filterStatus = array_values(array_unique($filterStatus));
 
+// Periksa filter departemen halaman asal.
+$filterDepartemenMasukan = $_POST['filter_departemen'] ?? [];
+
+if (!is_array($filterDepartemenMasukan)) {
+    http_response_code(400);
+    exit('Filter departemen tidak valid.');
+}
+
+$filterDepartemen = [];
+
+foreach ($filterDepartemenMasukan as $idDepartemenMasukan) {
+    $departmentId = is_string($idDepartemenMasukan)
+        ? filter_var(
+            $idDepartemenMasukan,
+            FILTER_VALIDATE_INT,
+            ['options' => ['min_range' => 1]]
+        )
+        : false;
+
+    if ($departmentId === false) {
+        http_response_code(400);
+        exit('ID departemen tidak valid.');
+    }
+
+    $filterDepartemen[] = $departmentId;
+}
+
+$filterDepartemen = array_values(array_unique($filterDepartemen));
+
 // Periksa nomor halaman asal.
 $halamanMasukan = $_POST['page'] ?? '1';
 
@@ -136,6 +165,10 @@ if ($pencarian !== '') {
 
 if ($filterStatus !== []) {
     $parameterKembali['status'] = $filterStatus;
+}
+
+if ($filterDepartemen !== []) {
+    $parameterKembali['departemen'] = $filterDepartemen;
 }
 
 $urlKembali = '/admin/users.php?'
