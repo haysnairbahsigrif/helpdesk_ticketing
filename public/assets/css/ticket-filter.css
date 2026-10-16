@@ -105,26 +105,26 @@
 }
 
 /* Kelompok status dan prioritas */
-.ticket-filter-group {
+.ticket-filter-menu-group {
     min-width: 0;
     margin: 0;
     padding: 0;
     border: 0;
 }
 
-.ticket-filter-group + .ticket-filter-group {
+.ticket-filter-menu-group + .ticket-filter-menu-group {
     padding-top: 16px;
     border-top: 1px solid #e2e8f0;
 }
 
-.ticket-filter-group fieldset {
+.ticket-filter-menu-group fieldset {
     min-width: 0;
     margin: 0;
     padding: 0;
     border: 0;
 }
 
-.ticket-filter-group legend {
+.ticket-filter-menu-group legend {
     margin-bottom: 8px;
     padding: 0;
     color: #334155;
@@ -133,7 +133,7 @@
 }
 
 /* Pilihan checkbox */
-.ticket-filter-group .ticket-dropdown-choice {
+.ticket-filter-menu-group .ticket-dropdown-choice {
     display: flex;
     align-items: center;
     gap: 10px;

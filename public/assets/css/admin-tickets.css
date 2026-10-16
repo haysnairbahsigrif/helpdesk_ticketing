@@ -125,11 +125,13 @@
 @media (min-width: 701px) {
     .ticket-admin-table {
         table-layout: auto;
+        border-collapse: collapse;
     }
 
     .ticket-admin-table th,
     .ticket-admin-table td {
         padding: 12px;
+        border: 1px solid #e2e8f0;
         vertical-align: middle;
     }
 
@@ -138,6 +140,29 @@
         white-space: nowrap;
         overflow-wrap: normal;
         word-break: normal;
+    }
+
+    /* Judul kolom */
+    .ticket-admin-table thead th {
+        background: #eff6ff;
+        color: #1e3a8a;
+        font-weight: 700;
+    }
+
+    /* Warna baris selang-seling */
+    .ticket-admin-table tbody tr:nth-child(even) {
+        background: #f8fafc;
+    }
+
+    /* Sorotan ketika kursor berada pada baris */
+    .ticket-admin-table tbody tr:hover {
+        background: #eff6ff;
+    }
+
+    /* Sel mengikuti warna baris */
+    .ticket-admin-table tbody th,
+    .ticket-admin-table tbody td {
+        background: transparent;
     }
 }
 
@@ -279,7 +304,7 @@
     margin: 16px 0 0;
 }
 
-.ticket-resolution-meta > div {
+.ticket-resolution-meta>div {
     min-width: 0;
 }
 
@@ -371,7 +396,7 @@
     background: #fff;
 }
 
-.ticket-disclosure > summary {
+.ticket-disclosure>summary {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -386,25 +411,25 @@
     box-sizing: border-box;
 }
 
-.ticket-disclosure > summary::-webkit-details-marker {
+.ticket-disclosure>summary::-webkit-details-marker {
     display: none;
 }
 
-.ticket-disclosure > summary:hover {
+.ticket-disclosure>summary:hover {
     background: #f8fafc;
 }
 
-.ticket-disclosure > summary:focus-visible {
+.ticket-disclosure>summary:focus-visible {
     outline: 3px solid #2563eb;
     outline-offset: 3px;
 }
 
-.ticket-disclosure[open] > summary {
+.ticket-disclosure[open]>summary {
     border-bottom: 1px solid #e2e8f0;
     border-radius: 8px 8px 0 0;
 }
 
-.ticket-disclosure[open] > summary .ticket-disclosure-arrow {
+.ticket-disclosure[open]>summary .ticket-disclosure-arrow {
     transform: rotate(90deg);
 }
 
@@ -429,7 +454,7 @@
         gap: 8px;
     }
 
-    .ticket-disclosure > summary {
+    .ticket-disclosure>summary {
         padding-inline: 12px;
     }
 

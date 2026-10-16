@@ -82,7 +82,7 @@ $buatUrlHapusFilter = static function (
 
             <div class="ticket-filter-menu-panel">
                 <?php foreach ($kelompokFilterTiket as $namaFilter => $kelompok): ?>
-                    <div class="ticket-filter-group">
+                    <div class="ticket-filter-menu-group">
                         <fieldset>
                             <legend><?php
                                 echo htmlspecialchars(

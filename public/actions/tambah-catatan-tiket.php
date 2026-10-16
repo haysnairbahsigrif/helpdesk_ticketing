@@ -123,6 +123,7 @@ if (
 }
 
 $parameterKembali['pesan'] = $pesan;
+$parameterKembali['buka_tiket'] = $tiketId;
 
 header(
     'Location: /admin/tiket.php?' . http_build_query($parameterKembali),
